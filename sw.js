@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 "use strict";
 
-const CACHE_NAME = "fizki-v3";
+const CACHE_NAME = "fizki-v4";
 
 const PRECACHE_URLS = [
   "/",

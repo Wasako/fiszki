@@ -816,12 +816,15 @@ h1 {
   position: relative;
   z-index: 1;
   display: flex;
+  flex-wrap: nowrap;
   gap: 0;
   margin: 0 0 1.25rem;
   border-radius: 12px;
   padding: 4px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .tab-slider {
@@ -840,7 +843,8 @@ h1 {
 .tab {
   position: relative;
   z-index: 2;
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   border: none;
   border-radius: 10px;
   padding: 0.65rem 0.5rem;
@@ -851,6 +855,9 @@ h1 {
   color: var(--text-muted);
   transition: color 0.3s ease;
   -webkit-tap-highlight-color: transparent;
+  white-space: normal;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .tab:hover {
@@ -883,9 +890,9 @@ h1 {
 }
 
 .tabs-level .tab {
-  font-size: 0.8rem;
-  padding: 0.52rem 0.35rem;
-  line-height: 1.2;
+  font-size: clamp(0.62rem, 2.6vw, 0.78rem);
+  padding: 0.45rem 0.2rem;
+  line-height: 1.15;
 }
 
 .tabs-task-class .tab {
