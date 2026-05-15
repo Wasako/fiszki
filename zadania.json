@@ -177,6 +177,985 @@
               ]
             }
           ]
+        },
+        {
+          "id": "lo1-wektory",
+          "title": "Wektory i wielkości skalarne",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.1 Wektory i wielkości skalarne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-ruch-jednostajny",
+          "title": "Ruch jednostajny prostoliniowy",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.2 Ruch jednostajny prostoliniowy** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-wielkosci-ruchu",
+          "title": "Wielkości opisujące ruch",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.3 Ruch jednostajnie zmienny prostoliniowy** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-ruch-przyspieszony",
+          "title": "Ruch jednostajnie przyspieszony",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.3 Ruch jednostajnie zmienny prostoliniowy** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-ruch-zmienny",
+          "title": "Spadek swobodny i rzut pionowy",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.4 Spadek swobodny i rzut pionowy** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-ruch-2d",
+          "title": "Rzuty w przestrzeni",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.5 Rzuty w przestrzeni: rzut poziomy i ukośny** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-wzglednosc",
+          "title": "Względność ruchu",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.1.6 Względność ruchu i składanie prędkości** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-dyn-1",
+          "title": "1.2.1 I zasada dynamiki (inercjalne układy odniesienia)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.1 I zasada dynamiki (inercjalne układy odniesienia)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-newton",
+          "title": "Zasady dynamiki Newtona",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.2 II zasada dynamiki (równanie ruchu)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-dyn-3",
+          "title": "1.2.3 III zasada dynamiki",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.3 III zasada dynamiki** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-ped-impuls",
+          "title": "Pęd i popęd",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.4 Pęd i popęd siły, zasada zachowania pędu** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-zach-pedu",
+          "title": "Zasada zachowania pędu",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.4 Pęd i popęd siły, zasada zachowania pędu** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-tarcie",
+          "title": "Tarcie",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.5 Siły oporu: tarcie statyczne i kinetyczne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-okrag-nieinercja",
+          "title": "Ruch po okręgu i układy nieinercjalne",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.2.6 Układy nieinercjalne i siły bezwładności** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-pme-2",
+          "title": "1.3.2 Moc mechaniczna (chwilowa i średnia)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.3.2 Moc mechaniczna (chwilowa i średnia)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-pme-3",
+          "title": "1.3.3 Energia kinetyczna i praca-energia",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.3.3 Energia kinetyczna i praca-energia** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-pme-4",
+          "title": "1.3.4 Energia potencjalna (grawitacji, sprężystości)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.3.4 Energia potencjalna (grawitacji, sprężystości)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-zee-zderzenia",
+          "title": "Energia i zderzenia",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.3.5 Zasada zachowania energii mechanicznej** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-pme-6",
+          "title": "1.3.6 Zderzenia sprężyste i niesprężyste",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.3.6 Zderzenia sprężyste i niesprężyste** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-hydrostatyka",
+          "title": "Hydrostatyka",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.4.1 Ciśnienie hydrostatyczne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-hyd-2",
+          "title": "1.4.2 Prawo Pascala i prasa hydrauliczna",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.4.2 Prawo Pascala i prasa hydrauliczna** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-hyd-3",
+          "title": "1.4.3 Prawo Archimedesa i warunki pływania ciał",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.4.3 Prawo Archimedesa i warunki pływania ciał** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k1-hyd-4",
+          "title": "1.4.4 Elementy hydrodynamiki",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**1.4.4 Elementy hydrodynamiki** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-1",
+          "title": "2.1.1 Środek masy układu ciał",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.1 Środek masy układu ciał** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-2",
+          "title": "2.1.2 Kinematyka ruchu obrotowego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.2 Kinematyka ruchu obrotowego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-3",
+          "title": "2.1.3 Moment siły i warunki równowagi bryły",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.3 Moment siły i warunki równowagi bryły** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-4",
+          "title": "2.1.4 Moment bezwładności i twierdzenie Steinera",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.4 Moment bezwładności i twierdzenie Steinera** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-5",
+          "title": "2.1.5 II zasada dynamiki ruchu obrotowego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.5 II zasada dynamiki ruchu obrotowego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-6",
+          "title": "2.1.6 Moment pędu i zasada jego zachowania",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.6 Moment pędu i zasada jego zachowania** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-bry-7",
+          "title": "2.1.7 Energia kinetyczna ruchu obrotowego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.1.7 Energia kinetyczna ruchu obrotowego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-gra-1",
+          "title": "2.2.1 Prawa Keplera",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.2.1 Prawa Keplera** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-gra-2",
+          "title": "2.2.2 Prawo powszechnego ciążenia",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.2.2 Prawo powszechnego ciążenia** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-gra-3",
+          "title": "2.2.3 Pole grawitacyjne (natężenie, potencjał, praca)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.2.3 Pole grawitacyjne (natężenie, potencjał, praca)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-gra-4",
+          "title": "2.2.4 Prędkości kosmiczne (I i II)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.2.4 Prędkości kosmiczne (I i II)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-gra-5",
+          "title": "2.2.5 Ruch satelitów i stan nieważkości",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.2.5 Ruch satelitów i stan nieważkości** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ter-1",
+          "title": "2.3.1 Podstawy teorii kinetyczno-molekularnej gazów",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.3.1 Podstawy teorii kinetyczno-molekularnej gazów** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ter-2",
+          "title": "2.3.2 Równanie stanu gazu doskonałego (Clapeyrona)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.3.2 Równanie stanu gazu doskonałego (Clapeyrona)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ter-3",
+          "title": "2.3.3 Przemiany gazowe",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.3.3 Przemiany gazowe** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-termodynamika-mini",
+          "title": "Termodynamika",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.3.4 Ciepło właściwe i bilans cieplny** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ter-5",
+          "title": "2.3.5 I zasada termodynamiki i praca gazu",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.3.5 I zasada termodynamiki i praca gazu** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ter-6",
+          "title": "2.3.6 II zasada termodynamiki i sprawność silników cieplnych",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.3.6 II zasada termodynamiki i sprawność silników cieplnych** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ele-1",
+          "title": "2.4.1 Ładunek elektryczny i Prawo Coulomba",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.4.1 Ładunek elektryczny i Prawo Coulomba** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ele-2",
+          "title": "2.4.2 Pole elektryczne (natężenie, linie pola)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.4.2 Pole elektryczne (natężenie, linie pola)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ele-3",
+          "title": "2.4.3 Praca, potencjał i napięcie elektryczne",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.4.3 Praca, potencjał i napięcie elektryczne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ele-4",
+          "title": "2.4.4 Przewodniki i dielektryki w polu elektrycznym",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.4.4 Przewodniki i dielektryki w polu elektrycznym** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ele-5",
+          "title": "2.4.5 Pojemność elektryczna, kondensatory",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.4.5 Pojemność elektryczna, kondensatory** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k2-ele-6",
+          "title": "2.4.6 Łączenie kondensatorów i energia pola",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**2.4.6 Łączenie kondensatorów i energia pola** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-prad-1",
+          "title": "3.1.1 Natężenie prądu i prawo Ohma",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.1.1 Natężenie prądu i prawo Ohma** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-prad-2",
+          "title": "3.1.2 Prawa Kirchhoffa",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.1.2 Prawa Kirchhoffa** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-prad-3",
+          "title": "3.1.3 Łączenie oporników",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.1.3 Łączenie oporników** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-prad-4",
+          "title": "3.1.4 Siła elektromotoryczna (SEM) i opór wewnętrzny",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.1.4 Siła elektromotoryczna (SEM) i opór wewnętrzny** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-prad-5",
+          "title": "3.1.5 Praca i moc prądu elektrycznego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.1.5 Praca i moc prądu elektrycznego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-mag-1",
+          "title": "3.2.1 Wektor indukcji magnetycznej",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.2.1 Wektor indukcji magnetycznej** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-mag-2",
+          "title": "3.2.2 Siła elektrodynamiczna",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.2.2 Siła elektrodynamiczna** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo1-elektro-magnes",
+          "title": "Elektryczność i magnetyzm",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.2.3 Siła Lorentza** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-mag-4",
+          "title": "3.2.4 Przewodniki z prądem w polu magnetycznym",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.2.4 Przewodniki z prądem w polu magnetycznym** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-mag-5",
+          "title": "3.2.5 Właściwości magnetyczne materii",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.2.5 Właściwości magnetyczne materii** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-ind-1",
+          "title": "3.3.1 Strumień pola magnetycznego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.3.1 Strumień pola magnetycznego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-ind-2",
+          "title": "3.3.2 Prawo indukcji Faradaya i reguła Lenza",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.3.2 Prawo indukcji Faradaya i reguła Lenza** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-ind-3",
+          "title": "3.3.3 Zjawisko samoindukcji",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.3.3 Zjawisko samoindukcji** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-ind-4",
+          "title": "3.3.4 Prąd przemienny i obwody prądu przemiennego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.3.4 Prąd przemienny i obwody prądu przemiennego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-ind-5",
+          "title": "3.3.5 Transformatory i generatory",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.3.5 Transformatory i generatory** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-1",
+          "title": "3.4.1 Równanie ruchu drgającego harmonicznego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.1 Równanie ruchu drgającego harmonicznego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-2",
+          "title": "3.4.2 Wahadło matematyczne i sprężynowe",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.2 Wahadło matematyczne i sprężynowe** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-3",
+          "title": "3.4.3 Przemiany energii w ruchu drgającym",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.3 Przemiany energii w ruchu drgającym** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-4",
+          "title": "3.4.4 Tłumienie i rezonans mechaniczny",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.4 Tłumienie i rezonans mechaniczny** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-5",
+          "title": "3.4.5 Równanie fali mechanicznej",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.5 Równanie fali mechanicznej** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-6",
+          "title": "3.4.6 Zjawiska falowe (odbicie, załamanie, interferencja, dyfrakcja)",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.6 Zjawiska falowe (odbicie, załamanie, interferencja, dyfrakcja)** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k3-fal-7",
+          "title": "3.4.7 Akustyka i efekt Dopplera",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**3.4.7 Akustyka i efekt Dopplera** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-opt-1",
+          "title": "4.1.1 Optyka geometryczna: prawa odbicia i załamania",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.1.1 Optyka geometryczna: prawa odbicia i załamania** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-opt-2",
+          "title": "4.1.2 Całkowite wewnętrzne odbicie",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.1.2 Całkowite wewnętrzne odbicie** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-opt-3",
+          "title": "4.1.3 Zwierciadła płaskie i sferyczne",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.1.3 Zwierciadła płaskie i sferyczne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-opt-4",
+          "title": "4.1.4 Soczewki cienkie i wady wzroku",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.1.4 Soczewki cienkie i wady wzroku** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-opt-5",
+          "title": "4.1.5 Optyka falowa: interferencja i dyfrakcja",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.1.5 Optyka falowa: interferencja i dyfrakcja** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-opt-6",
+          "title": "4.1.6 Polaryzacja i rozszczepienie (dyspersja) światła",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.1.6 Polaryzacja i rozszczepienie (dyspersja) światła** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-kw-1",
+          "title": "4.2.1 Promieniowanie termiczne",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.2.1 Promieniowanie termiczne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-kw-2",
+          "title": "4.2.2 Zjawisko fotoelektryczne zewnętrzne",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.2.2 Zjawisko fotoelektryczne zewnętrzne** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-kw-3",
+          "title": "4.2.3 Fotony i efekt Comptona",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.2.3 Fotony i efekt Comptona** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-kw-4",
+          "title": "4.2.4 Fale materii",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.2.4 Fale materii** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-ja-1",
+          "title": "4.3.1 Model atomu Bohra",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.3.1 Model atomu Bohra** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-ja-2",
+          "title": "4.3.2 Budowa jądra atomowego, izotopy",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.3.2 Budowa jądra atomowego, izotopy** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-ja-3",
+          "title": "4.3.3 Deficyt masy i energia wiązania",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.3.3 Deficyt masy i energia wiązania** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-ja-4",
+          "title": "4.3.4 Promieniotwórczość naturalna",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.3.4 Promieniotwórczość naturalna** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-ja-5",
+          "title": "4.3.5 Prawo rozpadu promieniotwórczego",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.3.5 Prawo rozpadu promieniotwórczego** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-ja-6",
+          "title": "4.3.6 Reakcje jądrowe",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.3.6 Reakcje jądrowe** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-stw-1",
+          "title": "4.4.1 Postulaty Einsteina",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.4.1 Postulaty Einsteina** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-stw-2",
+          "title": "4.4.2 Dylatacja czasu i paradoks bliźniąt",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.4.2 Dylatacja czasu i paradoks bliźniąt** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-stw-3",
+          "title": "4.4.3 Kontrakcja długości",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.4.3 Kontrakcja długości** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "lo-rz-k4-stw-4",
+          "title": "4.4.4 Relatywistyczna energia, pęd i zasada równoważności masy i energii",
+          "tasks": [
+            {
+              "title": "Zadanie przykładowe",
+              "question": "**4.4.4 Relatywistyczna energia, pęd i zasada równoważności masy i energii** — Liceum — rozszerzenie. Tu dodasz właściwe zadania; na razie wpis pomocniczy dla nauczyciela.",
+              "answer": "—"
+            }
+          ]
         }
       ]
     },

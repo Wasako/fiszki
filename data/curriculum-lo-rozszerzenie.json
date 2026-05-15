@@ -10,27 +10,46 @@
           "children": [
             {
               "id": "lo-rz-k1-kin-1",
-              "title": "1.1.1 Wektory i wielkości skalarne"
+              "title": "1.1.1 Wektory i wielkości skalarne",
+              "sectionRefs": [
+                "lo1-wektory"
+              ]
             },
             {
               "id": "lo-rz-k1-kin-2",
-              "title": "1.1.2 Ruch jednostajny prostoliniowy"
+              "title": "1.1.2 Ruch jednostajny prostoliniowy",
+              "sectionRefs": [
+                "lo1-ruch-jednostajny"
+              ]
             },
             {
               "id": "lo-rz-k1-kin-3",
-              "title": "1.1.3 Ruch jednostajnie zmienny prostoliniowy"
+              "title": "1.1.3 Ruch jednostajnie zmienny prostoliniowy",
+              "sectionRefs": [
+                "lo1-wielkosci-ruchu",
+                "lo1-ruch-przyspieszony"
+              ]
             },
             {
               "id": "lo-rz-k1-kin-4",
-              "title": "1.1.4 Spadek swobodny i rzut pionowy"
+              "title": "1.1.4 Spadek swobodny i rzut pionowy",
+              "sectionRefs": [
+                "lo1-ruch-zmienny"
+              ]
             },
             {
               "id": "lo-rz-k1-kin-5",
-              "title": "1.1.5 Rzuty w przestrzeni: rzut poziomy i ukośny"
+              "title": "1.1.5 Rzuty w przestrzeni: rzut poziomy i ukośny",
+              "sectionRefs": [
+                "lo1-ruch-2d"
+              ]
             },
             {
               "id": "lo-rz-k1-kin-6",
-              "title": "1.1.6 Względność ruchu i składanie prędkości"
+              "title": "1.1.6 Względność ruchu i składanie prędkości",
+              "sectionRefs": [
+                "lo1-wzglednosc"
+              ]
             }
           ]
         },
@@ -40,27 +59,46 @@
           "children": [
             {
               "id": "lo-rz-k1-dyn-1",
-              "title": "1.2.1 I zasada dynamiki (inercjalne układy odniesienia)"
+              "title": "1.2.1 I zasada dynamiki (inercjalne układy odniesienia)",
+              "sectionRefs": [
+                "lo-rz-k1-dyn-1"
+              ]
             },
             {
               "id": "lo-rz-k1-dyn-2",
-              "title": "1.2.2 II zasada dynamiki (równanie ruchu)"
+              "title": "1.2.2 II zasada dynamiki (równanie ruchu)",
+              "sectionRefs": [
+                "lo1-newton"
+              ]
             },
             {
               "id": "lo-rz-k1-dyn-3",
-              "title": "1.2.3 III zasada dynamiki"
+              "title": "1.2.3 III zasada dynamiki",
+              "sectionRefs": [
+                "lo-rz-k1-dyn-3"
+              ]
             },
             {
               "id": "lo-rz-k1-dyn-4",
-              "title": "1.2.4 Pęd i popęd siły, zasada zachowania pędu"
+              "title": "1.2.4 Pęd i popęd siły, zasada zachowania pędu",
+              "sectionRefs": [
+                "lo1-ped-impuls",
+                "lo1-zach-pedu"
+              ]
             },
             {
               "id": "lo-rz-k1-dyn-5",
-              "title": "1.2.5 Siły oporu: tarcie statyczne i kinetyczne"
+              "title": "1.2.5 Siły oporu: tarcie statyczne i kinetyczne",
+              "sectionRefs": [
+                "lo1-tarcie"
+              ]
             },
             {
               "id": "lo-rz-k1-dyn-6",
-              "title": "1.2.6 Układy nieinercjalne i siły bezwładności"
+              "title": "1.2.6 Układy nieinercjalne i siły bezwładności",
+              "sectionRefs": [
+                "lo1-okrag-nieinercja"
+              ]
             }
           ]
         },
@@ -70,27 +108,46 @@
           "children": [
             {
               "id": "lo-rz-k1-pme-1",
-              "title": "1.3.1 Praca siły stałej i zmiennej"
+              "title": "1.3.1 Praca siły stałej i zmiennej",
+              "sectionRefs": [
+                "lo1-praca-moc-em",
+                "praca-moc-energia"
+              ]
             },
             {
               "id": "lo-rz-k1-pme-2",
-              "title": "1.3.2 Moc mechaniczna (chwilowa i średnia)"
+              "title": "1.3.2 Moc mechaniczna (chwilowa i średnia)",
+              "sectionRefs": [
+                "lo-rz-k1-pme-2"
+              ]
             },
             {
               "id": "lo-rz-k1-pme-3",
-              "title": "1.3.3 Energia kinetyczna i praca-energia"
+              "title": "1.3.3 Energia kinetyczna i praca-energia",
+              "sectionRefs": [
+                "lo-rz-k1-pme-3"
+              ]
             },
             {
               "id": "lo-rz-k1-pme-4",
-              "title": "1.3.4 Energia potencjalna (grawitacji, sprężystości)"
+              "title": "1.3.4 Energia potencjalna (grawitacji, sprężystości)",
+              "sectionRefs": [
+                "lo-rz-k1-pme-4"
+              ]
             },
             {
               "id": "lo-rz-k1-pme-5",
-              "title": "1.3.5 Zasada zachowania energii mechanicznej"
+              "title": "1.3.5 Zasada zachowania energii mechanicznej",
+              "sectionRefs": [
+                "lo1-zee-zderzenia"
+              ]
             },
             {
               "id": "lo-rz-k1-pme-6",
-              "title": "1.3.6 Zderzenia sprężyste i niesprężyste"
+              "title": "1.3.6 Zderzenia sprężyste i niesprężyste",
+              "sectionRefs": [
+                "lo-rz-k1-pme-6"
+              ]
             }
           ]
         },
@@ -100,19 +157,31 @@
           "children": [
             {
               "id": "lo-rz-k1-hyd-1",
-              "title": "1.4.1 Ciśnienie hydrostatyczne"
+              "title": "1.4.1 Ciśnienie hydrostatyczne",
+              "sectionRefs": [
+                "lo1-hydrostatyka"
+              ]
             },
             {
               "id": "lo-rz-k1-hyd-2",
-              "title": "1.4.2 Prawo Pascala i prasa hydrauliczna"
+              "title": "1.4.2 Prawo Pascala i prasa hydrauliczna",
+              "sectionRefs": [
+                "lo-rz-k1-hyd-2"
+              ]
             },
             {
               "id": "lo-rz-k1-hyd-3",
-              "title": "1.4.3 Prawo Archimedesa i warunki pływania ciał"
+              "title": "1.4.3 Prawo Archimedesa i warunki pływania ciał",
+              "sectionRefs": [
+                "lo-rz-k1-hyd-3"
+              ]
             },
             {
               "id": "lo-rz-k1-hyd-4",
-              "title": "1.4.4 Elementy hydrodynamiki"
+              "title": "1.4.4 Elementy hydrodynamiki",
+              "sectionRefs": [
+                "lo-rz-k1-hyd-4"
+              ]
             }
           ]
         }
@@ -128,31 +197,52 @@
           "children": [
             {
               "id": "lo-rz-k2-bry-1",
-              "title": "2.1.1 Środek masy układu ciał"
+              "title": "2.1.1 Środek masy układu ciał",
+              "sectionRefs": [
+                "lo-rz-k2-bry-1"
+              ]
             },
             {
               "id": "lo-rz-k2-bry-2",
-              "title": "2.1.2 Kinematyka ruchu obrotowego"
+              "title": "2.1.2 Kinematyka ruchu obrotowego",
+              "sectionRefs": [
+                "lo-rz-k2-bry-2"
+              ]
             },
             {
               "id": "lo-rz-k2-bry-3",
-              "title": "2.1.3 Moment siły i warunki równowagi bryły"
+              "title": "2.1.3 Moment siły i warunki równowagi bryły",
+              "sectionRefs": [
+                "lo-rz-k2-bry-3"
+              ]
             },
             {
               "id": "lo-rz-k2-bry-4",
-              "title": "2.1.4 Moment bezwładności i twierdzenie Steinera"
+              "title": "2.1.4 Moment bezwładności i twierdzenie Steinera",
+              "sectionRefs": [
+                "lo-rz-k2-bry-4"
+              ]
             },
             {
               "id": "lo-rz-k2-bry-5",
-              "title": "2.1.5 II zasada dynamiki ruchu obrotowego"
+              "title": "2.1.5 II zasada dynamiki ruchu obrotowego",
+              "sectionRefs": [
+                "lo-rz-k2-bry-5"
+              ]
             },
             {
               "id": "lo-rz-k2-bry-6",
-              "title": "2.1.6 Moment pędu i zasada jego zachowania"
+              "title": "2.1.6 Moment pędu i zasada jego zachowania",
+              "sectionRefs": [
+                "lo-rz-k2-bry-6"
+              ]
             },
             {
               "id": "lo-rz-k2-bry-7",
-              "title": "2.1.7 Energia kinetyczna ruchu obrotowego"
+              "title": "2.1.7 Energia kinetyczna ruchu obrotowego",
+              "sectionRefs": [
+                "lo-rz-k2-bry-7"
+              ]
             }
           ]
         },
@@ -162,23 +252,38 @@
           "children": [
             {
               "id": "lo-rz-k2-gra-1",
-              "title": "2.2.1 Prawa Keplera"
+              "title": "2.2.1 Prawa Keplera",
+              "sectionRefs": [
+                "lo-rz-k2-gra-1"
+              ]
             },
             {
               "id": "lo-rz-k2-gra-2",
-              "title": "2.2.2 Prawo powszechnego ciążenia"
+              "title": "2.2.2 Prawo powszechnego ciążenia",
+              "sectionRefs": [
+                "lo-rz-k2-gra-2"
+              ]
             },
             {
               "id": "lo-rz-k2-gra-3",
-              "title": "2.2.3 Pole grawitacyjne (natężenie, potencjał, praca)"
+              "title": "2.2.3 Pole grawitacyjne (natężenie, potencjał, praca)",
+              "sectionRefs": [
+                "lo-rz-k2-gra-3"
+              ]
             },
             {
               "id": "lo-rz-k2-gra-4",
-              "title": "2.2.4 Prędkości kosmiczne (I i II)"
+              "title": "2.2.4 Prędkości kosmiczne (I i II)",
+              "sectionRefs": [
+                "lo-rz-k2-gra-4"
+              ]
             },
             {
               "id": "lo-rz-k2-gra-5",
-              "title": "2.2.5 Ruch satelitów i stan nieważkości"
+              "title": "2.2.5 Ruch satelitów i stan nieważkości",
+              "sectionRefs": [
+                "lo-rz-k2-gra-5"
+              ]
             }
           ]
         },
@@ -188,27 +293,45 @@
           "children": [
             {
               "id": "lo-rz-k2-ter-1",
-              "title": "2.3.1 Podstawy teorii kinetyczno-molekularnej gazów"
+              "title": "2.3.1 Podstawy teorii kinetyczno-molekularnej gazów",
+              "sectionRefs": [
+                "lo-rz-k2-ter-1"
+              ]
             },
             {
               "id": "lo-rz-k2-ter-2",
-              "title": "2.3.2 Równanie stanu gazu doskonałego (Clapeyrona)"
+              "title": "2.3.2 Równanie stanu gazu doskonałego (Clapeyrona)",
+              "sectionRefs": [
+                "lo-rz-k2-ter-2"
+              ]
             },
             {
               "id": "lo-rz-k2-ter-3",
-              "title": "2.3.3 Przemiany gazowe"
+              "title": "2.3.3 Przemiany gazowe",
+              "sectionRefs": [
+                "lo-rz-k2-ter-3"
+              ]
             },
             {
               "id": "lo-rz-k2-ter-4",
-              "title": "2.3.4 Ciepło właściwe i bilans cieplny"
+              "title": "2.3.4 Ciepło właściwe i bilans cieplny",
+              "sectionRefs": [
+                "lo1-termodynamika-mini"
+              ]
             },
             {
               "id": "lo-rz-k2-ter-5",
-              "title": "2.3.5 I zasada termodynamiki i praca gazu"
+              "title": "2.3.5 I zasada termodynamiki i praca gazu",
+              "sectionRefs": [
+                "lo-rz-k2-ter-5"
+              ]
             },
             {
               "id": "lo-rz-k2-ter-6",
-              "title": "2.3.6 II zasada termodynamiki i sprawność silników cieplnych"
+              "title": "2.3.6 II zasada termodynamiki i sprawność silników cieplnych",
+              "sectionRefs": [
+                "lo-rz-k2-ter-6"
+              ]
             }
           ]
         },
@@ -218,27 +341,45 @@
           "children": [
             {
               "id": "lo-rz-k2-ele-1",
-              "title": "2.4.1 Ładunek elektryczny i Prawo Coulomba"
+              "title": "2.4.1 Ładunek elektryczny i Prawo Coulomba",
+              "sectionRefs": [
+                "lo-rz-k2-ele-1"
+              ]
             },
             {
               "id": "lo-rz-k2-ele-2",
-              "title": "2.4.2 Pole elektryczne (natężenie, linie pola)"
+              "title": "2.4.2 Pole elektryczne (natężenie, linie pola)",
+              "sectionRefs": [
+                "lo-rz-k2-ele-2"
+              ]
             },
             {
               "id": "lo-rz-k2-ele-3",
-              "title": "2.4.3 Praca, potencjał i napięcie elektryczne"
+              "title": "2.4.3 Praca, potencjał i napięcie elektryczne",
+              "sectionRefs": [
+                "lo-rz-k2-ele-3"
+              ]
             },
             {
               "id": "lo-rz-k2-ele-4",
-              "title": "2.4.4 Przewodniki i dielektryki w polu elektrycznym"
+              "title": "2.4.4 Przewodniki i dielektryki w polu elektrycznym",
+              "sectionRefs": [
+                "lo-rz-k2-ele-4"
+              ]
             },
             {
               "id": "lo-rz-k2-ele-5",
-              "title": "2.4.5 Pojemność elektryczna, kondensatory"
+              "title": "2.4.5 Pojemność elektryczna, kondensatory",
+              "sectionRefs": [
+                "lo-rz-k2-ele-5"
+              ]
             },
             {
               "id": "lo-rz-k2-ele-6",
-              "title": "2.4.6 Łączenie kondensatorów i energia pola"
+              "title": "2.4.6 Łączenie kondensatorów i energia pola",
+              "sectionRefs": [
+                "lo-rz-k2-ele-6"
+              ]
             }
           ]
         }
@@ -254,23 +395,38 @@
           "children": [
             {
               "id": "lo-rz-k3-prad-1",
-              "title": "3.1.1 Natężenie prądu i prawo Ohma"
+              "title": "3.1.1 Natężenie prądu i prawo Ohma",
+              "sectionRefs": [
+                "lo-rz-k3-prad-1"
+              ]
             },
             {
               "id": "lo-rz-k3-prad-2",
-              "title": "3.1.2 Prawa Kirchhoffa"
+              "title": "3.1.2 Prawa Kirchhoffa",
+              "sectionRefs": [
+                "lo-rz-k3-prad-2"
+              ]
             },
             {
               "id": "lo-rz-k3-prad-3",
-              "title": "3.1.3 Łączenie oporników"
+              "title": "3.1.3 Łączenie oporników",
+              "sectionRefs": [
+                "lo-rz-k3-prad-3"
+              ]
             },
             {
               "id": "lo-rz-k3-prad-4",
-              "title": "3.1.4 Siła elektromotoryczna (SEM) i opór wewnętrzny"
+              "title": "3.1.4 Siła elektromotoryczna (SEM) i opór wewnętrzny",
+              "sectionRefs": [
+                "lo-rz-k3-prad-4"
+              ]
             },
             {
               "id": "lo-rz-k3-prad-5",
-              "title": "3.1.5 Praca i moc prądu elektrycznego"
+              "title": "3.1.5 Praca i moc prądu elektrycznego",
+              "sectionRefs": [
+                "lo-rz-k3-prad-5"
+              ]
             }
           ]
         },
@@ -280,23 +436,38 @@
           "children": [
             {
               "id": "lo-rz-k3-mag-1",
-              "title": "3.2.1 Wektor indukcji magnetycznej"
+              "title": "3.2.1 Wektor indukcji magnetycznej",
+              "sectionRefs": [
+                "lo-rz-k3-mag-1"
+              ]
             },
             {
               "id": "lo-rz-k3-mag-2",
-              "title": "3.2.2 Siła elektrodynamiczna"
+              "title": "3.2.2 Siła elektrodynamiczna",
+              "sectionRefs": [
+                "lo-rz-k3-mag-2"
+              ]
             },
             {
               "id": "lo-rz-k3-mag-3",
-              "title": "3.2.3 Siła Lorentza"
+              "title": "3.2.3 Siła Lorentza",
+              "sectionRefs": [
+                "lo1-elektro-magnes"
+              ]
             },
             {
               "id": "lo-rz-k3-mag-4",
-              "title": "3.2.4 Przewodniki z prądem w polu magnetycznym"
+              "title": "3.2.4 Przewodniki z prądem w polu magnetycznym",
+              "sectionRefs": [
+                "lo-rz-k3-mag-4"
+              ]
             },
             {
               "id": "lo-rz-k3-mag-5",
-              "title": "3.2.5 Właściwości magnetyczne materii"
+              "title": "3.2.5 Właściwości magnetyczne materii",
+              "sectionRefs": [
+                "lo-rz-k3-mag-5"
+              ]
             }
           ]
         },
@@ -306,23 +477,38 @@
           "children": [
             {
               "id": "lo-rz-k3-ind-1",
-              "title": "3.3.1 Strumień pola magnetycznego"
+              "title": "3.3.1 Strumień pola magnetycznego",
+              "sectionRefs": [
+                "lo-rz-k3-ind-1"
+              ]
             },
             {
               "id": "lo-rz-k3-ind-2",
-              "title": "3.3.2 Prawo indukcji Faradaya i reguła Lenza"
+              "title": "3.3.2 Prawo indukcji Faradaya i reguła Lenza",
+              "sectionRefs": [
+                "lo-rz-k3-ind-2"
+              ]
             },
             {
               "id": "lo-rz-k3-ind-3",
-              "title": "3.3.3 Zjawisko samoindukcji"
+              "title": "3.3.3 Zjawisko samoindukcji",
+              "sectionRefs": [
+                "lo-rz-k3-ind-3"
+              ]
             },
             {
               "id": "lo-rz-k3-ind-4",
-              "title": "3.3.4 Prąd przemienny i obwody prądu przemiennego"
+              "title": "3.3.4 Prąd przemienny i obwody prądu przemiennego",
+              "sectionRefs": [
+                "lo-rz-k3-ind-4"
+              ]
             },
             {
               "id": "lo-rz-k3-ind-5",
-              "title": "3.3.5 Transformatory i generatory"
+              "title": "3.3.5 Transformatory i generatory",
+              "sectionRefs": [
+                "lo-rz-k3-ind-5"
+              ]
             }
           ]
         },
@@ -332,31 +518,52 @@
           "children": [
             {
               "id": "lo-rz-k3-fal-1",
-              "title": "3.4.1 Równanie ruchu drgającego harmonicznego"
+              "title": "3.4.1 Równanie ruchu drgającego harmonicznego",
+              "sectionRefs": [
+                "lo-rz-k3-fal-1"
+              ]
             },
             {
               "id": "lo-rz-k3-fal-2",
-              "title": "3.4.2 Wahadło matematyczne i sprężynowe"
+              "title": "3.4.2 Wahadło matematyczne i sprężynowe",
+              "sectionRefs": [
+                "lo-rz-k3-fal-2"
+              ]
             },
             {
               "id": "lo-rz-k3-fal-3",
-              "title": "3.4.3 Przemiany energii w ruchu drgającym"
+              "title": "3.4.3 Przemiany energii w ruchu drgającym",
+              "sectionRefs": [
+                "lo-rz-k3-fal-3"
+              ]
             },
             {
               "id": "lo-rz-k3-fal-4",
-              "title": "3.4.4 Tłumienie i rezonans mechaniczny"
+              "title": "3.4.4 Tłumienie i rezonans mechaniczny",
+              "sectionRefs": [
+                "lo-rz-k3-fal-4"
+              ]
             },
             {
               "id": "lo-rz-k3-fal-5",
-              "title": "3.4.5 Równanie fali mechanicznej"
+              "title": "3.4.5 Równanie fali mechanicznej",
+              "sectionRefs": [
+                "lo-rz-k3-fal-5"
+              ]
             },
             {
               "id": "lo-rz-k3-fal-6",
-              "title": "3.4.6 Zjawiska falowe (odbicie, załamanie, interferencja, dyfrakcja)"
+              "title": "3.4.6 Zjawiska falowe (odbicie, załamanie, interferencja, dyfrakcja)",
+              "sectionRefs": [
+                "lo-rz-k3-fal-6"
+              ]
             },
             {
               "id": "lo-rz-k3-fal-7",
-              "title": "3.4.7 Akustyka i efekt Dopplera"
+              "title": "3.4.7 Akustyka i efekt Dopplera",
+              "sectionRefs": [
+                "lo-rz-k3-fal-7"
+              ]
             }
           ]
         }
@@ -372,27 +579,45 @@
           "children": [
             {
               "id": "lo-rz-k4-opt-1",
-              "title": "4.1.1 Optyka geometryczna: prawa odbicia i załamania"
+              "title": "4.1.1 Optyka geometryczna: prawa odbicia i załamania",
+              "sectionRefs": [
+                "lo-rz-k4-opt-1"
+              ]
             },
             {
               "id": "lo-rz-k4-opt-2",
-              "title": "4.1.2 Całkowite wewnętrzne odbicie"
+              "title": "4.1.2 Całkowite wewnętrzne odbicie",
+              "sectionRefs": [
+                "lo-rz-k4-opt-2"
+              ]
             },
             {
               "id": "lo-rz-k4-opt-3",
-              "title": "4.1.3 Zwierciadła płaskie i sferyczne"
+              "title": "4.1.3 Zwierciadła płaskie i sferyczne",
+              "sectionRefs": [
+                "lo-rz-k4-opt-3"
+              ]
             },
             {
               "id": "lo-rz-k4-opt-4",
-              "title": "4.1.4 Soczewki cienkie i wady wzroku"
+              "title": "4.1.4 Soczewki cienkie i wady wzroku",
+              "sectionRefs": [
+                "lo-rz-k4-opt-4"
+              ]
             },
             {
               "id": "lo-rz-k4-opt-5",
-              "title": "4.1.5 Optyka falowa: interferencja i dyfrakcja"
+              "title": "4.1.5 Optyka falowa: interferencja i dyfrakcja",
+              "sectionRefs": [
+                "lo-rz-k4-opt-5"
+              ]
             },
             {
               "id": "lo-rz-k4-opt-6",
-              "title": "4.1.6 Polaryzacja i rozszczepienie (dyspersja) światła"
+              "title": "4.1.6 Polaryzacja i rozszczepienie (dyspersja) światła",
+              "sectionRefs": [
+                "lo-rz-k4-opt-6"
+              ]
             }
           ]
         },
@@ -402,19 +627,31 @@
           "children": [
             {
               "id": "lo-rz-k4-kw-1",
-              "title": "4.2.1 Promieniowanie termiczne"
+              "title": "4.2.1 Promieniowanie termiczne",
+              "sectionRefs": [
+                "lo-rz-k4-kw-1"
+              ]
             },
             {
               "id": "lo-rz-k4-kw-2",
-              "title": "4.2.2 Zjawisko fotoelektryczne zewnętrzne"
+              "title": "4.2.2 Zjawisko fotoelektryczne zewnętrzne",
+              "sectionRefs": [
+                "lo-rz-k4-kw-2"
+              ]
             },
             {
               "id": "lo-rz-k4-kw-3",
-              "title": "4.2.3 Fotony i efekt Comptona"
+              "title": "4.2.3 Fotony i efekt Comptona",
+              "sectionRefs": [
+                "lo-rz-k4-kw-3"
+              ]
             },
             {
               "id": "lo-rz-k4-kw-4",
-              "title": "4.2.4 Fale materii"
+              "title": "4.2.4 Fale materii",
+              "sectionRefs": [
+                "lo-rz-k4-kw-4"
+              ]
             }
           ]
         },
@@ -424,27 +661,45 @@
           "children": [
             {
               "id": "lo-rz-k4-ja-1",
-              "title": "4.3.1 Model atomu Bohra"
+              "title": "4.3.1 Model atomu Bohra",
+              "sectionRefs": [
+                "lo-rz-k4-ja-1"
+              ]
             },
             {
               "id": "lo-rz-k4-ja-2",
-              "title": "4.3.2 Budowa jądra atomowego, izotopy"
+              "title": "4.3.2 Budowa jądra atomowego, izotopy",
+              "sectionRefs": [
+                "lo-rz-k4-ja-2"
+              ]
             },
             {
               "id": "lo-rz-k4-ja-3",
-              "title": "4.3.3 Deficyt masy i energia wiązania"
+              "title": "4.3.3 Deficyt masy i energia wiązania",
+              "sectionRefs": [
+                "lo-rz-k4-ja-3"
+              ]
             },
             {
               "id": "lo-rz-k4-ja-4",
-              "title": "4.3.4 Promieniotwórczość naturalna"
+              "title": "4.3.4 Promieniotwórczość naturalna",
+              "sectionRefs": [
+                "lo-rz-k4-ja-4"
+              ]
             },
             {
               "id": "lo-rz-k4-ja-5",
-              "title": "4.3.5 Prawo rozpadu promieniotwórczego"
+              "title": "4.3.5 Prawo rozpadu promieniotwórczego",
+              "sectionRefs": [
+                "lo-rz-k4-ja-5"
+              ]
             },
             {
               "id": "lo-rz-k4-ja-6",
-              "title": "4.3.6 Reakcje jądrowe"
+              "title": "4.3.6 Reakcje jądrowe",
+              "sectionRefs": [
+                "lo-rz-k4-ja-6"
+              ]
             }
           ]
         },
@@ -454,19 +709,31 @@
           "children": [
             {
               "id": "lo-rz-k4-stw-1",
-              "title": "4.4.1 Postulaty Einsteina"
+              "title": "4.4.1 Postulaty Einsteina",
+              "sectionRefs": [
+                "lo-rz-k4-stw-1"
+              ]
             },
             {
               "id": "lo-rz-k4-stw-2",
-              "title": "4.4.2 Dylatacja czasu i paradoks bliźniąt"
+              "title": "4.4.2 Dylatacja czasu i paradoks bliźniąt",
+              "sectionRefs": [
+                "lo-rz-k4-stw-2"
+              ]
             },
             {
               "id": "lo-rz-k4-stw-3",
-              "title": "4.4.3 Kontrakcja długości"
+              "title": "4.4.3 Kontrakcja długości",
+              "sectionRefs": [
+                "lo-rz-k4-stw-3"
+              ]
             },
             {
               "id": "lo-rz-k4-stw-4",
-              "title": "4.4.4 Relatywistyczna energia, pęd i zasada równoważności masy i energii"
+              "title": "4.4.4 Relatywistyczna energia, pęd i zasada równoważności masy i energii",
+              "sectionRefs": [
+                "lo-rz-k4-stw-4"
+              ]
             }
           ]
         }
