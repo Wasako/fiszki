@@ -1,90 +1,22 @@
-# Decap CMS — edycja data/fiszki-wzory.json i zadania.json
-# Panel (pełny): https://fizki.pl/admin/
-# Panel (tylko zadania): https://fizki.pl/admin/zadania/
-# Polityka dostępu / wyłączenie strażnika: config/cms-access.json
-# OAuth: api/auth.js + api/callback.js na Vercel (zmienne w .env.example)
+# Decap CMS — tylko zadania.json (edytorzy z ograniczonym dostępem)
+# Panel: https://fizki.pl/admin/zadania/
+# Pełny panel (fiszki + zadania): https://fizki.pl/admin/
+# Polityka / wyłączenie strażnika: config/cms-access.json
 
 backend:
   name: github
   repo: Wasako/fiszki
   branch: master
-  # base_url = origin (bez /api) — Decap porównuje e.origin z base_url przy postMessage
   base_url: https://fizki.pl
-  auth_endpoint: api/auth
+  auth_endpoint: api/auth?return=/admin/zadania/
 
-# „Go back to site” prowadzi na stronę główną aplikacji (nie .com)
 site_url: https://fizki.pl
 display_url: https://fizki.pl
 logo:
   url: https://fizki.pl
-  text: Fizki
-
-# Lokalnie: npx decap-server + odkomentuj local_backend
-# local_backend: true
-
-media_folder: images
-public_folder: /images
+  text: Fizki — zadania
 
 collections:
-  # --- Fiszki (obiekt JSON: version, source, cards[]) ---
-  - name: fiszki
-    label: Fiszki — Wzory
-    files:
-      - name: baza_fiszek
-        label: Baza fiszek (data/fiszki-wzory.json)
-        file: data/fiszki-wzory.json
-        format: json
-        fields:
-          - label: Wersja
-            name: version
-            widget: number
-            value_type: int
-          - label: Źródło (informacyjnie)
-            name: source
-            widget: string
-            required: false
-          - label: Karty (wzory)
-            name: cards
-            widget: list
-            summary: "{{fields.topic}} — {{fields.name}}"
-            fields:
-              - label: Dział (topic)
-                name: topic
-                widget: string
-              - label: Nazwa wzoru (name → front w aplikacji)
-                name: name
-                widget: string
-              - label: Symbol (LaTeX, lewa strona)
-                name: symbol
-                widget: string
-                required: false
-              - label: Poprawny wzór (correct_latex → back)
-                name: correct_latex
-                widget: text
-              - label: Zakres (cke = matura/rozszerzenie; podstawowka = SP + lo-podstawa)
-                name: scope
-                widget: select
-                options:
-                  - { label: Matura CKE, value: cke }
-                  - { label: Podstawówka / lo-podstawa (PDF), value: podstawowka }
-                default: cke
-              - label: Widoczne w szkole podstawowej
-                name: showSp
-                widget: boolean
-                default: true
-                required: false
-                hint: Odznacz (false), aby ukryć kartę tylko na SP — nadal widoczna w liceum podstawa.
-              - label: Dystraktory quizu (3× LaTeX — tablica stringów)
-                name: distractors
-                widget: list
-                min: 0
-                max: 3
-                field:
-                  label: Błędny wzór LaTeX
-                  name: latex
-                  widget: string
-
-  # --- Zadania (obiekt JSON: { "levels": [ poziomy… ] }) ---
   - name: zadania
     label: Zadania główne
     files:

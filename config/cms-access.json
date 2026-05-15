@@ -1,0 +1,14 @@
+{
+  "_readme": "Jedyny plik sterujący ograniczeniami CMS. Aby WYŁĄCZYĆ całe zabezpieczenie: ustaw \"enabled\": false i wypchnij na master — albo napisz agentowi: wyłącz cms-access.",
+  "enabled": true,
+  "limitedEditorEmails": [
+    "leagueoflegstarts@gmail.com"
+  ],
+  "allowedPaths": [
+    "zadania.json",
+    "admin/zadania/",
+    "config/cms-access.json",
+    ".github/workflows/cms-limited-editor-guard.yml"
+  ],
+  "limitedEditorPanelPath": "/admin/zadania/"
+}

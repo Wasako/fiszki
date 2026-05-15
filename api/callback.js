@@ -1,10 +1,28 @@
 /**
  * Decap CMS — callback GitHub OAuth; przekazuje token do okna CMS (postMessage).
  */
-function oauthSuccessHtml(accessToken) {
+function sanitizeCmsReturnPath(raw) {
+  const p = String(raw || "/admin/").trim();
+  if (!p.startsWith("/admin")) return "/admin/";
+  if (p.includes("..")) return "/admin/";
+  return p.endsWith("/") ? p : `${p}/`;
+}
+
+function parseOAuthState(stateParam) {
+  if (!stateParam) return "/admin/";
+  try {
+    const parsed = JSON.parse(Buffer.from(String(stateParam), "base64url").toString("utf8"));
+    return sanitizeCmsReturnPath(parsed.return);
+  } catch {
+    return "/admin/";
+  }
+}
+
+function oauthSuccessHtml(accessToken, returnPath) {
   const inner = JSON.stringify({ token: accessToken, provider: "github" });
   const authMsg = "authorization:github:success:" + inner;
   const authMsgJson = JSON.stringify(authMsg);
+  const safeReturn = sanitizeCmsReturnPath(returnPath);
 
   return `<!DOCTYPE html>
 <html lang="pl">
@@ -28,7 +46,7 @@ function oauthSuccessHtml(accessToken) {
     try {
       sessionStorage.setItem("decap_github_auth_pending", authMsg);
     } catch (e) {}
-    window.location.replace("/admin/");
+    window.location.replace(${JSON.stringify(safeReturn)});
   }
 
   function onMessage(e) {
@@ -44,7 +62,7 @@ function oauthSuccessHtml(accessToken) {
 })();
 </script>
 <p>Logowanie zakończone. Przekierowanie do panelu…</p>
-<p><a href="/admin/">Kliknij tutaj, jeśli okno się nie zamknie</a></p>
+<p><a href="${safeReturn}">Kliknij tutaj, jeśli okno się nie zamknie</a></p>
 </body>
 </html>`;
 }
@@ -109,5 +127,6 @@ export default async function handler(req, res) {
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("Cache-Control", "no-store");
-  res.status(200).send(oauthSuccessHtml(data.access_token));
+  const returnPath = parseOAuthState(q.state);
+  res.status(200).send(oauthSuccessHtml(data.access_token, returnPath));
 }

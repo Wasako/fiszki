@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fizki — edycja zadań</title>
+    <script>
+      (function () {
+        var KEY = "decap_github_auth_pending";
+        var msg = sessionStorage.getItem(KEY);
+        if (!msg) return;
+        sessionStorage.removeItem(KEY);
+        function deliver() {
+          window.postMessage(msg, window.location.origin);
+        }
+        window.addEventListener("load", function () {
+          deliver();
+          setTimeout(deliver, 300);
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <script src="https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js"></script>
+  </body>
+</html>

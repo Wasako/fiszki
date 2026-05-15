@@ -296,12 +296,92 @@
   }
 
   /**
-   * Czy zadanie wymaga bramki quizu (4 warianty formulaQuiz).
+   * Czy zadanie wymaga bramki quizu (4 warianty formulaQuiz) — legacy.
    * @param {object} t
    */
   function taskNeedsQuizGate(t) {
     const fq = t && t.formulaQuiz;
     return Boolean(fq && Array.isArray(fq.choices) && fq.choices.length >= 4);
+  }
+
+  /**
+   * Walidacja wyniku liczbowego (tolerancja 2%; przy exact=0 — bezwzględna 0,01).
+   * @param {string} userInput
+   * @param {string} exactValue
+   */
+  function checkMathAnswer(userInput, exactValue) {
+    const strip = (s) => String(s ?? "").replace(/\s/g, "").replace(/,/g, ".");
+    const user = parseFloat(strip(userInput));
+    const exact = parseFloat(strip(exactValue));
+    if (!Number.isFinite(user) || !Number.isFinite(exact)) return false;
+    if (exact === 0) return Math.abs(user - exact) <= 0.01;
+    return Math.abs((user - exact) / exact) <= 0.02;
+  }
+
+  /** @param {object} t @returns {"open"|"math"|"abcd"} */
+  function getTaskType(t) {
+    const tt = t && t.taskType;
+    if (tt === "open" || tt === "math" || tt === "abcd") return tt;
+    return "open";
+  }
+
+  /** Czy zadanie ma interaktywną bramkę (math / abcd / legacy formulaQuiz). */
+  function taskHasInteractiveGate(t) {
+    const type = getTaskType(t);
+    if (type === "open") return taskNeedsQuizGate(t);
+    if (type === "math") return String(t.mathValue ?? "").trim() !== "";
+    if (type === "abcd") {
+      const opts = t && t.abcdOptions;
+      return Array.isArray(opts) && opts.length >= 4;
+    }
+    return false;
+  }
+
+  /** Czy zadanie wymaga odblokowania przed odpowiedzią / pełnym rozwiązaniem. */
+  function taskNeedsAnswerGate(t) {
+    return taskHasInteractiveGate(t);
+  }
+
+  /** @param {number | string | undefined} difficulty */
+  function taskDifficultyStarsHtml(difficulty) {
+    const n = Math.max(1, Math.min(3, Number(difficulty) || 1));
+    const filled = "⭐".repeat(n);
+    const empty = "☆".repeat(3 - n);
+    return `<span class="task-difficulty-stars" aria-label="Poziom trudności ${n} z 3">${filled}${empty}</span>`;
+  }
+
+  function unlockTaskWithSolution() {
+    taskQuizSolved = true;
+    taskSolutionVisible = true;
+    taskQuizUnlockAnim = true;
+    render();
+  }
+
+  /** @param {HTMLElement | null} el */
+  function triggerTaskShake(el) {
+    if (!el) return;
+    el.classList.remove("shake");
+    void el.offsetWidth;
+    el.classList.add("shake");
+    window.setTimeout(() => el.classList.remove("shake"), 400);
+  }
+
+  /**
+   * 2-Strike: pierwszy błąd — wstrząs + podpowiedź; drugi — ujawnienie i odblokowanie.
+   * @param {HTMLElement | null} shakeEl
+   * @param {() => void} [onSecondStrike]
+   */
+  function handleTaskWrongAttempt(shakeEl, onSecondStrike) {
+    taskAttempts += 1;
+    if (taskAttempts === 1) {
+      triggerTaskShake(shakeEl);
+      render();
+      return;
+    }
+    if (taskAttempts >= 2) {
+      if (typeof onSecondStrike === "function") onSecondStrike();
+      unlockTaskWithSolution();
+    }
   }
 
   /**
@@ -480,7 +560,7 @@
   }
 
   /**
-   * @typedef {{ title: string, question: string, answer: string, formulas?: string[], sheetFormulas?: string[], sheetCardRefs?: (string|[string, string])[], laws?: string[], solutionSteps?: string[], formulaQuiz?: { lhsLatex?: string, prompt?: string, choices?: { katex: string, correct?: boolean, distractorRationale?: string }[] } }} Task
+   * @typedef {{ title: string, question: string, answer: string, difficulty?: number|string, taskType?: "open"|"math"|"abcd", mathValue?: string, mathUnit?: string, abcdOptions?: { text: string, isCorrect?: boolean }[], formulas?: string[], sheetFormulas?: string[], sheetCardRefs?: (string|[string, string])[], laws?: string[], solutionSteps?: string[], formulaQuiz?: { lhsLatex?: string, prompt?: string, choices?: { katex: string, correct?: boolean, distractorRationale?: string }[] } }} Task
    * @typedef {{ id: string, title: string, tasks?: Task[], children?: TopicSection[], sectionRef?: string, sectionRefs?: string[] }} TopicSection
    * @typedef {{ id: string, title: string, sections: TopicSection[], curriculum?: TopicSection[] }} SchoolLevel
    */
@@ -505,8 +585,163 @@
   const SP_OFFICIAL_SHEET_PDF_URL =
     "https://www.sp-sobienie.pl/images/sampledata/WZORY/wzory%20fizyka.pdf";
 
+  /** Onboarding: typ szkoły → `homeLevelId` w danych. */
+  const USER_LEVEL_TO_HOME = {
+    sp: "sp",
+    "lo-p": "lo-podstawa",
+    "lo-r": "lo-rozszerzenie",
+  };
+
+  const USER_LEVEL_SHORT_LABELS = {
+    sp: "SP",
+    "lo-p": "LO Podst.",
+    "lo-r": "LO Rozsz.",
+  };
+
+  const ONBOARDING_SCHOOL_OPTIONS = [
+    { id: "sp", title: "Szkoła podstawowa" },
+    { id: "lo-p", title: "Liceum — podstawa" },
+    { id: "lo-r", title: "Liceum — rozszerzenie" },
+  ];
+
+  const FIZKI_CONFIG_STORAGE_KEY = "fizki_config";
+
   function orderedHomeLevelIds() {
     return HOME_LEVEL_TAB_ORDER.slice();
+  }
+
+  /** @param {string} ul */
+  function homeLevelIdFromUserLevel(ul) {
+    return USER_LEVEL_TO_HOME[ul] || USER_LEVEL_TO_HOME["lo-r"];
+  }
+
+  /** @returns {string} */
+  function getEffectiveClassFilterId() {
+    return userGrade === "all" ? "" : String(userGrade || "").trim();
+  }
+
+  function applyFizkiConfig() {
+    homeLevelId = homeLevelIdFromUserLevel(userLevel);
+    const level = getLevel(homeLevelId);
+    if (userGrade !== "all") {
+      const node =
+        level && level.curriculum ? findCurriculumNodeById(level.curriculum, userGrade) : null;
+      if (!node || !hasNodeChildren(node)) {
+        userGrade = "all";
+      }
+    }
+    taskClassTabId = getEffectiveClassFilterId();
+    updateAppBreadcrumb();
+  }
+
+  function saveFizkiConfig() {
+    localStorage.setItem(
+      FIZKI_CONFIG_STORAGE_KEY,
+      JSON.stringify({ userLevel, userGrade })
+    );
+    applyFizkiConfig();
+  }
+
+  /** @returns {boolean} */
+  function loadFizkiConfig() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(FIZKI_CONFIG_STORAGE_KEY) || "null");
+      if (!raw || typeof raw !== "object") return false;
+      const ul = String(raw.userLevel || "").trim();
+      const ug = String(raw.userGrade ?? "all").trim() || "all";
+      if (!Object.prototype.hasOwnProperty.call(USER_LEVEL_TO_HOME, ul)) return false;
+      userLevel = ul;
+      userGrade = ug;
+      applyFizkiConfig();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function updateAppBreadcrumb() {
+    const el = document.getElementById("app-mini-breadcrumb");
+    if (!el) return;
+    if (screen === "onboarding-school" || screen === "onboarding-grade") {
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    const school = USER_LEVEL_SHORT_LABELS[userLevel] || userLevel;
+    const grade = userGradeDisplayLabel();
+    el.textContent = `${school} • ${grade}`;
+  }
+
+  function userGradeDisplayLabel() {
+    if (userGrade === "all") return "Wszystko";
+    const level = getLevel(homeLevelIdFromUserLevel(userLevel));
+    if (!level || !level.curriculum) return userGrade;
+    const node = findCurriculumNodeById(level.curriculum, userGrade);
+    if (node && node.title && String(node.title).trim()) return String(node.title).trim();
+    return userGrade;
+  }
+
+  /**
+   * @param {string} ul — sp | lo-p | lo-r
+   * @returns {{ id: string, title: string }[]}
+   */
+  function gradeOptionsForUserLevel(ul) {
+    const hid = homeLevelIdFromUserLevel(ul);
+    const level = getLevel(hid);
+    const roots = level ? curriculumVisibleClassRoots(level) : [];
+    /** @type {{ id: string, title: string }[]} */
+    const opts = [{ id: "all", title: "Wszystko" }];
+    for (const r of roots) {
+      const title = r.title != null && String(r.title).trim() ? String(r.title) : String(r.id || "");
+      opts.push({ id: String(r.id || ""), title });
+    }
+    return opts;
+  }
+
+  function installAppBreadcrumbDelegation() {
+    if (document.documentElement.dataset.breadcrumbDelegation === "1") return;
+    document.documentElement.dataset.breadcrumbDelegation = "1";
+    const el = document.getElementById("app-mini-breadcrumb");
+    if (!el) return;
+    el.addEventListener("click", () => {
+      _pendingOnboardingLevel = "";
+      taskLevelId = null;
+      taskSectionId = null;
+      taskCurriculumPath = [];
+      taskCurriculumExpandedIds.clear();
+      lastTaskQuizGateKey = "";
+      screen = "onboarding-school";
+      render();
+    });
+  }
+
+  function renderOnboardingSchoolHtml() {
+    const opts = ONBOARDING_SCHOOL_OPTIONS.map(
+      (o) =>
+        `<button type="button" class="onboarding-option" data-onboarding-school="${escapeHtml(o.id)}">${escapeHtml(o.title)}</button>`
+    ).join("");
+    return `<div class="onboarding" aria-labelledby="onboarding-school-title">
+      <h2 id="onboarding-school-title" class="onboarding-title">Gdzie się uczysz?</h2>
+      <p class="onboarding-sub">Wybierz typ szkoły — w kolejnym kroku wskażesz klasę.</p>
+      <div class="onboarding-options">${opts}</div>
+    </div>`;
+  }
+
+  function renderOnboardingGradeHtml() {
+    const school = ONBOARDING_SCHOOL_OPTIONS.find((o) => o.id === _pendingOnboardingLevel);
+    const schoolTitle = school ? school.title : "";
+    const grades = gradeOptionsForUserLevel(_pendingOnboardingLevel);
+    const opts = grades
+      .map(
+        (g) =>
+          `<button type="button" class="onboarding-option" data-onboarding-grade="${escapeHtml(g.id)}">${escapeHtml(g.title)}</button>`
+      )
+      .join("");
+    return `<div class="onboarding" aria-labelledby="onboarding-grade-title">
+      <h2 id="onboarding-grade-title" class="onboarding-title">Która klasa?</h2>
+      <p class="onboarding-sub">${escapeHtml(schoolTitle)} — możesz ograniczyć treść do jednej klasy lub wybrać wszystko.</p>
+      <div class="onboarding-options">${opts}</div>
+    </div>`;
   }
 
   /** Liście planu programu → id sekcji z zadaniami w `level.sections` (można podać kilka). */
@@ -559,14 +794,15 @@
       lvl.sections = Array.isArray(lvl.sections) ? lvl.sections : [];
       for (const sec of lvl.sections) {
         sec.tasks = Array.isArray(sec.tasks) ? sec.tasks : [];
-        for (const task of sec.tasks) {
+        sec.tasks = sec.tasks.filter((task) => {
           if (Array.isArray(task.formulas)) {
             task.formulas = normalizeJsonStringList(task.formulas) || [];
           }
           if (Array.isArray(task.solutionSteps)) {
             task.solutionSteps = normalizeJsonStringList(task.solutionSteps) || [];
           }
-        }
+          return taskHasInteractiveGate(task);
+        });
       }
     }
     TASK_LEVELS = levels;
@@ -761,16 +997,16 @@
     try {
       await loadFiszkiWzory();
       await loadZadaniaJson();
-      const hidBoot = String(homeLevelId || "").trim();
-      if (!HOME_LEVEL_TAB_ORDER.includes(hidBoot)) {
-        homeLevelId = TASK_LEVELS[0].id;
-      } else {
-        homeLevelId = hidBoot;
-      }
       await loadCurriculaAndLinks();
       installAppRootDelegation();
+      installAppBreadcrumbDelegation();
+      if (!loadFizkiConfig()) {
+        screen = "onboarding-school";
+      }
       render();
-      history.replaceState(appHistoryState(), "", "");
+      if (screen !== "onboarding-school" && screen !== "onboarding-grade") {
+        history.replaceState(appHistoryState(), "", "");
+      }
     } catch (e) {
       console.error(e);
       showAppBootError();
@@ -782,13 +1018,20 @@
   /** Ostatnie wymiary pill zakładek (przetrwają `innerHTML` w `render`). */
   const sliderPositionsCache = {};
 
-  /** @type {'main' | 'flash-study' | 'flash-complete' | 'task-chapters' | 'task-detail'} */
+  /** @type {'main' | 'flash-study' | 'flash-complete' | 'task-chapters' | 'task-detail' | 'onboarding-school' | 'onboarding-grade'} */
   let screen = "main";
   /** @type {'fiszki' | 'zadania' | 'karta-wzorow'} */
   let mainTab = "fiszki";
 
-  /** Id poziomu z `TASK_LEVELS` — wybór na górze menu głównego (zadania i opis zakładki Zadania). */
+  /** Id poziomu z `TASK_LEVELS` — pochodne z `userLevel` (`applyFizkiConfig`). */
   let homeLevelId = "lo-rozszerzenie";
+
+  /** Onboarding: typ szkoły (sp | lo-p | lo-r). */
+  let userLevel = "lo-r";
+  /** `all` lub id węzła klasy z planu (`curriculum`, np. `lo-rz-k1`). */
+  let userGrade = "all";
+  /** Tymczasowy wybór szkoły między krokami onboardingu. */
+  let _pendingOnboardingLevel = "";
 
   /** Indeks działu (topic) na karcie wzorów — zapamiętywany przy przełączaniu zakładek. */
   let sheetTopicIndex = 0;
@@ -800,6 +1043,43 @@
   let flashQuizPicked = null;
   /** @type {{ index: number, choices: string[], correctIndex: number } | null} */
   let flashQuizCache = null;
+  /** @type {ReturnType<typeof setTimeout> | null} auto-advance po poprawnej odpowiedzi */
+  let flashAutoAdvanceTimerId = null;
+
+  function clearFlashAutoAdvanceTimer() {
+    if (flashAutoAdvanceTimerId !== null) {
+      clearTimeout(flashAutoAdvanceTimerId);
+      flashAutoAdvanceTimerId = null;
+    }
+  }
+
+  /** Przejście do następnej fiszki lub ekranu ukończenia (jak „Dalej”). */
+  function advanceFlashStudyCard() {
+    clearFlashAutoAdvanceTimer();
+    if (flashIndex < deck.length - 1) {
+      flashIndex += 1;
+      flashQuizPicked = null;
+      flashQuizCache = null;
+      render();
+    } else if (flashQuizPicked !== null) {
+      pushAppHistory();
+      screen = "flash-complete";
+      flashQuizPicked = null;
+      flashQuizCache = null;
+      render();
+    }
+  }
+
+  /** Po poprawnej odpowiedzi: auto „Dalej” po 1 s, jeśli użytkownik nie zmienił karty. */
+  function scheduleFlashAutoAdvance(indexAtAnswer) {
+    clearFlashAutoAdvanceTimer();
+    flashAutoAdvanceTimerId = setTimeout(() => {
+      flashAutoAdvanceTimerId = null;
+      if (screen !== "flash-study") return;
+      if (flashIndex !== indexAtAnswer) return;
+      advanceFlashStudyCard();
+    }, 1000);
+  }
 
   /**
    * Postęp quizu fiszek w `localStorage` (`fiszki_progress`): klucz = `card.front` (nazwa wzoru),
@@ -848,6 +1128,12 @@
   let lastTaskQuizGateKey = "";
   let taskQuizPickIndex = null;
   let taskQuizSolved = false;
+  /** Liczba błędnych prób w bramce zadania (2-Strike Rule). */
+  let taskAttempts = 0;
+  /** Szkic wpisanego wyniku (typ math) między renderami. */
+  let taskMathInputDraft = "";
+  /** Po 2. błędzie — pokazuj poprawny wynik w polu math. */
+  let taskMathRevealed = false;
   /** Jednorazowa animacja po poprawnej odpowiedzi w bramce zadania. */
   let taskQuizUnlockAnim = false;
 
@@ -876,6 +1162,7 @@
     taskSectionId = state.taskSectionId ?? null;
     taskCurriculumPath = Array.isArray(state.taskCurriculumPath) ? state.taskCurriculumPath.slice() : [];
     taskIndex = typeof state.taskIndex === "number" ? state.taskIndex : 0;
+    loadFizkiConfig();
   }
 
   function goToMainFromTasks(tab) {
@@ -884,8 +1171,8 @@
     taskSectionId = null;
     taskCurriculumPath = [];
     lastTaskQuizGateKey = "";
-    taskClassTabId = "";
     taskCurriculumExpandedIds.clear();
+    applyFizkiConfig();
     screen = "main";
     render();
     history.replaceState(appHistoryState(), "", "");
@@ -980,24 +1267,32 @@
    * @returns {TopicSection[]}
    */
   function sectionsForTaskClassFilter(level, classId) {
+    const cid =
+      classId !== undefined && classId !== null ? String(classId) : getEffectiveClassFilterId();
     const all = level.sections || [];
-    if (!classId || !level.curriculum || !all.length) return all.slice();
-    const node = findCurriculumNodeById(level.curriculum, classId);
+    if (!cid || !level.curriculum || !all.length) return all.slice();
+    const node = findCurriculumNodeById(level.curriculum, cid);
     if (!node || !hasNodeChildren(node)) return all.slice();
     const allowed = collectSectionIdsUnderCurriculumSubtree(level, node);
     if (!allowed.size) return all.slice();
     return all.filter((s) => allowed.has(s.id));
   }
 
-  /** Upewnia się, że `taskClassTabId` wskazuje na istniejący węzeł klasy lub `""`. */
-  function normalizeTaskClassTabId(level) {
-    if (!level.curriculum || !Array.isArray(level.curriculum) || !level.curriculum.length) {
-      taskClassTabId = "";
+  /** Waliduje `userGrade` względem planu poziomu. */
+  function normalizeUserGradeForLevel(level) {
+    if (userGrade === "all") return;
+    if (!level || !level.curriculum || !Array.isArray(level.curriculum) || !level.curriculum.length) {
+      userGrade = "all";
       return;
     }
-    if (!taskClassTabId) return;
-    const node = findCurriculumNodeById(level.curriculum, taskClassTabId);
-    if (!node || !hasNodeChildren(node)) taskClassTabId = "";
+    const node = findCurriculumNodeById(level.curriculum, userGrade);
+    if (!node || !hasNodeChildren(node)) userGrade = "all";
+  }
+
+  /** @deprecated Użyj `normalizeUserGradeForLevel`; utrzymane dla wywołań w renderze zadań. */
+  function normalizeTaskClassTabId(level) {
+    normalizeUserGradeForLevel(level);
+    taskClassTabId = getEffectiveClassFilterId();
   }
 
   /** Pierwszy poziom planu jak w `taskClassTabsHtml` (bez pustego „import”). */
@@ -1175,8 +1470,9 @@
   function navigateTaskBy(delta) {
     const level = taskLevelId ? getLevel(taskLevelId) : null;
     if (!level || !taskSectionId) return false;
-    const seq = buildTaskNavSequence(level, taskClassTabId);
-    const idx = findTaskNavIndex(level, taskClassTabId, taskSectionId, taskIndex);
+    const classFilter = getEffectiveClassFilterId();
+    const seq = buildTaskNavSequence(level, classFilter);
+    const idx = findTaskNavIndex(level, classFilter, taskSectionId, taskIndex);
     if (idx < 0) return false;
     const nextIdx = idx + delta;
     if (nextIdx < 0 || nextIdx >= seq.length) return false;
@@ -1657,34 +1953,11 @@
 
       const navScreens = screen === "main" || screen === "task-chapters" || screen === "task-detail";
       if (navScreens) {
-        const levelBtn = el.closest("[data-home-level]");
-        if (levelBtn) {
-          const id = String(levelBtn.dataset.homeLevel || levelBtn.getAttribute("data-home-level") || "").trim();
-          if (!id) return;
-          homeLevelId = id;
-          sheetTopicIndex = 0;
-          deck = cardsForHomeLevel(homeLevelId).slice();
-          taskCurriculumPath = [];
-          taskClassTabId = "";
-          taskCurriculumExpandedIds.clear();
-          taskLevelId = homeLevelId;
-          if (screen === "task-chapters" || screen === "task-detail") {
-            taskSectionId = null;
-            taskIndex = 0;
-            taskAnswerVisible = false;
-            taskFormulasVisible = false;
-            taskSolutionVisible = false;
-            lastTaskQuizGateKey = "";
-            screen = "task-chapters";
-          }
-          render();
-          return;
-        }
-
         const mainTabBtn = el.closest("[data-main-tab]");
         if (mainTabBtn) {
           const which = String(mainTabBtn.dataset.mainTab || mainTabBtn.getAttribute("data-main-tab") || "").trim();
           if (which === "zadania") {
+            applyFizkiConfig();
             pushAppHistory();
             mainTab = "zadania";
             taskLevelId = homeLevelId;
@@ -1695,7 +1968,6 @@
             taskSolutionVisible = false;
             taskCurriculumPath = [];
             lastTaskQuizGateKey = "";
-            taskClassTabId = "";
             taskCurriculumExpandedIds.clear();
             screen = "task-chapters";
             render();
@@ -1724,6 +1996,7 @@
             flashIndex = 0;
             flashQuizPicked = null;
             flashQuizCache = null;
+            clearFlashAutoAdvanceTimer();
             pushAppHistory();
             screen = "flash-study";
             render();
@@ -1736,6 +2009,7 @@
             flashIndex = 0;
             flashQuizPicked = null;
             flashQuizCache = null;
+            clearFlashAutoAdvanceTimer();
             pushAppHistory();
             screen = "flash-study";
             render();
@@ -1752,6 +2026,7 @@
           flashIndex = 0;
           flashQuizPicked = null;
           flashQuizCache = null;
+          clearFlashAutoAdvanceTimer();
           pushAppHistory();
           screen = "flash-study";
           render();
@@ -1772,37 +2047,10 @@
     applySheetTopicSelectChange();
   }
 
-  /** Ujednolicenie `homeLevelId` do slotów menu górnego (przed renderem nawigacji / `main`). */
-  function ensureHomeLevelIdInMenuOrder() {
-    homeLevelId = String(homeLevelId || "").trim();
-    if (!homeLevelId) {
-      homeLevelId = TASK_LEVELS[0]?.id || HOME_LEVEL_TAB_ORDER[0];
-    } else if (!HOME_LEVEL_TAB_ORDER.includes(homeLevelId)) {
-      homeLevelId = TASK_LEVELS[0]?.id || HOME_LEVEL_TAB_ORDER[0];
-    }
-  }
-
-  /** Dwa rzędy zakładek: poziom (`data-home-level`) + treść (`data-main-tab`) — `main` i widoki zadań. */
+  /** Zakładki treści (Fiszki / Karta / Zadania) — `main` i widoki zadań. */
   function homeNavTabsHtml() {
-    ensureHomeLevelIdInMenuOrder();
-    const homeLevelTabsHtml = orderedHomeLevelIds()
-      .map((id) => {
-        const lvl = getLevel(id);
-        const label =
-          lvl && String(lvl.title || "").trim() ? lvl.title : HOME_LEVEL_FALLBACK_TITLES[id] || id;
-        const sel = id === homeLevelId ? "true" : "false";
-        return `<button type="button" class="tab" role="tab" data-home-level="${escapeHtml(id)}" aria-selected="${sel}">${escapeHtml(
-          label
-        )}</button>`;
-      })
-      .join("");
-    const lvlCache = sliderPositionsCache.level || { left: 0, width: 0 };
     const mainCache = sliderPositionsCache.main || { left: 0, width: 0 };
-    return `<div class="tabs tabs-level" role="tablist" aria-label="Poziom zaawansowania" data-slider-group="level" style="--slider-left:${lvlCache.left}px;--slider-width:${lvlCache.width}px">
-          <div class="tab-slider" aria-hidden="true"></div>
-          ${homeLevelTabsHtml}
-        </div>
-        <div class="tabs tabs-main" role="tablist" aria-label="Treść" data-slider-group="main" style="--slider-left:${mainCache.left}px;--slider-width:${mainCache.width}px">
+    return `<div class="tabs tabs-main" role="tablist" aria-label="Treść" data-slider-group="main" style="--slider-left:${mainCache.left}px;--slider-width:${mainCache.width}px">
           <div class="tab-slider" aria-hidden="true"></div>
           <button type="button" class="tab" role="tab" id="tab-fiszki" data-main-tab="fiszki" aria-selected="${mainTab === "fiszki" ? "true" : "false"}">Fiszki</button>
           <button type="button" class="tab" role="tab" id="tab-karta-wzorow" data-main-tab="karta-wzorow" aria-selected="${mainTab === "karta-wzorow" ? "true" : "false"}">Karta wzorów</button>
@@ -1825,8 +2073,51 @@
       flashQuizCache = null;
     }
 
+    if (screen === "onboarding-school") {
+      app.innerHTML = renderOnboardingSchoolHtml();
+      updateAppBreadcrumb();
+      app.querySelectorAll("[data-onboarding-school]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-onboarding-school");
+          if (!id) return;
+          _pendingOnboardingLevel = id;
+          screen = "onboarding-grade";
+          render();
+        });
+      });
+      return;
+    }
+
+    if (screen === "onboarding-grade") {
+      if (!_pendingOnboardingLevel) {
+        screen = "onboarding-school";
+        render();
+        return;
+      }
+      app.innerHTML = renderOnboardingGradeHtml();
+      updateAppBreadcrumb();
+      app.querySelectorAll("[data-onboarding-grade]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const gradeId = btn.getAttribute("data-onboarding-grade");
+          if (!gradeId) return;
+          userLevel = _pendingOnboardingLevel;
+          userGrade = gradeId;
+          _pendingOnboardingLevel = "";
+          saveFizkiConfig();
+          sheetTopicIndex = 0;
+          deck = cardsForHomeLevel(homeLevelId).slice();
+          taskCurriculumExpandedIds.clear();
+          screen = "main";
+          mainTab = "fiszki";
+          render("main");
+          history.replaceState(appHistoryState(), "", "");
+        });
+      });
+      return;
+    }
+
     if (screen === "main") {
-      ensureHomeLevelIdInMenuOrder();
+      applyFizkiConfig();
 
       const resolvedLevel = getLevel(homeLevelId);
       let hl = resolvedLevel;
@@ -1915,22 +2206,28 @@
         .join("");
 
       app.innerHTML = `
-        <div class="top-bar">
-          <button type="button" class="btn btn-secondary btn-back" id="btn-main">← Menu</button>
-          <h1>Fiszki — quiz</h1>
-        </div>
-        <p class="progress">${flashIndex + 1} / ${deck.length}</p>
-        <div class="quiz-scene">
-          <div class="quiz-card quiz-card--flip">
-            <div class="quiz-prompt-slot">${headInnerHtml}</div>
-            <div class="${quizOptsGridClass}" role="group" aria-label="Warianty odpowiedzi">
-              ${optionsHtml}
+        <div class="flash-study">
+          <div class="flash-study-body">
+            <div class="top-bar">
+              <button type="button" class="btn btn-secondary btn-back" id="btn-main">← Menu</button>
+              <h1>Fiszki — quiz</h1>
+            </div>
+            <p class="progress flash-study-progress">${flashIndex + 1} / ${deck.length}</p>
+            <div class="quiz-scene flash-card-container">
+              <div class="quiz-card quiz-card--flip">
+                <div class="quiz-prompt-slot">${headInnerHtml}</div>
+                <div class="${quizOptsGridClass}" role="group" aria-label="Warianty odpowiedzi">
+                  ${optionsHtml}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" id="btn-prev">Wstecz</button>
-          <button type="button" class="btn btn-secondary" id="btn-next">Dalej</button>
+          <nav class="flash-nav" aria-label="Nawigacja między fiszkami">
+            <div class="flash-nav-row">
+              <button type="button" class="btn btn-secondary" id="btn-prev">Wstecz</button>
+              <button type="button" class="btn btn-secondary" id="btn-next">Dalej</button>
+            </div>
+          </nav>
         </div>
       `;
 
@@ -1946,12 +2243,15 @@
           const isCorrect = i === quiz.correctIndex;
           flashProgress[card.front] = isCorrect ? "correct" : "wrong";
           persistFlashProgress();
+          const indexAtAnswer = flashIndex;
           flashQuizPicked = i;
           render();
+          if (isCorrect) scheduleFlashAutoAdvance(indexAtAnswer);
         };
       });
 
       document.getElementById("btn-prev").onclick = () => {
+        clearFlashAutoAdvanceTimer();
         if (flashIndex > 0) {
           flashIndex -= 1;
           flashQuizPicked = null;
@@ -1961,24 +2261,16 @@
       };
 
       document.getElementById("btn-next").onclick = () => {
-        if (flashIndex < deck.length - 1) {
-          flashIndex += 1;
-          flashQuizPicked = null;
-          flashQuizCache = null;
-          render();
-        } else if (flashQuizPicked !== null) {
-          pushAppHistory();
-          screen = "flash-complete";
-          flashQuizPicked = null;
-          flashQuizCache = null;
-          render();
-        }
+        clearFlashAutoAdvanceTimer();
+        advanceFlashStudyCard();
       };
       queueMountKatex();
       return;
     }
 
     else if (screen === "task-chapters") {
+      applyFizkiConfig();
+      if (!taskLevelId) taskLevelId = homeLevelId;
       const level = taskLevelId ? getLevel(taskLevelId) : null;
       if (!level) {
         screen = "main";
@@ -2001,7 +2293,8 @@
                 .map(
                   (t, i) => `
         <button type="button" class="list-item" data-task-i="${i}">
-          ${escapeHtml(t.title)}
+          <span class="list-item-title">${escapeHtml(t.title)}</span>
+          ${taskDifficultyStarsHtml(t.difficulty)}
         </button>`
                 )
                 .join("")
@@ -2036,15 +2329,16 @@
         return;
       }
 
+      applyFizkiConfig();
       normalizeTaskClassTabId(level);
-      const classTabs = taskClassTabsHtml(level, taskClassTabId);
-      const treeHtml = renderTaskCurriculumTreeHtml(level, taskClassTabId);
+      const classFilter = getEffectiveClassFilterId();
+      const treeHtml = renderTaskCurriculumTreeHtml(level, classFilter);
 
       let chaptersHtml;
       if (treeHtml) {
         chaptersHtml = treeHtml;
       } else {
-        const filteredSections = sectionsForTaskClassFilter(level, taskClassTabId);
+        const filteredSections = sectionsForTaskClassFilter(level);
         chaptersHtml =
           filteredSections.length > 0
             ? filteredSections
@@ -2058,15 +2352,14 @@
                 })
                 .join("")
             : `<p class="hint" style="margin:0">${
-                classTabs
-                  ? "Brak działów przypisanych do tej klasy w planie — wybierz „Wszystkie” lub inną klasę."
-                  : "Brak zdefiniowanych działów dla tego poziomu. Uzupełnij zadania.json lub wybierz inny poziom w menu."
+                userGrade !== "all"
+                  ? "Brak działów przypisanych do wybranej klasy — zmień klasę w ustawieniach u góry."
+                  : "Brak zdefiniowanych działów dla tego poziomu. Uzupełnij zadania.json."
               }</p>`;
       }
 
       app.innerHTML = `
         ${homeNavTabsHtml()}
-        ${classTabs}
         <p class="panel-title task-dzialy-heading">Działy</p>
         <div class="list-stack task-curriculum-root">${chaptersHtml}</div>
       `;
@@ -2111,13 +2404,6 @@
         };
       });
 
-      app.querySelectorAll("[data-task-class]").forEach((btn) => {
-        btn.onclick = () => {
-          taskCurriculumExpandedIds.clear();
-          taskClassTabId = btn.getAttribute("data-task-class") || "";
-          render();
-        };
-      });
       return;
     }
 
@@ -2145,18 +2431,72 @@
       if (quizGateKey !== lastTaskQuizGateKey) {
         lastTaskQuizGateKey = quizGateKey;
         taskQuizPickIndex = null;
-        taskQuizSolved = !taskNeedsQuizGate(t);
+        taskAttempts = 0;
+        taskMathInputDraft = "";
+        taskMathRevealed = false;
+        taskQuizSolved = !taskNeedsAnswerGate(t);
         taskAnswerVisible = false;
         taskFormulasVisible = false;
         taskSolutionVisible = false;
       }
 
-      const needsQuizGate = taskNeedsQuizGate(t);
-      const gateLocked = needsQuizGate && !taskQuizSolved;
+      const taskType = getTaskType(t);
+      const needsAnswerGate = taskNeedsAnswerGate(t);
+      const needsLegacyQuizGate = taskType === "open" && taskNeedsQuizGate(t);
+      const gateLocked = needsAnswerGate && !taskQuizSolved;
       const fq = t.formulaQuiz;
 
+      let taskAnswerGateHtml = "";
+      if (taskType === "math" && needsAnswerGate) {
+        const mathInputVal = taskMathRevealed ? String(t.mathValue ?? "") : taskMathInputDraft;
+        const mathInputCls = "task-math-input" + (taskMathRevealed ? " task-math-input--revealed" : "");
+        const strikeHint =
+          taskAttempts === 1 && !taskQuizSolved
+            ? `<p class="task-strike-hint" role="status">Gdzieś jest błąd. Sprawdź jednostki lub przekształcenia i spróbuj jeszcze raz.</p>`
+            : "";
+        const unitSuffix = t.mathUnit ? `<span class="task-math-unit">${escapeHtml(t.mathUnit)}</span>` : "";
+        taskAnswerGateHtml = `
+          <div class="task-answer-gate task-answer-gate--math" id="task-answer-gate">
+            <p class="answer-label">Twój wynik</p>
+            <div class="task-math-row">
+              <input type="text" class="${mathInputCls}" id="task-math-input" inputmode="decimal" autocomplete="off" placeholder="Wpisz wynik" value="${escapeHtml(
+                mathInputVal
+              )}"${taskQuizSolved ? " disabled" : ""} />
+              ${unitSuffix}
+              <button type="button" class="btn" id="btn-check-math"${taskQuizSolved ? " disabled" : ""}>Sprawdź</button>
+            </div>
+            ${strikeHint}
+          </div>`;
+      } else if (taskType === "abcd" && needsAnswerGate) {
+        const abcdOpts = (t.abcdOptions || []).slice(0, 4);
+        const abcdCells = abcdOpts
+          .map((opt, i) => {
+            let cls = "btn task-abcd-option";
+            if (taskQuizPickIndex === i) {
+              cls += opt.isCorrect ? " task-abcd-option--correct" : " task-abcd-option--wrong";
+            } else if (taskAttempts >= 2 && opt.isCorrect) {
+              cls += " task-abcd-option--correct";
+            }
+            const dis = taskQuizSolved || taskAttempts >= 2 ? " disabled" : "";
+            return `<button type="button" class="${cls}" data-task-abcd-opt="${i}"${dis}>${richMixedLinesToHtml(
+              String(opt.text || "")
+            )}</button>`;
+          })
+          .join("");
+        const strikeHint =
+          taskAttempts === 1 && !taskQuizSolved
+            ? `<p class="task-strike-hint" role="status">Gdzieś jest błąd. Sprawdź jednostki lub przekształcenia i spróbuj jeszcze raz.</p>`
+            : "";
+        taskAnswerGateHtml = `
+          <div class="task-answer-gate task-answer-gate--abcd" id="task-answer-gate">
+            <p class="answer-label">Wybierz odpowiedź</p>
+            <div class="task-abcd-options" role="group">${abcdCells}</div>
+            ${strikeHint}
+          </div>`;
+      }
+
       let formulaQuizHtml = "";
-      if (needsQuizGate && fq) {
+      if (needsLegacyQuizGate && fq) {
         const quizOptsClass = "quiz-options quiz-options--stack task-quiz-options";
         const opts = fq.choices
           .map((ch, i) => {
@@ -2188,8 +2528,8 @@
           </div>`;
       }
 
-      const gateAttr = gateLocked ? " disabled" : "";
-      const gateCls = gateLocked ? " btn-gated" : "";
+      const gateAttrLocked = gateLocked ? " disabled" : "";
+      const gateClsLocked = gateLocked ? " btn-gated" : "";
 
       const ansClass = taskAnswerVisible ? "answer-block" : "answer-block hidden";
       const formulas = Array.isArray(t.formulas) ? t.formulas : [];
@@ -2226,10 +2566,10 @@
         .join("")}</ol>`;
 
       const quizLegendHaystack =
-        taskQuizSolved && needsQuizGate && fq ? taskFormulaQuizLegendHaystack(t) : "";
+        taskQuizSolved && needsLegacyQuizGate && fq ? taskFormulaQuizLegendHaystack(t) : "";
       const quizLegendEntries = quizLegendHaystack ? getLegendEntriesMatchingHaystack(quizLegendHaystack) : [];
       const quizLegendHtml =
-        taskQuizSolved && needsQuizGate && fq
+        taskQuizSolved && needsLegacyQuizGate && fq
           ? quizLegendEntries.length > 0
             ? `<div class="task-quiz-symbol-legend"><p class="answer-label">Legenda symboli (wzór z quizu)</p>${symbolLegendBlockHtml(
                 quizLegendEntries
@@ -2238,12 +2578,38 @@
           : "";
 
       const unlockAnimClass = taskQuizUnlockAnim ? " task-quiz-unlock-anim" : "";
+      const showSuccessFeedback = taskQuizSolved && taskQuizUnlockAnim;
       taskQuizUnlockAnim = false;
 
-      const navSeq = level ? buildTaskNavSequence(level, taskClassTabId) : [];
-      const navIdx = level ? findTaskNavIndex(level, taskClassTabId, taskSectionId, taskIndex) : -1;
+      const classFilter = getEffectiveClassFilterId();
+      const navSeq = level ? buildTaskNavSequence(level, classFilter) : [];
+      const navIdx = level ? findTaskNavIndex(level, classFilter, taskSectionId, taskIndex) : -1;
       const canTaskPrev = navIdx > 0;
       const canTaskNext = navIdx >= 0 && navIdx < navSeq.length - 1;
+
+      const escapeHatchHtml =
+        needsAnswerGate && !taskQuizSolved
+          ? `<div class="task-quiz-footer">
+              <button type="button" class="btn btn-secondary btn-escape-hatch" id="btn-escape-hatch">Nie wiem, pokaż rozwiązanie</button>
+            </div>`
+          : "";
+
+      const successFeedbackHtml = showSuccessFeedback
+        ? `<p class="task-success-feedback" role="status">🎉 Świetnie! Odblokowano rozwiązanie.</p>`
+        : "";
+
+      const taskActionsHtml = `<div class="task-hint-actions">
+            ${successFeedbackHtml}
+            <button type="button" class="btn-hint${taskFormulasVisible ? " btn-hint--active" : ""}" id="btn-toggle-formulas">
+              ${taskFormulasVisible ? "Ukryj wzory" : "Pokaż wzory"}
+            </button>
+            <button type="button" class="btn-hint${taskAnswerVisible ? " btn-hint--active" : ""}${gateClsLocked}" id="btn-toggle-answer"${gateAttrLocked}>
+              ${taskAnswerVisible ? "Ukryj odpowiedź" : "Pokaż odpowiedź"}
+            </button>
+            <button type="button" class="btn-hint${taskSolutionVisible ? " btn-hint--active" : ""}${gateClsLocked}" id="btn-toggle-solution"${gateAttrLocked}>
+              ${taskSolutionVisible ? "Ukryj pełne rozwiązanie" : "Pokaż pełne rozwiązanie (kroki)"}
+            </button>
+          </div>`;
 
       app.innerHTML = `
         ${homeNavTabsHtml()}
@@ -2253,20 +2619,14 @@
         </div>
         <p class="progress">${taskIndex + 1} / ${sec.tasks.length} · ${escapeHtml(level ? level.title : "")} · ${escapeHtml(sec.title)}</p>
         <div class="task-sheet${unlockAnimClass}">
-          <span class="label">${escapeHtml(t.title)}</span>
-          <div class="task-q">${richMixedLinesToHtml(t.question)}</div>
-          ${formulaQuizHtml}
-          <div class="task-actions">
-            <button type="button" class="btn${taskFormulasVisible ? " btn-secondary" : ""}${gateCls}" id="btn-toggle-formulas"${gateAttr}>
-              ${taskFormulasVisible ? "Ukryj wzory" : "Pokaż wzory"}
-            </button>
-            <button type="button" class="btn${taskAnswerVisible ? " btn-secondary" : ""}${gateCls}" id="btn-toggle-answer"${gateAttr}>
-              ${taskAnswerVisible ? "Ukryj odpowiedź" : "Pokaż odpowiedź"}
-            </button>
-            <button type="button" class="btn${taskSolutionVisible ? " btn-secondary" : ""}${gateCls}" id="btn-toggle-solution"${gateAttr}>
-              ${taskSolutionVisible ? "Ukryj pełne rozwiązanie" : "Pokaż pełne rozwiązanie (kroki)"}
-            </button>
+          <span class="label task-sheet-title">${escapeHtml(t.title)} ${taskDifficultyStarsHtml(t.difficulty)}</span>
+          <div class="task-question task-q">${richMixedLinesToHtml(t.question)}</div>
+          <div class="task-quiz-zone">
+            ${taskAnswerGateHtml}
+            ${formulaQuizHtml}
+            ${escapeHatchHtml}
           </div>
+          ${taskActionsHtml}
           <div class="${formulasClass}" id="formulas-box" aria-live="polite">
             <p class="answer-label">Wzory</p>
             ${formulasBody}
@@ -2292,7 +2652,7 @@
         mountKatexIn(app);
       });
 
-      if (needsQuizGate && fq) {
+      if (needsLegacyQuizGate && fq) {
         app.querySelectorAll("[data-task-quiz-opt]").forEach((btn) => {
           btn.onclick = () => {
             if (taskQuizSolved) return;
@@ -2302,10 +2662,57 @@
             if (fq.choices[i].correct) {
               taskQuizSolved = true;
               taskQuizUnlockAnim = true;
+              render();
+            } else {
+              render();
             }
-            render();
           };
         });
+      }
+
+      const btnCheckMath = document.getElementById("btn-check-math");
+      if (btnCheckMath) {
+        btnCheckMath.onclick = () => {
+          if (taskQuizSolved) return;
+          const input = document.getElementById("task-math-input");
+          const userVal = input instanceof HTMLInputElement ? input.value : "";
+          taskMathInputDraft = userVal;
+          if (checkMathAnswer(userVal, String(t.mathValue ?? ""))) {
+            taskQuizSolved = true;
+            taskQuizUnlockAnim = true;
+            render();
+            return;
+          }
+          const gateEl = document.getElementById("task-answer-gate");
+          handleTaskWrongAttempt(gateEl, () => {
+            taskMathRevealed = true;
+          });
+        };
+      }
+
+      const abcdOpts = taskType === "abcd" ? (t.abcdOptions || []).slice(0, 4) : [];
+      if (abcdOpts.length >= 4) {
+        app.querySelectorAll("[data-task-abcd-opt]").forEach((btn) => {
+          btn.onclick = () => {
+            if (taskQuizSolved || taskAttempts >= 2) return;
+            const i = Number(btn.getAttribute("data-task-abcd-opt"));
+            if (Number.isNaN(i) || !abcdOpts[i]) return;
+            taskQuizPickIndex = i;
+            if (abcdOpts[i].isCorrect) {
+              taskQuizSolved = true;
+              taskQuizUnlockAnim = true;
+              render();
+              return;
+            }
+            const gateEl = document.getElementById("task-answer-gate");
+            handleTaskWrongAttempt(gateEl);
+          };
+        });
+      }
+
+      const btnEscape = document.getElementById("btn-escape-hatch");
+      if (btnEscape) {
+        btnEscape.onclick = () => unlockTaskWithSolution();
       }
 
       document.getElementById("btn-back-list").onclick = () => {
@@ -2313,7 +2720,6 @@
       };
 
       document.getElementById("btn-toggle-formulas").onclick = () => {
-        if (gateLocked) return;
         taskFormulasVisible = !taskFormulasVisible;
         render();
       };
@@ -2347,7 +2753,10 @@
     const br = document.getElementById("btn-recover-screen");
     if (br) br.onclick = () => render();
       } finally {
-        requestAnimationFrame(updateTabSliders);
+        requestAnimationFrame(() => {
+          updateTabSliders();
+          updateAppBreadcrumb();
+        });
       }
     };
 
