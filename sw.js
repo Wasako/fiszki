@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 "use strict";
 
-const CACHE_NAME = "fizki-v1";
+const CACHE_NAME = "fizki-v2";
 
 const PRECACHE_URLS = [
   "/",
@@ -23,7 +23,13 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .then((cache) =>
+        Promise.allSettled(PRECACHE_URLS.map((url) => cache.add(url)))
+      )
+      .then((results) => {
+        const failed = results.filter((r) => r.status === "rejected");
+        if (failed.length) console.warn("[sw] precache partial:", failed.length);
+      })
       .then(() => self.skipWaiting())
   );
 });

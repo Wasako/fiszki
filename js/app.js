@@ -2325,9 +2325,47 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch((err) => {
-        console.warn("Rejestracja Service Workera nie powiodła się:", err);
-      });
+      navigator.serviceWorker
+        .register("/sw.js", { scope: "/" })
+        .then((reg) => {
+          reg.addEventListener("updatefound", () => {
+            const nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener("statechange", () => {
+              if (nw.state === "installed" && navigator.serviceWorker.controller) {
+                console.info("[PWA] Dostępna nowa wersja — odśwież stronę.");
+              }
+            });
+          });
+        })
+        .catch((err) => {
+          console.warn("Rejestracja Service Workera nie powiodła się:", err);
+        });
     });
   }
+
+  /** @type {BeforeInstallPromptEvent | null} */
+  let deferredPwaInstall = null;
+  const pwaInstallBtn = document.getElementById("pwa-install");
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPwaInstall = e;
+    if (pwaInstallBtn) pwaInstallBtn.hidden = false;
+  });
+
+  if (pwaInstallBtn) {
+    pwaInstallBtn.addEventListener("click", async () => {
+      if (!deferredPwaInstall) return;
+      deferredPwaInstall.prompt();
+      await deferredPwaInstall.userChoice;
+      deferredPwaInstall = null;
+      pwaInstallBtn.hidden = true;
+    });
+  }
+
+  window.addEventListener("appinstalled", () => {
+    deferredPwaInstall = null;
+    if (pwaInstallBtn) pwaInstallBtn.hidden = true;
+  });
 })();

@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#121212" />
   <title>Fizyka — fiszki i zadania</title>
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icons/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Fizki" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <link rel="stylesheet" href="css/styles.css" />
   <link
     rel="stylesheet"
@@ -25,6 +31,7 @@
   <!-- #app: cały UI generuje js/app.js (m.in. ekran główny z .tabs.tabs-level i data-home-level). -->
   <div id="app" class="app"></div>
   <footer class="app-footer">
+    <button type="button" id="pwa-install" class="btn-theme-toggle btn-pwa-install" hidden>📲 Zainstaluj aplikację</button>
     <button type="button" id="theme-toggle" class="btn-theme-toggle" aria-label="Przełącz motyw jasny lub ciemny">🌓 Zmień motyw</button>
   </footer>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>

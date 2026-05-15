@@ -79,6 +79,10 @@ body {
   flex-shrink: 0;
   max-width: 28rem;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
   margin: 0 auto;
   padding: 0 1rem 1.25rem;
   text-align: center;
