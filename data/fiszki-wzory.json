@@ -1,0 +1,1832 @@
+{
+  "version": 1,
+  "source": "js/cards-wzory-cke.js",
+  "cards": [
+    {
+      "topic": "Kinematyka",
+      "name": "Prędkość",
+      "symbol": "\\vec{v}",
+      "correct_latex": "\\vec{v} = \\dfrac{\\Delta \\vec{r}}{\\Delta t}",
+      "distractors": [
+        "\\vec{v} = \\dfrac{\\Delta t}{\\Delta \\vec{r}}",
+        "\\vec{v} = \\Delta \\vec{r}\\,\\Delta t",
+        "\\vec{v} = \\dfrac{ \\vec{r}}{ t}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Przyspieszenie",
+      "symbol": "a",
+      "correct_latex": "a = \\dfrac{\\Delta \\vec{v}}{\\Delta t}",
+      "distractors": [
+        "a = \\dfrac{\\Delta t}{\\Delta \\vec{v}}",
+        "a = \\Delta \\vec{v}\\,\\Delta t",
+        "a = \\dfrac{\\Delta v}{\\Delta t}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Prędkość kątowa",
+      "symbol": "\\omega",
+      "correct_latex": "\\omega = \\dfrac{\\Delta \\alpha}{\\Delta t}",
+      "distractors": [
+        "\\omega = \\dfrac{\\Delta t}{\\Delta \\alpha}",
+        "\\omega = \\Delta \\alpha\\,\\Delta t",
+        "\\omega = \\dfrac{ \\alpha}{ t}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Związek prędkości kątowej i liniowej",
+      "symbol": "v",
+      "correct_latex": "v = \\omega r",
+      "distractors": [
+        "v = \\omega \\cdot t",
+        "v = \\dfrac{s}{t^{2}}",
+        "v = \\omega r^2"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Ruch jednostajny po okręgu (okres, częstotliwość)",
+      "symbol": "\\omega",
+      "correct_latex": "\\omega = \\dfrac{2\\pi}{T}\\,,\\quad T = \\dfrac{1}{f}",
+      "distractors": [
+        "\\omega = \\dfrac{T}{2\\pi}\\,,\\quad T = \\dfrac{1}{f}",
+        "\\omega = 2\\pi\\,T\\,,\\quad T = \\dfrac{1}{f}",
+        "\\omega = \\tfrac{2\\pi}{T}\\,,\\quad T = \\dfrac{1}{f}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Przyspieszenie dośrodkowe",
+      "symbol": "a_{\\mathrm{do}}",
+      "correct_latex": "a_{\\mathrm{do}} = \\dfrac{v^2}{r} = v\\omega = \\omega^2 r",
+      "distractors": [
+        "a_{\\mathrm{do}} = \\dfrac{r}{v^2} = v\\omega = \\omega^2 r",
+        "a_{\\mathrm{do}} = v^2\\,r = v\\omega = \\omega^2 r",
+        "a_{\\mathrm{do}} = \\tfrac{v^2}{r} = v\\omega = \\omega^2 r"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Przyspieszenie kątowe",
+      "symbol": "\\varepsilon",
+      "correct_latex": "\\varepsilon = \\dfrac{\\Delta \\omega}{\\Delta t}",
+      "distractors": [
+        "\\varepsilon = \\dfrac{\\Delta t}{\\Delta \\omega}",
+        "\\varepsilon = \\Delta \\omega\\,\\Delta t",
+        "\\varepsilon = \\dfrac{ \\omega}{ t}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Przyspieszenie styczne",
+      "symbol": "a_{\\mathrm{st}}",
+      "correct_latex": "a_{\\mathrm{st}} = \\varepsilon r",
+      "distractors": [
+        "a_{\\mathrm{st}} = \\varepsilon r^2",
+        "a_{\\mathrm{st}} = 2\\,\\varepsilon r",
+        "a_{\\mathrm{st}} = \\dfrac{\\varepsilon r}{2}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Prędkość w ruchu jednostajnie zmiennym prostoliniowym",
+      "symbol": "\\vec{v}",
+      "correct_latex": "\\vec{v} = \\vec{v}_0 + \\vec{a}\\,t",
+      "distractors": [
+        "\\vec{v} = \\vec{v}_0 - \\vec{a}\\,t",
+        "\\vec{v} = \\vec{v}_0 + \\vec{a}\\,t^2",
+        "\\vec{v} = 2\\,\\vec{v}_0 + \\vec{a}\\,t"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Droga w ruchu jednostajnie zmiennym prostoliniowym",
+      "symbol": "s",
+      "correct_latex": "s = v_0 t + \\dfrac{1}{2} a t^2",
+      "distractors": [
+        "s = v_0 t - \\dfrac{1}{2} a t^2",
+        "s = v_0 t + \\tfrac{1}{2} a t^2",
+        "s = v_0 t + \\dfrac{1}{2} a t^3"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Średnia prędkość na prostej (droga i czas)",
+      "symbol": "v_{\\mathrm{śr}}",
+      "correct_latex": "v_{\\mathrm{śr}} = \\dfrac{s}{\\Delta t}",
+      "distractors": [
+        "v_{\\mathrm{śr}} = \\dfrac{\\Delta t}{s}",
+        "v_{\\mathrm{śr}} = s\\,\\Delta t",
+        "v_{\\mathrm{śr}} = \\dfrac{s}{ t}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Droga w ruchu jednostajnym prostoliniowym (skalar)",
+      "symbol": "s",
+      "correct_latex": "s = v\\,\\Delta t",
+      "distractors": [
+        "s = v\\cdot\\Delta t",
+        "s = v\\, t",
+        "s = v\\,\\Delta t^2"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Składowe prędkości na płaszczyźnie (wzór trygonometryczny)",
+      "symbol": "v_x",
+      "correct_latex": "v_x = v \\cos\\alpha\\,,\\quad v_y = v \\sin\\alpha",
+      "distractors": [
+        "v_x = v \\cos\\alpha\\,,\\quad v_y = v \\sin\\alpha\\quad\\text{(×1)}",
+        "v_x = v \\cos\\alpha\\,,\\quad v_y = v \\sin\\alpha\\quad\\text{(×2)}",
+        "v_x = v \\cos\\alpha\\,,\\quad v_y = v \\sin\\alpha\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Kinematyka",
+      "name": "Ruch pionowy przy stałym g — wiązanie prędkości z wysokością",
+      "symbol": "v_y^2",
+      "correct_latex": "v_y^2 = v_{0y}^2 - 2 g\\,\\Delta y",
+      "distractors": [
+        "v_y^2 = v_{0y}^2 - 2 g\\cdot\\Delta y",
+        "v_y^2 = v_{0y}^2 - 2 g\\, y",
+        "v_y^2 = v_{0y}^2 + 2 g\\,\\Delta y"
+      ]
+    },
+    {
+      "topic": "Siły tarcia i siła sprężystości",
+      "name": "Siła tarcia kinetycznego",
+      "symbol": "T_k",
+      "correct_latex": "T_k = \\mu_k F_N",
+      "distractors": [
+        "T_k = \\mu_k F_N^2",
+        "T_k = 2\\,\\mu_k F_N",
+        "T_k = \\dfrac{\\mu_k F_N}{2}"
+      ]
+    },
+    {
+      "topic": "Siły tarcia i siła sprężystości",
+      "name": "Siła tarcia statycznego",
+      "symbol": "T_s",
+      "correct_latex": "T_s \\le \\mu_s F_N",
+      "distractors": [
+        "T_s \\le \\mu_s F_N^2",
+        "T_s \\le 2\\,\\mu_s F_N",
+        "T_s \\le \\dfrac{\\mu_s F_N}{2}"
+      ]
+    },
+    {
+      "topic": "Siły tarcia i siła sprężystości",
+      "name": "Siła sprężystości",
+      "symbol": "F_s",
+      "correct_latex": "F_s = -k x",
+      "distractors": [
+        "F_s = +k x",
+        "F_s = -k x^2",
+        "F_s = 2\\,-k x"
+      ]
+    },
+    {
+      "topic": "Siły tarcia i siła sprężystości",
+      "name": "Energia potencjalna sprężystości",
+      "symbol": "E_{\\mathrm{pot}}",
+      "correct_latex": "E_{\\mathrm{pot}} = \\dfrac{1}{2} k x^2",
+      "distractors": [
+        "E_{\\mathrm{pot}} = 1\\,2 k x^2",
+        "E_{\\mathrm{pot}} = \\tfrac{1}{2} k x^2",
+        "E_{\\mathrm{pot}} = \\dfrac{1}{2} k x^3"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Pęd",
+      "symbol": "\\vec{p}",
+      "correct_latex": "\\vec{p} = m \\vec{v}",
+      "distractors": [
+        "\\vec{p} = m \\vec{v}^2",
+        "\\vec{p} = 2\\,m \\vec{v}",
+        "\\vec{p} = \\dfrac{m \\vec{v}}{2}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "II zasada dynamiki (układ inercjalny)",
+      "symbol": "m \\vec{a}",
+      "correct_latex": "m \\vec{a} = \\vec{F}\\,,\\quad \\dfrac{\\Delta \\vec{p}}{\\Delta t} = \\vec{F}",
+      "distractors": [
+        "m \\vec{a} = \\vec{F}\\,,\\quad \\dfrac{\\Delta t}{\\Delta \\vec{p}} = \\vec{F}",
+        "m \\vec{a} = \\vec{F}\\,,\\quad \\Delta \\vec{p}\\,\\Delta t = \\vec{F}",
+        "m \\vec{a} = \\vec{F}\\,,\\quad \\dfrac{ \\vec{p}}{ t} = \\vec{F}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Wartość momentu pędu punktu materialnego",
+      "symbol": "L",
+      "correct_latex": "L = r p \\sin \\angle(\\vec{r}, \\vec{p})",
+      "distractors": [
+        "L = r p \\sin \\angle(r, p)",
+        "L = r p \\sin \\angle(\\vec{r}, \\vec{p})^2",
+        "L = 2\\,r p \\sin \\angle(\\vec{r}, \\vec{p})"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Wartość momentu siły",
+      "symbol": "M",
+      "correct_latex": "M = r F \\sin \\angle(\\vec{r}, \\vec{F})",
+      "distractors": [
+        "M = r F \\sin \\angle(r, F)",
+        "M = r F \\sin \\angle(\\vec{r}, \\vec{F})^2",
+        "M = 2\\,r F \\sin \\angle(\\vec{r}, \\vec{F})"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Moment bezwładności",
+      "symbol": "I",
+      "correct_latex": "I = \\sum_{i=1}^{n} m_i r_i^2",
+      "distractors": [
+        "I = \\sum_{i=1}^{n} m_i r_i^3",
+        "I = \\sum_{i=1}^{n} m_i r_i^2\\quad\\text{(×1)}",
+        "I = \\sum_{i=1}^{n} m_i r_i^2\\quad\\text{(×2)}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Moment pędu bryły sztywnej",
+      "symbol": "L",
+      "correct_latex": "L = I \\omega",
+      "distractors": [
+        "L = I \\omega^2",
+        "L = 2\\,I \\omega",
+        "L = \\dfrac{I \\omega}{2}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "II zasada dynamiki ruchu obrotowego (zapis skalarny)",
+      "symbol": "I \\varepsilon",
+      "correct_latex": "I \\varepsilon = M",
+      "distractors": [
+        "I \\varepsilon = M^2",
+        "I \\varepsilon = 2\\,M",
+        "I \\varepsilon = \\dfrac{M}{2}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Praca siły",
+      "symbol": "W_F",
+      "correct_latex": "W_F = F\\,\\Delta r \\cos \\angle(\\vec{F}, \\Delta \\vec{r})",
+      "distractors": [
+        "W_F = F\\,\\Delta r \\cos \\angle(F, \\Delta r)",
+        "W_F = F\\cdot\\Delta r \\cos \\angle(\\vec{F}, \\Delta \\vec{r})",
+        "W_F = F\\, r \\cos \\angle(\\vec{F},  \\vec{r})"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Praca momentu siły",
+      "symbol": "W_M",
+      "correct_latex": "W_M = M\\,\\Delta \\alpha",
+      "distractors": [
+        "W_M = M\\cdot\\Delta \\alpha",
+        "W_M = M\\, \\alpha",
+        "W_M = M\\,\\Delta \\alpha^2"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Moc",
+      "symbol": "P",
+      "correct_latex": "P = \\dfrac{W}{\\Delta t}",
+      "distractors": [
+        "P = \\dfrac{\\Delta t}{W}",
+        "P = W\\,\\Delta t",
+        "P = \\dfrac{W}{ t}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Siła nacisku przy przyspieszeniu układu w kierunku pionowym",
+      "symbol": "F_N",
+      "correct_latex": "F_N = m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})",
+      "distractors": [
+        "F_N = m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})^2",
+        "F_N = 2\\,m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})",
+        "F_N = \\dfrac{m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})}{2}"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Energia kinetyczna ruchu postępowego",
+      "symbol": "E_{\\mathrm{kin}}",
+      "correct_latex": "E_{\\mathrm{kin}} = \\dfrac{1}{2} m v^2",
+      "distractors": [
+        "E_{\\mathrm{kin}} = 1\\,2 m v^2",
+        "E_{\\mathrm{kin}} = \\tfrac{1}{2} m v^2",
+        "E_{\\mathrm{kin}} = \\dfrac{1}{2} m v^3"
+      ]
+    },
+    {
+      "topic": "Dynamika",
+      "name": "Energia kinetyczna ruchu obrotowego",
+      "symbol": "E_{\\mathrm{kin}}",
+      "correct_latex": "E_{\\mathrm{kin}} = \\dfrac{1}{2} I \\omega^2",
+      "distractors": [
+        "E_{\\mathrm{kin}} = 1\\,2 I \\omega^2",
+        "E_{\\mathrm{kin}} = \\tfrac{1}{2} I \\omega^2",
+        "E_{\\mathrm{kin}} = \\dfrac{1}{2} I \\omega^3"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Prawo powszechnego ciążenia",
+      "symbol": "F_g",
+      "correct_latex": "F_g = G \\dfrac{m_1 m_2}{r^2}",
+      "distractors": [
+        "F_g = G \\dfrac{r^2}{m_1 m_2}",
+        "F_g = G m_1 m_2\\,r^2",
+        "F_g = G \\tfrac{m_1 m_2}{r^2}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Natężenie pola grawitacyjnego i przyspieszenie grawitacyjne",
+      "symbol": "\\gamma",
+      "correct_latex": "\\gamma = \\dfrac{F_g}{m}\\,,\\quad a_g = \\gamma",
+      "distractors": [
+        "\\gamma = \\dfrac{m}{F_g}\\,,\\quad a_g = \\gamma",
+        "\\gamma = F_g\\,m\\,,\\quad a_g = \\gamma",
+        "\\gamma = \\tfrac{F_g}{m}\\,,\\quad a_g = \\gamma"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Energia potencjalna grawitacji",
+      "symbol": "E_{\\mathrm{pot}}",
+      "correct_latex": "E_{\\mathrm{pot}} = -G \\dfrac{m_1 m_2}{r}",
+      "distractors": [
+        "E_{\\mathrm{pot}} = -G \\dfrac{r}{m_1 m_2}",
+        "E_{\\mathrm{pot}} = -G m_1 m_2\\,r",
+        "E_{\\mathrm{pot}} = +G \\dfrac{m_1 m_2}{r}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Zmiana energii potencjalnej przy powierzchni Ziemi",
+      "symbol": "\\Delta E_p",
+      "correct_latex": "\\Delta E_p = m g \\Delta h",
+      "distractors": [
+        "\\Delta E_p = m g \\Delta h^2",
+        "\\Delta E_p = 2\\,m g \\Delta h",
+        "\\Delta E_p = \\dfrac{m g \\Delta h}{2}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Prędkość na orbicie kołowej",
+      "symbol": "v_{\\mathrm{or}}",
+      "correct_latex": "v_{\\mathrm{or}} = \\sqrt{\\dfrac{G M}{r}}",
+      "distractors": [
+        "v_{\\mathrm{or}} = \\sqrt{\\dfrac{r}{G M}}",
+        "v_{\\mathrm{or}} = \\sqrt{G M\\,r}",
+        "v_{\\mathrm{or}} = \\sqrt{\\tfrac{G M}{r}}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Prędkość ucieczki",
+      "symbol": "v_u",
+      "correct_latex": "v_u = \\sqrt{\\dfrac{2 G M}{r}}",
+      "distractors": [
+        "v_u = \\sqrt{\\dfrac{r}{2 G M}}",
+        "v_u = \\sqrt{2 G M\\,r}",
+        "v_u = \\sqrt{\\tfrac{2 G M}{r}}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "II prawo Keplera i zachowanie momentu pędu na orbicie",
+      "symbol": "\\dfrac{\\Delta S}{\\Delta t}",
+      "correct_latex": "\\dfrac{\\Delta S}{\\Delta t} = \\mathrm{const}\\,,\\quad \\vec{L} = \\mathrm{const}",
+      "distractors": [
+        "\\dfrac{\\Delta S}{\\Delta t} = \\mathrm{const}\\,,\\quad L = \\mathrm{const}",
+        "\\dfrac{\\Delta S}{\\Delta t} = \\mathrm{const}\\,,\\quad \\vec{L} = \\mathrm{const}\\quad\\text{(×1)}",
+        "\\dfrac{\\Delta S}{\\Delta t} = \\mathrm{const}\\,,\\quad \\vec{L} = \\mathrm{const}\\quad\\text{(×2)}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "III prawo Keplera",
+      "symbol": "\\dfrac{T_1^2}{a_1^3}",
+      "correct_latex": "\\dfrac{T_1^2}{a_1^3} = \\dfrac{T_2^2}{a_2^3} = \\mathrm{const}",
+      "distractors": [
+        "\\dfrac{T_1^2}{a_1^3} = \\dfrac{a_2^3}{T_2^2} = \\mathrm{const}",
+        "\\dfrac{T_1^2}{a_1^3} = T_2^2\\,a_2^3 = \\mathrm{const}",
+        "\\dfrac{T_1^2}{a_1^3} = \\tfrac{T_2^2}{a_2^3} = \\mathrm{const}"
+      ]
+    },
+    {
+      "topic": "Grawitacja i elementy astronomii",
+      "name": "Prawo Hubble'a",
+      "symbol": "v",
+      "correct_latex": "v = H d",
+      "distractors": [
+        "v = \\omega \\cdot t",
+        "v = \\dfrac{s}{t^{2}}",
+        "v = H d^2"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Maksymalne wychylenie (amplituda)",
+      "symbol": "x_{\\max}",
+      "correct_latex": "x_{\\max} = A",
+      "distractors": [
+        "x_{\\max} = A^2",
+        "x_{\\max} = 2\\,A",
+        "x_{\\max} = \\dfrac{A}{2}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Położenie w ruchu harmonicznym",
+      "symbol": "x(t)",
+      "correct_latex": "x(t) = A \\sin(\\omega t + \\varphi_0)",
+      "distractors": [
+        "x(t) = A \\sin(\\omega t - \\varphi_0)",
+        "x(t) = A \\sin(\\omega t + \\varphi_0)^2",
+        "x(t) = 2\\,A \\sin(\\omega t + \\varphi_0)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Prędkość w ruchu harmonicznym",
+      "symbol": "v(t)",
+      "correct_latex": "v(t) = A \\omega \\cos(\\omega t + \\varphi_0)",
+      "distractors": [
+        "v(t) = A \\omega \\cos(\\omega t - \\varphi_0)",
+        "v(t) = A \\omega \\cos(\\omega t + \\varphi_0)^2",
+        "v(t) = 2\\,A \\omega \\cos(\\omega t + \\varphi_0)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Przyspieszenie w ruchu harmonicznym",
+      "symbol": "a(t)",
+      "correct_latex": "a(t) = -A \\omega^2 \\sin(\\omega t + \\varphi_0)",
+      "distractors": [
+        "a(t) = -A \\omega^2 \\sin(\\omega t - \\varphi_0)",
+        "a(t) = +A \\omega^2 \\sin(\\omega t + \\varphi_0)",
+        "a(t) = -A \\omega^3 \\sin(\\omega t + \\varphi_0)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Maksima prędkości i przyspieszenia (drgania)",
+      "symbol": "v_{\\max}",
+      "correct_latex": "v_{\\max} = A \\omega\\,,\\quad a_{\\max} = A \\omega^2",
+      "distractors": [
+        "v_{\\max} = A \\omega\\,,\\quad a_{\\max} = A \\omega^3",
+        "v_{\\max} = A \\omega\\,,\\quad a_{\\max} = A \\omega^2\\quad\\text{(×1)}",
+        "v_{\\max} = A \\omega\\,,\\quad a_{\\max} = A \\omega^2\\quad\\text{(×2)}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Siła harmoniczna",
+      "symbol": "F_h",
+      "correct_latex": "F_h = -m \\omega^2 x",
+      "distractors": [
+        "F_h = +m \\omega^2 x",
+        "F_h = -m \\omega^3 x",
+        "F_h = -m \\omega^2 x^2"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Częstość kołowa małych drgań (sprężyna, wahadło matematyczne)",
+      "symbol": "\\omega",
+      "correct_latex": "\\omega = \\sqrt{\\dfrac{k}{m}}\\,,\\quad \\omega = \\sqrt{\\dfrac{g}{\\ell}}",
+      "distractors": [
+        "\\omega = \\sqrt{\\dfrac{m}{k}}\\,,\\quad \\omega = \\sqrt{\\dfrac{g}{\\ell}}",
+        "\\omega = \\sqrt{k\\,m}\\,,\\quad \\omega = \\sqrt{\\dfrac{g}{\\ell}}",
+        "\\omega = \\sqrt{\\tfrac{k}{m}}\\,,\\quad \\omega = \\sqrt{\\dfrac{g}{\\ell}}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Energia mechaniczna oscylatora",
+      "symbol": "E",
+      "correct_latex": "E = E_k + E_p = \\dfrac{1}{2} m A^2 \\omega^2",
+      "distractors": [
+        "E = E_k + E_p = 1\\,2 m A^2 \\omega^2",
+        "E = E_k - E_p = \\dfrac{1}{2} m A^2 \\omega^2",
+        "E = E_k + E_p = \\tfrac{1}{2} m A^2 \\omega^2"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Prędkość fali (długość, okres, częstotliwość)",
+      "symbol": "v",
+      "correct_latex": "v = \\dfrac{\\lambda}{T} = \\lambda f\\,,\\quad T = \\dfrac{1}{f}",
+      "distractors": [
+        "v = \\dfrac{T}{\\lambda} = \\lambda f\\,,\\quad T = \\dfrac{1}{f}",
+        "v = \\lambda\\,T = \\lambda f\\,,\\quad T = \\dfrac{1}{f}",
+        "v = \\tfrac{\\lambda}{T} = \\lambda f\\,,\\quad T = \\dfrac{1}{f}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Faza fali w punkcie i chwili",
+      "symbol": "\\varphi(t)",
+      "correct_latex": "\\varphi(t) = \\dfrac{2\\pi}{T} t - \\dfrac{2\\pi}{\\lambda} x + \\varphi_0",
+      "distractors": [
+        "\\varphi(t) = \\dfrac{T}{2\\pi} t - \\dfrac{2\\pi}{\\lambda} x + \\varphi_0",
+        "\\varphi(t) = 2\\pi\\,T t - \\dfrac{2\\pi}{\\lambda} x + \\varphi_0",
+        "\\varphi(t) = \\dfrac{2\\pi}{T} t - \\dfrac{2\\pi}{\\lambda} x - \\varphi_0"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Warunek wzmocnienia interferencyjnego",
+      "symbol": "\\varphi_2 - \\varphi_1",
+      "correct_latex": "\\varphi_2 - \\varphi_1 = 2\\pi n",
+      "distractors": [
+        "\\varphi_2 - \\varphi_1 = 2\\pi n^2",
+        "\\varphi_2 - \\varphi_1 = 2\\,2\\pi n",
+        "\\varphi_2 - \\varphi_1 = \\dfrac{2\\pi n}{2}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Warunek osłabienia interferencyjnego",
+      "symbol": "\\varphi_2 - \\varphi_1",
+      "correct_latex": "\\varphi_2 - \\varphi_1 = 2\\pi \\Bigl(n + \\dfrac{1}{2}\\Bigr)",
+      "distractors": [
+        "\\varphi_2 - \\varphi_1 = 2\\pi \\Bigl(n + 1\\,2\\Bigr)",
+        "\\varphi_2 - \\varphi_1 = 2\\pi \\Bigl(n - \\dfrac{1}{2}\\Bigr)",
+        "\\varphi_2 - \\varphi_1 = 2\\pi \\Bigl(n + \\tfrac{1}{2}\\Bigr)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Natężenie fali (średnie) i zależność od amplitudy",
+      "symbol": "I",
+      "correct_latex": "I = \\dfrac{E}{S\\,\\Delta t}\\,,\\quad I \\propto A^2",
+      "distractors": [
+        "I = \\dfrac{S\\,\\Delta t}{E}\\,,\\quad I \\propto A^2",
+        "I = E\\,S\\,\\Delta t\\,,\\quad I \\propto A^2",
+        "I = \\dfrac{E}{S\\cdot\\Delta t}\\,,\\quad I \\propto A^2"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Natężenie fali kulistej a odległość",
+      "symbol": "",
+      "correct_latex": "I \\propto \\dfrac{1}{r^2}",
+      "distractors": [
+        "I \\propto \\dfrac{1}{r^2}\\quad\\text{(×1)}",
+        "I \\propto \\dfrac{1}{r^2}\\quad\\text{(×2)}",
+        "I \\propto \\dfrac{1}{r^2}\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Prawo Snelliusa (załamanie na granicy ośrodków)",
+      "symbol": "\\dfrac{\\sin \\alpha_1}{\\sin \\alpha_2}",
+      "correct_latex": "\\dfrac{\\sin \\alpha_1}{\\sin \\alpha_2} = \\dfrac{v_1}{v_2} = \\dfrac{n_2}{n_1}",
+      "distractors": [
+        "\\dfrac{\\sin \\alpha_1}{\\sin \\alpha_2} = \\dfrac{v_2}{v_1} = \\dfrac{n_2}{n_1}",
+        "\\dfrac{\\sin \\alpha_1}{\\sin \\alpha_2} = v_1\\,v_2 = \\dfrac{n_2}{n_1}",
+        "\\dfrac{\\sin \\alpha_1}{\\sin \\alpha_2} = \\tfrac{v_1}{v_2} = \\dfrac{n_2}{n_1}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Doppler (dźwięk) — przybliżenie, źródło oddala się",
+      "symbol": "f_{\\mathrm{ob}}",
+      "correct_latex": "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - \\dfrac{|v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|}{v_d}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)",
+      "distractors": [
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - \\dfrac{v_d}{|v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - |v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|\\,v_d\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + \\dfrac{|v_{\\mathrm{źr}} + v_{\\mathrm{ob}}|}{v_d}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Doppler (dźwięk) — przybliżenie, źródło zbliża się",
+      "symbol": "f_{\\mathrm{ob}}",
+      "correct_latex": "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + \\dfrac{|v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|}{v_d}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)",
+      "distractors": [
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + \\dfrac{v_d}{|v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + |v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|\\,v_d\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - \\dfrac{|v_{\\mathrm{źr}} - v_{\\mathrm{ob}}|}{v_d}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll v_d)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Doppler (światło) — przybliżenie, źródło oddala się",
+      "symbol": "f_{\\mathrm{ob}}",
+      "correct_latex": "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - \\dfrac{v_{\\mathrm{źr}}}{c}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)",
+      "distractors": [
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - \\dfrac{c}{v_{\\mathrm{źr}}}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - v_{\\mathrm{źr}}\\,c\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + \\dfrac{v_{\\mathrm{źr}}}{c}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Doppler (światło) — przybliżenie, źródło zbliża się",
+      "symbol": "f_{\\mathrm{ob}}",
+      "correct_latex": "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + \\dfrac{v_{\\mathrm{źr}}}{c}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)",
+      "distractors": [
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + \\dfrac{c}{v_{\\mathrm{źr}}}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 + v_{\\mathrm{źr}}\\,c\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)",
+        "f_{\\mathrm{ob}} \\approx f_{\\mathrm{źr}} \\Bigl(1 - \\dfrac{v_{\\mathrm{źr}}}{c}\\Bigr)\\quad (v_{\\mathrm{źr}} \\ll c)"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Doppler — wzory ścisłe (dźwięk i światło, kierunek prędkości źródła)",
+      "symbol": "f_{\\mathrm{ob}}",
+      "correct_latex": "f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\dfrac{v_d \\mp v_{\\mathrm{ob}}}{v_d \\pm v_{\\mathrm{źr}}}\\,,\\quad f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\sqrt{\\dfrac{c \\mp v_{\\mathrm{źr}}}{c \\pm v_{\\mathrm{źr}}}}",
+      "distractors": [
+        "f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\dfrac{v_d \\pm v_{\\mathrm{źr}}}{v_d \\mp v_{\\mathrm{ob}}}\\,,\\quad f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\sqrt{\\dfrac{c \\mp v_{\\mathrm{źr}}}{c \\pm v_{\\mathrm{źr}}}}",
+        "f_{\\mathrm{ob}} = f_{\\mathrm{źr}} v_d \\mp v_{\\mathrm{ob}}\\,v_d \\pm v_{\\mathrm{źr}}\\,,\\quad f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\sqrt{\\dfrac{c \\mp v_{\\mathrm{źr}}}{c \\pm v_{\\mathrm{źr}}}}",
+        "f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\tfrac{v_d \\mp v_{\\mathrm{ob}}}{v_d \\pm v_{\\mathrm{źr}}}\\,,\\quad f_{\\mathrm{ob}} = f_{\\mathrm{źr}} \\sqrt{\\dfrac{c \\mp v_{\\mathrm{źr}}}{c \\pm v_{\\mathrm{źr}}}}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Siatka dyfrakcyjna",
+      "symbol": "d \\sin \\alpha_n",
+      "correct_latex": "d \\sin \\alpha_n = n \\lambda",
+      "distractors": [
+        "d \\sin \\alpha_n = n \\lambda^2",
+        "d \\sin \\alpha_n = 2\\,n \\lambda",
+        "d \\sin \\alpha_n = \\dfrac{n \\lambda}{2}"
+      ]
+    },
+    {
+      "topic": "Drgania, fale mechaniczne i świetlne",
+      "name": "Światło po przejściu przez polaryzator (oznaczenia amplitud)",
+      "symbol": "",
+      "correct_latex": "\\vec{E}_0\\ \\text{— padające},\\quad \\vec{E}_P\\ \\text{— po przejściu przez polaryzator o osi } P",
+      "distractors": [
+        "\\vec{E}_0\\ \\text{— padające},\\quad \\vec{E}_P\\ \\text{— po przejściu przez polaryzator o osi } P\\quad\\text{(×1)}",
+        "\\vec{E}_0\\ \\text{— padające},\\quad \\vec{E}_P\\ \\text{— po przejściu przez polaryzator o osi } P\\quad\\text{(×2)}",
+        "\\vec{E}_0\\ \\text{— padające},\\quad \\vec{E}_P\\ \\text{— po przejściu przez polaryzator o osi } P\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Optyka geometryczna",
+      "name": "Kąt graniczny (przejście z ośrodka 2 do 1)",
+      "symbol": "\\sin \\alpha_{2\\,\\mathrm{gr}}",
+      "correct_latex": "\\sin \\alpha_{2\\,\\mathrm{gr}} = \\dfrac{n_1}{n_2}",
+      "distractors": [
+        "\\sin \\alpha_{2\\,\\mathrm{gr}} = \\dfrac{n_2}{n_1}",
+        "\\sin \\alpha_{2\\,\\mathrm{gr}} = n_1\\,n_2",
+        "\\sin \\alpha_{2\\,\\mathrm{gr}} = \\tfrac{n_1}{n_2}"
+      ]
+    },
+    {
+      "topic": "Optyka geometryczna",
+      "name": "Warunek polaryzacji światła przy odbiciu (kąt Brewstera)",
+      "symbol": "\\alpha_{\\mathrm{pad}\\,1} + \\alpha_{\\m...",
+      "correct_latex": "\\alpha_{\\mathrm{pad}\\,1} + \\alpha_{\\mathrm{zał}\\,2} = 90^\\circ",
+      "distractors": [
+        "\\alpha_{\\mathrm{pad}\\,1} + \\alpha_{\\mathrm{zał}\\,2} = 90^\\circ^2",
+        "\\alpha_{\\mathrm{pad}\\,1} + \\alpha_{\\mathrm{zał}\\,2} = 2\\,90^\\circ",
+        "\\alpha_{\\mathrm{pad}\\,1} + \\alpha_{\\mathrm{zał}\\,2} = \\dfrac{90^\\circ}{2}"
+      ]
+    },
+    {
+      "topic": "Optyka geometryczna",
+      "name": "Równanie soczewki i zwierciadła",
+      "symbol": "\\dfrac{1}{x} + \\dfrac{1}{y}",
+      "correct_latex": "\\dfrac{1}{x} + \\dfrac{1}{y} = \\dfrac{1}{f}\\quad (x>0,\\ y \\gtrless 0,\\ f \\gtrless 0\\ \\text{— znaki wg typu obrazu i optyki})",
+      "distractors": [
+        "\\dfrac{1}{x} + \\dfrac{1}{y} = \\dfrac{f}{1}\\quad (x>0,\\ y \\gtrless 0,\\ f \\gtrless 0\\ \\text{— znaki wg typu obrazu i optyki})",
+        "\\dfrac{1}{x} + \\dfrac{1}{y} = 1\\,f\\quad (x>0,\\ y \\gtrless 0,\\ f \\gtrless 0\\ \\text{— znaki wg typu obrazu i optyki})",
+        "\\dfrac{1}{x} + \\dfrac{1}{y} = \\tfrac{1}{f}\\quad (x>0,\\ y \\gtrless 0,\\ f \\gtrless 0\\ \\text{— znaki wg typu obrazu i optyki})"
+      ]
+    },
+    {
+      "topic": "Optyka geometryczna",
+      "name": "Wzór na ogniskową soczewki (promienie krzywizny, środowiska)",
+      "symbol": "\\dfrac{1}{f}",
+      "correct_latex": "\\dfrac{1}{f} = \\Bigl(\\dfrac{n_{\\mathrm{socz}}}{n_{\\mathrm{otocz}}} - 1\\Bigr) \\Bigl(\\pm \\dfrac{1}{R_1} \\pm \\dfrac{1}{R_2}\\Bigr)",
+      "distractors": [
+        "\\dfrac{1}{f} = \\Bigl(\\dfrac{n_{\\mathrm{socz}}}{n_{\\mathrm{otocz}}} + 1\\Bigr) \\Bigl(\\pm \\dfrac{1}{R_1} \\pm \\dfrac{1}{R_2}\\Bigr)",
+        "\\dfrac{1}{f} = \\Bigl(\\dfrac{n_{\\mathrm{otocz}}}{n_{\\mathrm{socz}}} - 1\\Bigr) \\Bigl(\\pm \\dfrac{1}{R_1} \\pm \\dfrac{1}{R_2}\\Bigr)",
+        "\\dfrac{1}{f} = \\Bigl(n_{\\mathrm{socz}}\\,n_{\\mathrm{otocz}} - 1\\Bigr) \\Bigl(\\pm \\dfrac{1}{R_1} \\pm \\dfrac{1}{R_2}\\Bigr)"
+      ]
+    },
+    {
+      "topic": "Hydrostatyka, aerostatyka",
+      "name": "Siła parcia i ciśnienie",
+      "symbol": "F",
+      "correct_latex": "F = p\\,\\Delta S\\,,\\quad \\vec{F} \\perp \\Delta \\vec{S}",
+      "distractors": [
+        "F = p\\,\\Delta S\\,,\\quad F \\perp \\Delta S",
+        "F = p\\cdot\\Delta S\\,,\\quad \\vec{F} \\perp \\Delta \\vec{S}",
+        "F = p\\, S\\,,\\quad \\vec{F} \\perp  \\vec{S}"
+      ]
+    },
+    {
+      "topic": "Hydrostatyka, aerostatyka",
+      "name": "Zmiana ciśnienia hydro- i aerostatycznego",
+      "symbol": "\\Delta p",
+      "correct_latex": "\\Delta p = \\rho g \\Delta h",
+      "distractors": [
+        "\\Delta p = \\rho g \\Delta h^2",
+        "\\Delta p = 2\\,\\rho g \\Delta h",
+        "\\Delta p = \\dfrac{\\rho g \\Delta h}{2}"
+      ]
+    },
+    {
+      "topic": "Hydrostatyka, aerostatyka",
+      "name": "Siła wyporu (Archimedes)",
+      "symbol": "F_{\\mathrm{wyp}}",
+      "correct_latex": "F_{\\mathrm{wyp}} = \\rho\\, V_{\\mathrm{zan}}\\, g",
+      "distractors": [
+        "F_{\\mathrm{wyp}} = \\rho\\cdot V_{\\mathrm{zan}}\\, g",
+        "F_{\\mathrm{wyp}} = \\rho\\, V_{\\mathrm{zan}}\\, g^2",
+        "F_{\\mathrm{wyp}} = 2\\,\\rho\\, V_{\\mathrm{zan}}\\, g"
+      ]
+    },
+    {
+      "topic": "Hydrostatyka, aerostatyka",
+      "name": "Gęstość substancji",
+      "symbol": "\\rho",
+      "correct_latex": "\\rho = \\dfrac{m}{V}",
+      "distractors": [
+        "\\rho = \\dfrac{V}{m}",
+        "\\rho = m\\,V",
+        "\\rho = \\tfrac{m}{V}"
+      ]
+    },
+    {
+      "topic": "Hydrostatyka, aerostatyka",
+      "name": "Ciśnienie (definicja mechaniczna)",
+      "symbol": "p",
+      "correct_latex": "p = \\dfrac{F}{\\Delta S}",
+      "distractors": [
+        "p = \\dfrac{\\Delta S}{F}",
+        "p = F\\,\\Delta S",
+        "p = \\dfrac{F}{ S}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "I zasada termodynamiki",
+      "symbol": "\\Delta U",
+      "correct_latex": "\\Delta U = Q + W",
+      "distractors": [
+        "\\Delta U = Q - W",
+        "\\Delta U = Q + W^2",
+        "\\Delta U = 2\\,Q + W"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Praca siły parcia przy stałym ciśnieniu",
+      "symbol": "|W|",
+      "correct_latex": "|W| = p\\,|\\Delta V|",
+      "distractors": [
+        "|W| = p\\cdot|\\Delta V|",
+        "|W| = p\\,| V|",
+        "|W| = p\\,|\\Delta V|^2"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Praca siły parcia a wykres p(V)",
+      "symbol": "|W_{AB}|",
+      "correct_latex": "|W_{AB}| = \\text{pole pod odcinkiem } AB",
+      "distractors": [
+        "|W_{AB}| = \\text{pole pod odcinkiem } AB^2",
+        "|W_{AB}| = 2\\,\\text{pole pod odcinkiem } AB",
+        "|W_{AB}| = \\dfrac{\\text{pole pod odcinkiem } AB}{2}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Ciepło właściwe",
+      "symbol": "c_w",
+      "correct_latex": "c_w = \\dfrac{Q}{m\\,\\Delta T}",
+      "distractors": [
+        "c_w = \\dfrac{m\\,\\Delta T}{Q}",
+        "c_w = Q\\,m\\,\\Delta T",
+        "c_w = \\dfrac{Q}{m\\cdot\\Delta T}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Ciepło molowe",
+      "symbol": "C",
+      "correct_latex": "C = \\dfrac{Q}{n\\,\\Delta T}",
+      "distractors": [
+        "C = \\dfrac{n\\,\\Delta T}{Q}",
+        "C = Q\\,n\\,\\Delta T",
+        "C = \\dfrac{Q}{n\\cdot\\Delta T}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Ciepło przemiany fazowej",
+      "symbol": "L",
+      "correct_latex": "L = \\dfrac{Q}{m}",
+      "distractors": [
+        "L = \\dfrac{m}{Q}",
+        "L = Q\\,m",
+        "L = \\tfrac{Q}{m}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Średnia energia ruchu cząsteczki gazu doskonałego",
+      "symbol": "E_{\\mathrm{śr}}",
+      "correct_latex": "E_{\\mathrm{śr}} = \\dfrac{s}{2} k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})",
+      "distractors": [
+        "E_{\\mathrm{śr}} = \\dfrac{2}{s} k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})",
+        "E_{\\mathrm{śr}} = s\\,2 k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})",
+        "E_{\\mathrm{śr}} = \\tfrac{s}{2} k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Równanie stanu gazu doskonałego (Clapeyrona)",
+      "symbol": "p V",
+      "correct_latex": "p V = n R T",
+      "distractors": [
+        "p V = n R T^2",
+        "p V = 2\\,n R T",
+        "p V = \\dfrac{n R T}{2}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Związek ciepeł molowych gazu doskonałego",
+      "symbol": "C_p",
+      "correct_latex": "C_p = C_V + R",
+      "distractors": [
+        "C_p = C_V - R",
+        "C_p = C_V + R^2",
+        "C_p = 2\\,C_V + R"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Praca i ciepło w cyklu (silnik / pompa cieplna)",
+      "symbol": "0",
+      "correct_latex": "0 = Q_{\\mathrm{calk}} + W_{\\mathrm{calk}}",
+      "distractors": [
+        "0 = Q_{\\mathrm{calk}} - W_{\\mathrm{calk}}",
+        "0 = Q_{\\mathrm{calk}} + W_{\\mathrm{calk}}^2",
+        "0 = 2\\,Q_{\\mathrm{calk}} + W_{\\mathrm{calk}}"
+      ]
+    },
+    {
+      "topic": "Termodynamika",
+      "name": "Sprawność silnika cieplnego",
+      "symbol": "\\eta",
+      "correct_latex": "\\eta = \\dfrac{|W_{\\mathrm{calk}}|}{|Q_{\\mathrm{pob}}|} = \\dfrac{|Q_{\\mathrm{pob}}| - |Q_{\\mathrm{odd}}|}{|Q_{\\mathrm{pob}}|}",
+      "distractors": [
+        "\\eta = \\dfrac{|Q_{\\mathrm{pob}}|}{|W_{\\mathrm{calk}}|} = \\dfrac{|Q_{\\mathrm{pob}}| - |Q_{\\mathrm{odd}}|}{|Q_{\\mathrm{pob}}|}",
+        "\\eta = |W_{\\mathrm{calk}}|\\,|Q_{\\mathrm{pob}}| = \\dfrac{|Q_{\\mathrm{pob}}| - |Q_{\\mathrm{odd}}|}{|Q_{\\mathrm{pob}}|}",
+        "\\eta = \\dfrac{|W_{\\mathrm{calk}}|}{|Q_{\\mathrm{pob}}|} = \\dfrac{|Q_{\\mathrm{pob}}| + |Q_{\\mathrm{odd}}|}{|Q_{\\mathrm{pob}}|}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Prawo Coulomba i stała elektrostatyczna",
+      "symbol": "F_e",
+      "correct_latex": "F_e = k \\dfrac{q_1 q_2}{r^2}\\,,\\quad k = \\dfrac{1}{4\\pi \\varepsilon_0}",
+      "distractors": [
+        "F_e = k \\dfrac{r^2}{q_1 q_2}\\,,\\quad k = \\dfrac{1}{4\\pi \\varepsilon_0}",
+        "F_e = k q_1 q_2\\,r^2\\,,\\quad k = \\dfrac{1}{4\\pi \\varepsilon_0}",
+        "F_e = k \\tfrac{q_1 q_2}{r^2}\\,,\\quad k = \\dfrac{1}{4\\pi \\varepsilon_0}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Natężenie pola elektrycznego",
+      "symbol": "\\vec{E}",
+      "correct_latex": "\\vec{E} = \\dfrac{\\vec{F}_e}{q}",
+      "distractors": [
+        "\\vec{E} = \\dfrac{q}{\\vec{F}_e}",
+        "\\vec{E} = \\vec{F}_e\\,q",
+        "\\vec{E} = \\tfrac{\\vec{F}_e}{q}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Natężenie pola na zewnątrz sferycznego rozkładu ładunku",
+      "symbol": "E",
+      "correct_latex": "E = k \\dfrac{Q}{r^2}",
+      "distractors": [
+        "E = k \\dfrac{r^2}{Q}",
+        "E = k Q\\,r^2",
+        "E = k \\tfrac{Q}{r^2}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Napięcie między punktami A i B (praca na ładunek)",
+      "symbol": "U_{AB}",
+      "correct_latex": "U_{AB} = \\dfrac{W_{AB}}{q}",
+      "distractors": [
+        "U_{AB} = \\dfrac{q}{W_{AB}}",
+        "U_{AB} = W_{AB}\\,q",
+        "U_{AB} = \\tfrac{W_{AB}}{q}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Napięcie a potencjały elektryczne",
+      "symbol": "U_{AB}",
+      "correct_latex": "U_{AB} = V_B - V_A",
+      "distractors": [
+        "U_{AB} = V_B + V_A",
+        "U_{AB} = V_B - V_A^2",
+        "U_{AB} = 2\\,V_B - V_A"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Energia potencjalna elektryczna układu ładunków",
+      "symbol": "E_{\\mathrm{pot}}",
+      "correct_latex": "E_{\\mathrm{pot}} = k \\dfrac{q_1 q_2}{r}",
+      "distractors": [
+        "E_{\\mathrm{pot}} = k \\dfrac{r}{q_1 q_2}",
+        "E_{\\mathrm{pot}} = k q_1 q_2\\,r",
+        "E_{\\mathrm{pot}} = k \\tfrac{q_1 q_2}{r}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Napięcie w polu jednorodnym",
+      "symbol": "U",
+      "correct_latex": "U = E d",
+      "distractors": [
+        "U = I + R",
+        "U = E d^2",
+        "U = 2\\,E d"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Natężenie pola między płytami naładowanymi różnoimiennie",
+      "symbol": "E",
+      "correct_latex": "E = \\dfrac{\\sigma}{\\varepsilon_0}\\,,\\quad \\sigma = \\dfrac{Q}{\\Delta S} = \\mathrm{const}",
+      "distractors": [
+        "E = \\dfrac{\\varepsilon_0}{\\sigma}\\,,\\quad \\sigma = \\dfrac{Q}{\\Delta S} = \\mathrm{const}",
+        "E = \\sigma\\,\\varepsilon_0\\,,\\quad \\sigma = \\dfrac{Q}{\\Delta S} = \\mathrm{const}",
+        "E = \\dfrac{\\sigma}{\\varepsilon_0}\\,,\\quad \\sigma = \\dfrac{Q}{ S} = \\mathrm{const}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Natężenie pola wewnątrz dielektryka",
+      "symbol": "\\vec{E}",
+      "correct_latex": "\\vec{E} = \\dfrac{\\vec{E}_0}{\\varepsilon_r}",
+      "distractors": [
+        "\\vec{E} = \\dfrac{\\varepsilon_r}{\\vec{E}_0}",
+        "\\vec{E} = \\vec{E}_0\\,\\varepsilon_r",
+        "\\vec{E} = \\tfrac{\\vec{E}_0}{\\varepsilon_r}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Pojemność kondensatora",
+      "symbol": "C",
+      "correct_latex": "C = \\dfrac{Q}{U}",
+      "distractors": [
+        "C = \\dfrac{U}{Q}",
+        "C = Q\\,U",
+        "C = \\tfrac{Q}{U}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Pojemność kondensatora płaskiego z dielektrykiem",
+      "symbol": "C",
+      "correct_latex": "C = \\dfrac{\\varepsilon_r \\varepsilon_0 S}{d}",
+      "distractors": [
+        "C = \\dfrac{d}{\\varepsilon_r \\varepsilon_0 S}",
+        "C = \\varepsilon_r \\varepsilon_0 S\\,d",
+        "C = \\tfrac{\\varepsilon_r \\varepsilon_0 S}{d}"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Energia elektryczna kondensatora",
+      "symbol": "W",
+      "correct_latex": "W = \\dfrac{Q^2}{2C} = \\dfrac{1}{2} Q U = \\dfrac{1}{2} U^2 C",
+      "distractors": [
+        "W = \\dfrac{2C}{Q^2} = \\dfrac{1}{2} Q U = \\dfrac{1}{2} U^2 C",
+        "W = Q^2\\,2C = \\dfrac{1}{2} Q U = \\dfrac{1}{2} U^2 C",
+        "W = \\tfrac{Q^2}{2C} = \\dfrac{1}{2} Q U = \\dfrac{1}{2} U^2 C"
+      ]
+    },
+    {
+      "topic": "Elektrostatyka",
+      "name": "Pole wewnątrz i na powierzchni przewodnika (równowaga)",
+      "symbol": "\\vec{E}_{\\mathrm{wew}}",
+      "correct_latex": "\\vec{E}_{\\mathrm{wew}} = 0\\,,\\quad \\vec{E}_{\\mathrm{pow}} \\perp \\Delta \\vec{S}",
+      "distractors": [
+        "\\vec{E}_{\\mathrm{wew}} = 0\\,,\\quad \\vec{E}_{\\mathrm{pow}} \\perp  \\vec{S}",
+        "\\vec{E}_{\\mathrm{wew}} = 0\\,,\\quad \\vec{E}_{\\mathrm{pow}} \\perp \\Delta \\vec{S}^2",
+        "\\vec{E}_{\\mathrm{wew}} = 2\\,0\\,,\\quad \\vec{E}_{\\mathrm{pow}} \\perp \\Delta \\vec{S}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Natężenie prądu",
+      "symbol": "I",
+      "correct_latex": "I = \\dfrac{\\Delta Q}{\\Delta t}",
+      "distractors": [
+        "I = \\dfrac{\\Delta t}{\\Delta Q}",
+        "I = \\Delta Q\\,\\Delta t",
+        "I = \\dfrac{ Q}{ t}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Definicja oporu przewodnika",
+      "symbol": "R",
+      "correct_latex": "R = \\dfrac{U}{I}",
+      "distractors": [
+        "R = \\dfrac{I}{U}",
+        "R = U\\,I",
+        "R = \\tfrac{U}{I}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Prawo Ohma (dla stałej temperatury przewodnika)",
+      "symbol": "\\dfrac{U}{I}",
+      "correct_latex": "\\dfrac{U}{I} = \\mathrm{const}",
+      "distractors": [
+        "\\dfrac{U}{I} = \\mathrm{const}^2",
+        "\\dfrac{U}{I} = 2\\,\\mathrm{const}",
+        "\\dfrac{U}{I} = \\dfrac{\\mathrm{const}}{2}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Opór przewodnika z drutu",
+      "symbol": "R",
+      "correct_latex": "R = \\rho \\dfrac{\\ell}{S}",
+      "distractors": [
+        "R = \\rho \\dfrac{S}{\\ell}",
+        "R = \\rho \\ell\\,S",
+        "R = \\rho \\tfrac{\\ell}{S}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Moc prądu stałego na oporniku",
+      "symbol": "P",
+      "correct_latex": "P = U I = I^2 R = \\dfrac{U^2}{R}",
+      "distractors": [
+        "P = U I = I^2 R = \\dfrac{R}{U^2}",
+        "P = U I = I^2 R = U^2\\,R",
+        "P = U I = I^2 R = \\tfrac{U^2}{R}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Opór metali a temperatura (liniowy przybliżony model)",
+      "symbol": "R(T)",
+      "correct_latex": "R(T) = R(T_0)\\bigl(1 + \\alpha \\Delta T\\bigr)\\,,\\quad \\Delta T = T - T_0",
+      "distractors": [
+        "R(T) = R(T_0)\\bigl(1 + \\alpha  T\\bigr)\\,,\\quad  T = T - T_0",
+        "R(T) = R(T_0)\\bigl(1 - \\alpha \\Delta T\\bigr)\\,,\\quad \\Delta T = T - T_0",
+        "R(T) = R(T_0)\\bigl(1 + \\alpha \\Delta T\\bigr)\\,,\\quad \\Delta T = T + T_0"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Dodawanie napięć między punktami przewodnika",
+      "symbol": "U_{AC}",
+      "correct_latex": "U_{AC} = U_{AB} + U_{BC}",
+      "distractors": [
+        "U_{AC} = U_{AB} - U_{BC}",
+        "U_{AC} = U_{AB} + U_{BC}^2",
+        "U_{AC} = 2\\,U_{AB} + U_{BC}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "II prawo Kirchhoffa dla obwodu (oczka)",
+      "symbol": "\\sum_{i=1}^{k} (\\pm \\mathcal{E}_i) - ...",
+      "correct_latex": "\\sum_{i=1}^{k} (\\pm \\mathcal{E}_i) - \\sum_{j=1}^{n} (\\pm U_j) = 0",
+      "distractors": [
+        "\\sum_{i=1}^{k} (\\pm \\mathcal{E}_i) - \\sum_{j=1}^{n} (\\pm U_j) = 0^2",
+        "\\sum_{i=1}^{k} (\\pm \\mathcal{E}_i) - \\sum_{j=1}^{n} (\\pm U_j) = 2\\,0",
+        "\\sum_{i=1}^{k} (\\pm \\mathcal{E}_i) - \\sum_{j=1}^{n} (\\pm U_j) = \\dfrac{0}{2}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "SEM a napięcie na zaciskach baterii",
+      "symbol": "\\mathcal{E}",
+      "correct_latex": "\\mathcal{E} = U + I R_w",
+      "distractors": [
+        "\\mathcal{E} = U - I R_w",
+        "\\mathcal{E} = U + I R_w^2",
+        "\\mathcal{E} = 2\\,U + I R_w"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Opór zastępczy połączenia szeregowego",
+      "symbol": "R_z",
+      "correct_latex": "R_z = \\sum_{i=1}^{n} R_i",
+      "distractors": [
+        "R_z = \\sum_{i=1}^{n} R_i\\quad\\text{(×1)}",
+        "R_z = \\sum_{i=1}^{n} R_i\\quad\\text{(×2)}",
+        "R_z = \\sum_{i=1}^{n} R_i\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Prąd elektryczny",
+      "name": "Opór zastępczy połączenia równoległego",
+      "symbol": "\\dfrac{1}{R_z}",
+      "correct_latex": "\\dfrac{1}{R_z} = \\sum_{i=1}^{n} \\dfrac{1}{R_i}",
+      "distractors": [
+        "\\dfrac{1}{R_z} = \\sum_{i=1}^{n} \\dfrac{R_i}{1}",
+        "\\dfrac{1}{R_z} = \\sum_{i=1}^{n} 1\\,R_i",
+        "\\dfrac{1}{R_z} = \\sum_{i=1}^{n} \\tfrac{1}{R_i}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Siła Lorentza (wartość; kąt między v i B)",
+      "symbol": "F",
+      "correct_latex": "F = |q| v B \\sin \\alpha\\quad (\\vec{F} \\perp \\vec{v},\\ \\vec{F} \\perp \\vec{B})",
+      "distractors": [
+        "F = |q| v B \\sin \\alpha\\quad (F \\perp v,\\ F \\perp B)",
+        "F = m \\cdot t",
+        "F = \\dfrac{m}{v}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Siła elektrodynamiczna na odcinku przewodnika",
+      "symbol": "F",
+      "correct_latex": "F = I \\Delta \\ell B \\sin \\angle(\\Delta \\vec{\\ell}, \\vec{B})",
+      "distractors": [
+        "F = I \\Delta \\ell B \\sin \\angle(\\Delta \\ell, B)",
+        "F = I  \\ell B \\sin \\angle( \\vec{\\ell}, \\vec{B})",
+        "F = m \\cdot t"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Pole magnetyczne długiego prostoliniowego przewodnika",
+      "symbol": "B",
+      "correct_latex": "B = \\dfrac{\\mu_0 I}{2\\pi r}",
+      "distractors": [
+        "B = \\dfrac{2\\pi r}{\\mu_0 I}",
+        "B = \\mu_0 I\\,2\\pi r",
+        "B = \\tfrac{\\mu_0 I}{2\\pi r}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Pole wewnątrz długiej ciasnej zwojnicy",
+      "symbol": "B",
+      "correct_latex": "B = \\dfrac{\\mu_0 N I}{L}",
+      "distractors": [
+        "B = \\dfrac{L}{\\mu_0 N I}",
+        "B = \\mu_0 N I\\,L",
+        "B = \\tfrac{\\mu_0 N I}{L}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Moment siły na pętlę z prądem w polu B",
+      "symbol": "M",
+      "correct_latex": "M = I S B \\sin \\angle(\\vec{S}, \\vec{B})",
+      "distractors": [
+        "M = I S B \\sin \\angle(S, B)",
+        "M = I S B \\sin \\angle(\\vec{S}, \\vec{B})^2",
+        "M = 2\\,I S B \\sin \\angle(\\vec{S}, \\vec{B})"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Strumień magnetyczny przez powierzchnię",
+      "symbol": "\\Phi_B",
+      "correct_latex": "\\Phi_B = B S \\cos \\angle(\\vec{S}, \\vec{B})",
+      "distractors": [
+        "\\Phi_B = B S \\cos \\angle(S, B)",
+        "\\Phi_B = B S \\cos \\angle(\\vec{S}, \\vec{B})^2",
+        "\\Phi_B = 2\\,B S \\cos \\angle(\\vec{S}, \\vec{B})"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "SEM indukcji (Faraday–Lenz)",
+      "symbol": "\\mathcal{E}",
+      "correct_latex": "\\mathcal{E} = -\\dfrac{\\Delta \\Phi_B}{\\Delta t}",
+      "distractors": [
+        "\\mathcal{E} = -\\dfrac{\\Delta t}{\\Delta \\Phi_B}",
+        "\\mathcal{E} = -\\Delta \\Phi_B\\,\\Delta t",
+        "\\mathcal{E} = -\\dfrac{ \\Phi_B}{ t}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "SEM prądnicy (obrót w polu magnetycznym)",
+      "symbol": "\\mathcal{E}",
+      "correct_latex": "\\mathcal{E} = N B S \\omega \\sin \\angle(\\vec{S}, \\vec{B})\\,,\\quad \\angle(\\vec{S}, \\vec{B}) = \\omega t + \\varphi_0",
+      "distractors": [
+        "\\mathcal{E} = N B S \\omega \\sin \\angle(S, B)\\,,\\quad \\angle(S, B) = \\omega t + \\varphi_0",
+        "\\mathcal{E} = N B S \\omega \\sin \\angle(\\vec{S}, \\vec{B})\\,,\\quad \\angle(\\vec{S}, \\vec{B}) = \\omega t - \\varphi_0",
+        "\\mathcal{E} = N B S \\omega \\sin \\angle(\\vec{S}, \\vec{B})\\,,\\quad \\angle(\\vec{S}, \\vec{B}) = \\omega t + \\varphi_0\\quad\\text{(×1)}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Praca prądu sinusoidalnego w czasie jednego okresu",
+      "symbol": "W",
+      "correct_latex": "W = \\dfrac{1}{2} U_0 I_0 T",
+      "distractors": [
+        "W = 1\\,2 U_0 I_0 T",
+        "W = \\tfrac{1}{2} U_0 I_0 T",
+        "W = \\dfrac{1}{2} U_0 I_0 T^2"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Wartości skuteczne prądu i napięcia (sinus)",
+      "symbol": "I_{\\mathrm{sk}}",
+      "correct_latex": "I_{\\mathrm{sk}} = \\dfrac{I_0}{\\sqrt{2}}\\,,\\quad U_{\\mathrm{sk}} = \\dfrac{U_0}{\\sqrt{2}}",
+      "distractors": [
+        "I_{\\mathrm{sk}} = \\dfrac{\\sqrt{2}}{I_0}\\,,\\quad U_{\\mathrm{sk}} = \\dfrac{U_0}{\\sqrt{2}}",
+        "I_{\\mathrm{sk}} = I_0\\,\\sqrt{2}\\,,\\quad U_{\\mathrm{sk}} = \\dfrac{U_0}{\\sqrt{2}}",
+        "I_{\\mathrm{sk}} = \\tfrac{I_0}{\\sqrt{2}}\\,,\\quad U_{\\mathrm{sk}} = \\dfrac{U_0}{\\sqrt{2}}"
+      ]
+    },
+    {
+      "topic": "Magnetyzm",
+      "name": "Uproszczony model transformatora",
+      "symbol": "I_1 U_1",
+      "correct_latex": "I_1 U_1 = I_2 U_2\\,,\\quad \\dfrac{U_1}{U_2} = \\dfrac{N_1}{N_2}",
+      "distractors": [
+        "I_1 U_1 = I_2 U_2\\,,\\quad \\dfrac{U_2}{U_1} = \\dfrac{N_1}{N_2}",
+        "I_1 U_1 = I_2 U_2\\,,\\quad U_1\\,U_2 = \\dfrac{N_1}{N_2}",
+        "I_1 U_1 = I_2 U_2\\,,\\quad \\tfrac{U_1}{U_2} = \\dfrac{N_1}{N_2}"
+      ]
+    },
+    {
+      "topic": "Elementy mechaniki relatywistycznej",
+      "name": "Energia całkowita ciała (relatywistyczna)",
+      "symbol": "E",
+      "correct_latex": "E = \\dfrac{m c^2}{\\sqrt{1 - v^2/c^2}}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}",
+      "distractors": [
+        "E = \\dfrac{\\sqrt{1 - v^2/c^2}}{m c^2}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}",
+        "E = m c^2\\,\\sqrt{1 - v^2/c^2}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}",
+        "E = \\dfrac{m c^2}{\\sqrt{1 - v^2\\cdotc^2}}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}"
+      ]
+    },
+    {
+      "topic": "Elementy mechaniki relatywistycznej",
+      "name": "Energia spoczynkowa",
+      "symbol": "E_0",
+      "correct_latex": "E_0 = m c^2",
+      "distractors": [
+        "E_0 = m c^3",
+        "E_0 = m c^2^2",
+        "E_0 = 2\\,m c^2"
+      ]
+    },
+    {
+      "topic": "Elementy mechaniki relatywistycznej",
+      "name": "Równoważność zmiany masy i energii",
+      "symbol": "\\Delta E",
+      "correct_latex": "\\Delta E = \\Delta m\\, c^2",
+      "distractors": [
+        "\\Delta E = \\Delta m\\cdot c^2",
+        "\\Delta E = \\Delta m\\, c^3",
+        "\\Delta E = \\Delta m\\, c^2^2"
+      ]
+    },
+    {
+      "topic": "Elementy mechaniki relatywistycznej",
+      "name": "Pęd relatywistyczny",
+      "symbol": "p",
+      "correct_latex": "p = \\dfrac{m v}{\\sqrt{1 - v^2/c^2}}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}",
+      "distractors": [
+        "p = \\dfrac{\\sqrt{1 - v^2/c^2}}{m v}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}",
+        "p = m v\\,\\sqrt{1 - v^2/c^2}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}",
+        "p = \\dfrac{m v}{\\sqrt{1 - v^2\\cdotc^2}}\\,,\\quad v = \\dfrac{\\Delta x}{\\Delta t}"
+      ]
+    },
+    {
+      "topic": "Elementy mechaniki relatywistycznej",
+      "name": "Niezmiennik relatywistyczny (dynamiczny)",
+      "symbol": "E_0^2",
+      "correct_latex": "E_0^2 = E^2 - (c p)^2",
+      "distractors": [
+        "E_0^2 = E^2 + (c p)^2",
+        "E_0^2 = E^3 - (c p)^3",
+        "E_0^2 = E^2 - (c p)^2^2"
+      ]
+    },
+    {
+      "topic": "Elementy mechaniki relatywistycznej",
+      "name": "Energia kinetyczna",
+      "symbol": "E_{\\mathrm{kin}}",
+      "correct_latex": "E_{\\mathrm{kin}} = E - E_0",
+      "distractors": [
+        "E_{\\mathrm{kin}} = E + E_0",
+        "E_{\\mathrm{kin}} = m v^{2}",
+        "E_{\\mathrm{kin}} = E - E_0^2"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Prawo Wiena",
+      "symbol": "\\lambda_{\\max} T",
+      "correct_latex": "\\lambda_{\\max} T = b",
+      "distractors": [
+        "\\lambda_{\\max} T = b^2",
+        "\\lambda_{\\max} T = 2\\,b",
+        "\\lambda_{\\max} T = \\dfrac{b}{2}"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Prawo Stefana–Boltzmanna (moc z jednostki powierzchni)",
+      "symbol": "I",
+      "correct_latex": "I = \\sigma T^4\\,,\\quad [I] = \\mathrm{W/m^2}",
+      "distractors": [
+        "I = \\sigma T^4\\,,\\quad [I] = \\mathrm{W\\cdotm^2}",
+        "I = \\sigma T^4\\,,\\quad [I] = \\mathrm{W/m^3}",
+        "I = \\sigma T^4\\,,\\quad [I] = \\mathrm{W/m^2}\\quad\\text{(×1)}"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Energia i pęd fotonu",
+      "symbol": "E_f",
+      "correct_latex": "E_f = h f = \\dfrac{h c}{\\lambda}\\,,\\quad p_f = \\dfrac{h}{\\lambda}",
+      "distractors": [
+        "E_f = h f = \\dfrac{\\lambda}{h c}\\,,\\quad p_f = \\dfrac{h}{\\lambda}",
+        "E_f = h f = h c\\,\\lambda\\,,\\quad p_f = \\dfrac{h}{\\lambda}",
+        "E_f = h f = \\tfrac{h c}{\\lambda}\\,,\\quad p_f = \\dfrac{h}{\\lambda}"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Zjawisko fotoelektryczne",
+      "symbol": "E_f",
+      "correct_latex": "E_f = W_{\\mathrm{el}} + E_{\\mathrm{kin\\,el\\,max}}",
+      "distractors": [
+        "E_f = W_{\\mathrm{el}} + E_{\\mathrm{kin\\cdotel\\,max}}",
+        "E_f = W_{\\mathrm{el}} - E_{\\mathrm{kin\\,el\\,max}}",
+        "E_f = W_{\\mathrm{el}} + E_{\\mathrm{kin\\,el\\,max}}^2"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Emisja lub absorpcja fotonu przez atom",
+      "symbol": "E_m - E_n",
+      "correct_latex": "E_m - E_n = h f_{mn} + E_{\\mathrm{odrzutu}}\\quad (m>n)",
+      "distractors": [
+        "E_m - E_n = h f_{mn} - E_{\\mathrm{odrzutu}}\\quad (m>n)",
+        "E_m - E_n = h f_{mn} + E_{\\mathrm{odrzutu}}\\quad (m>n)^2",
+        "E_m - E_n = 2\\,h f_{mn} + E_{\\mathrm{odrzutu}}\\quad (m>n)"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Poziomy energetyczne atomu wodoru",
+      "symbol": "E_n",
+      "correct_latex": "E_n = -\\dfrac{13.606\\ \\mathrm{eV}}{n^2}",
+      "distractors": [
+        "E_n = -\\dfrac{n^2}{13.606\\ \\mathrm{eV}}",
+        "E_n = -13.606\\ \\mathrm{eV}\\,n^2",
+        "E_n = +\\dfrac{13.606\\ \\mathrm{eV}}{n^2}"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Długość fali de Broglie'a",
+      "symbol": "\\lambda",
+      "correct_latex": "\\lambda = \\dfrac{h}{p}",
+      "distractors": [
+        "\\lambda = \\dfrac{p}{h}",
+        "\\lambda = h\\,p",
+        "\\lambda = \\tfrac{h}{p}"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Zasady zachowania (wybrane, poziom fundamentalny)",
+      "symbol": "",
+      "correct_latex": "\\begin{array}{l}\\text{zachowanie ładunku układu}\\\\\\text{zachowanie energii układu}\\\\\\text{zachowanie pędu układu}\\\\\\text{zachowanie liczby nukleonów w układzie}\\end{array}",
+      "distractors": [
+        "\\begin{array}{l}\\text{zachowanie ładunku układu}\\\\\\text{zachowanie energii układu}\\\\\\text{zachowanie pędu układu}\\\\\\text{zachowanie liczby nukleonów w układzie}\\end{array}\\quad\\text{(×1)}",
+        "\\begin{array}{l}\\text{zachowanie ładunku układu}\\\\\\text{zachowanie energii układu}\\\\\\text{zachowanie pędu układu}\\\\\\text{zachowanie liczby nukleonów w układzie}\\end{array}\\quad\\text{(×2)}",
+        "\\begin{array}{l}\\text{zachowanie ładunku układu}\\\\\\text{zachowanie energii układu}\\\\\\text{zachowanie pędu układu}\\\\\\text{zachowanie liczby nukleonów w układzie}\\end{array}\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Elementy fizyki atomowej i jądrowej",
+      "name": "Statystyczne prawo rozpadu promieniotwórczego",
+      "symbol": "N(t)",
+      "correct_latex": "N(t) = N_0 \\left(\\dfrac{1}{2}\\right)^{t/T}",
+      "distractors": [
+        "N(t) = N_0 \\left(1\\,2\\right)^{t/T}",
+        "N(t) = N_0 \\left(\\dfrac{1}{2}\\right)^{t\\cdotT}",
+        "N(t) = N_0 \\left(\\tfrac{1}{2}\\right)^{t/T}"
+      ]
+    },
+    {
+      "topic": "Wybrane zależności",
+      "name": "Środek masy układu punktów materialnych",
+      "symbol": "\\vec{r}_{\\mathrm{SM}}",
+      "correct_latex": "\\vec{r}_{\\mathrm{SM}} = \\dfrac{\\sum_{i=1}^{n} m_i \\vec{r}_i}{\\sum_{i=1}^{n} m_i}",
+      "distractors": [
+        "\\vec{r}_{\\mathrm{SM}} = \\dfrac{\\sum_{i=1}^{n} m_i}{\\sum_{i=1}^{n} m_i \\vec{r}_i}",
+        "\\vec{r}_{\\mathrm{SM}} = \\sum_{i=1}^{n} m_i \\vec{r}_i\\,\\sum_{i=1}^{n} m_i",
+        "\\vec{r}_{\\mathrm{SM}} = \\tfrac{\\sum_{i=1}^{n} m_i \\vec{r}_i}{\\sum_{i=1}^{n} m_i}"
+      ]
+    },
+    {
+      "topic": "Wybrane zależności",
+      "name": "Droga a pole pod wykresem v(t)",
+      "symbol": "s_{AB}",
+      "correct_latex": "s_{AB} = \\text{pole pod odcinkiem } AB",
+      "distractors": [
+        "s_{AB} = \\text{pole pod odcinkiem } AB^2",
+        "s_{AB} = 2\\,\\text{pole pod odcinkiem } AB",
+        "s_{AB} = \\dfrac{\\text{pole pod odcinkiem } AB}{2}"
+      ]
+    },
+    {
+      "topic": "Wybrane zależności",
+      "name": "Praca a pole pod wykresem F(s)",
+      "symbol": "|W_{AB}|",
+      "correct_latex": "|W_{AB}| = \\text{pole pod odcinkiem } AB",
+      "distractors": [
+        "|W_{AB}| = \\text{pole pod odcinkiem } AB^2",
+        "|W_{AB}| = 2\\,\\text{pole pod odcinkiem } AB",
+        "|W_{AB}| = \\dfrac{\\text{pole pod odcinkiem } AB}{2}"
+      ]
+    },
+    {
+      "topic": "Wybrane zależności",
+      "name": "Praca a pole pod wykresem P(t)",
+      "symbol": "|W_{AB}|",
+      "correct_latex": "|W_{AB}| = \\text{pole pod odcinkiem } AB",
+      "distractors": [
+        "|W_{AB}| = \\text{pole pod odcinkiem } AB^2",
+        "|W_{AB}| = 2\\,\\text{pole pod odcinkiem } AB",
+        "|W_{AB}| = \\dfrac{\\text{pole pod odcinkiem } AB}{2}"
+      ]
+    },
+    {
+      "topic": "Wybrane zależności",
+      "name": "Dodawanie i odejmowanie wektorów (konstrukcje)",
+      "symbol": "",
+      "correct_latex": "\\text{Równoległobok, trójkąt, przeniesienie równoległe, rozkład na składowe}",
+      "distractors": [
+        "\\text{Równoległobok, trójkąt, przeniesienie równoległe, rozkład na składowe}\\quad\\text{(×1)}",
+        "\\text{Równoległobok, trójkąt, przeniesienie równoległe, rozkład na składowe}\\quad\\text{(×2)}",
+        "\\text{Równoległobok, trójkąt, przeniesienie równoległe, rozkład na składowe}\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Podstawowe jednostki SI",
+      "name": "Siedem jednostek podstawowych",
+      "symbol": "",
+      "correct_latex": "\\begin{array}{ll}\\text{m} & \\text{metr — długość}\\\\\\text{kg} & \\text{kilogram — masa}\\\\\\text{s} & \\text{sekunda — czas}\\\\\\text{A} & \\text{amper — natężenie prądu}\\\\\\text{K} & \\text{kelwin — temperatura}\\\\\\text{mol} & \\text{mol — liczność materii}\\\\\\text{cd} & \\text{kandela — światłość}\\end{array}",
+      "distractors": [
+        "\\begin{array}{ll}\\text{m} & \\text{metr — długość}\\\\\\text{kg} & \\text{kilogram — masa}\\\\\\text{s} & \\text{sekunda — czas}\\\\\\text{A} & \\text{amper — natężenie prądu}\\\\\\text{K} & \\text{kelwin — temperatura}\\\\\\text{mol} & \\text{mol — liczność materii}\\\\\\text{cd} & \\text{kandela — światłość}\\end{array}\\quad\\text{(×1)}",
+        "\\begin{array}{ll}\\text{m} & \\text{metr — długość}\\\\\\text{kg} & \\text{kilogram — masa}\\\\\\text{s} & \\text{sekunda — czas}\\\\\\text{A} & \\text{amper — natężenie prądu}\\\\\\text{K} & \\text{kelwin — temperatura}\\\\\\text{mol} & \\text{mol — liczność materii}\\\\\\text{cd} & \\text{kandela — światłość}\\end{array}\\quad\\text{(×2)}",
+        "\\begin{array}{ll}\\text{m} & \\text{metr — długość}\\\\\\text{kg} & \\text{kilogram — masa}\\\\\\text{s} & \\text{sekunda — czas}\\\\\\text{A} & \\text{amper — natężenie prądu}\\\\\\text{K} & \\text{kelwin — temperatura}\\\\\\text{mol} & \\text{mol — liczność materii}\\\\\\text{cd} & \\text{kandela — światłość}\\end{array}\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Przedrostki jednostek miar",
+      "name": "Nazwy i oznaczenia (wybrane)",
+      "symbol": "",
+      "correct_latex": "\\begin{array}{llll}\\text{Y} & 10^{24} & \\text{y} & 10^{-24}\\\\\\text{Z} & 10^{21} & \\text{z} & 10^{-21}\\\\\\text{E} & 10^{18} & \\text{a} & 10^{-18}\\\\\\text{P} & 10^{15} & \\text{f} & 10^{-15}\\\\\\text{T} & 10^{12} & \\text{p} & 10^{-12}\\\\\\text{G} & 10^{9} & \\text{n} & 10^{-9}\\\\\\text{M} & 10^{6} & \\mu & 10^{-6}\\\\\\text{k} & 10^{3} & \\text{m} & 10^{-3}\\\\\\text{h} & 10^{2} & \\text{c} & 10^{-2}\\\\\\text{da} & 10^{1} & \\text{d} & 10^{-1}\\end{array}",
+      "distractors": [
+        "\\begin{array}{llll}\\text{Y} & 10^{24} & \\text{y} & 10^{-24}\\\\\\text{Z} & 10^{21} & \\text{z} & 10^{-21}\\\\\\text{E} & 10^{18} & \\text{a} & 10^{-18}\\\\\\text{P} & 10^{15} & \\text{f} & 10^{-15}\\\\\\text{T} & 10^{12} & \\text{p} & 10^{-12}\\\\\\text{G} & 10^{9} & \\text{n} & 10^{-9}\\\\\\text{M} & 10^{6} & \\mu & 10^{-6}\\\\\\text{k} & 10^{3} & \\text{m} & 10^{-3}\\\\\\text{h} & 10^{2} & \\text{c} & 10^{-2}\\\\\\text{da} & 10^{1} & \\text{d} & 10^{-1}\\end{array}\\quad\\text{(×1)}",
+        "\\begin{array}{llll}\\text{Y} & 10^{24} & \\text{y} & 10^{-24}\\\\\\text{Z} & 10^{21} & \\text{z} & 10^{-21}\\\\\\text{E} & 10^{18} & \\text{a} & 10^{-18}\\\\\\text{P} & 10^{15} & \\text{f} & 10^{-15}\\\\\\text{T} & 10^{12} & \\text{p} & 10^{-12}\\\\\\text{G} & 10^{9} & \\text{n} & 10^{-9}\\\\\\text{M} & 10^{6} & \\mu & 10^{-6}\\\\\\text{k} & 10^{3} & \\text{m} & 10^{-3}\\\\\\text{h} & 10^{2} & \\text{c} & 10^{-2}\\\\\\text{da} & 10^{1} & \\text{d} & 10^{-1}\\end{array}\\quad\\text{(×2)}",
+        "\\begin{array}{llll}\\text{Y} & 10^{24} & \\text{y} & 10^{-24}\\\\\\text{Z} & 10^{21} & \\text{z} & 10^{-21}\\\\\\text{E} & 10^{18} & \\text{a} & 10^{-18}\\\\\\text{P} & 10^{15} & \\text{f} & 10^{-15}\\\\\\text{T} & 10^{12} & \\text{p} & 10^{-12}\\\\\\text{G} & 10^{9} & \\text{n} & 10^{-9}\\\\\\text{M} & 10^{6} & \\mu & 10^{-6}\\\\\\text{k} & 10^{3} & \\text{m} & 10^{-3}\\\\\\text{h} & 10^{2} & \\text{c} & 10^{-2}\\\\\\text{da} & 10^{1} & \\text{d} & 10^{-1}\\end{array}\\quad\\text{(×3)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Prędkość światła w próżni",
+      "symbol": "c",
+      "correct_latex": "c = 299\\,792\\,458\\ \\mathrm{m/s}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "c = 299\\,792\\,458\\ \\mathrm{m\\cdots}\\quad \\text{(wartość dokładna)}",
+        "c = 299\\cdot792\\,458\\ \\mathrm{m/s}\\quad \\text{(wartość dokładna)}",
+        "c = 299\\,792\\,458\\ \\mathrm{m/s}\\quad \\text{(wartość dokładna)}^2"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Stała Plancka",
+      "symbol": "h",
+      "correct_latex": "h = 6{,}626\\,070\\,15 \\cdot 10^{-34}\\ \\mathrm{J\\cdot s}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "h = 6{,}626\\,070\\,15 / 10^{-34}\\ \\mathrm{J\\cdot s}\\quad \\text{(wartość dokładna)}",
+        "h = 6{,}626\\cdot070\\,15 \\cdot 10^{-34}\\ \\mathrm{J\\cdot s}\\quad \\text{(wartość dokładna)}",
+        "h = 6{,}626\\,070\\,15 \\cdot 10^{+34}\\ \\mathrm{J\\cdot s}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Ładunek elementarny",
+      "symbol": "e",
+      "correct_latex": "e = 1{,}602\\,176\\,634 \\cdot 10^{-19}\\ \\mathrm{C}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "e = 1{,}602\\,176\\,634 / 10^{-19}\\ \\mathrm{C}\\quad \\text{(wartość dokładna)}",
+        "e = 1{,}602\\cdot176\\,634 \\cdot 10^{-19}\\ \\mathrm{C}\\quad \\text{(wartość dokładna)}",
+        "e = 1{,}602\\,176\\,634 \\cdot 10^{+19}\\ \\mathrm{C}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Stała Boltzmanna",
+      "symbol": "k_B",
+      "correct_latex": "k_B = 1{,}380\\,649 \\cdot 10^{-23}\\ \\mathrm{J/K}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "k_B = 1{,}380\\,649 / 10^{-23}\\ \\mathrm{J/K}\\quad \\text{(wartość dokładna)}",
+        "k_B = 1{,}380\\,649 \\cdot 10^{-23}\\ \\mathrm{J\\cdotK}\\quad \\text{(wartość dokładna)}",
+        "k_B = 1{,}380\\cdot649 \\cdot 10^{-23}\\ \\mathrm{J/K}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Stała Avogadra",
+      "symbol": "N_A",
+      "correct_latex": "N_A = 6{,}022\\,140\\,76 \\cdot 10^{23}\\ \\mathrm{mol^{-1}}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "N_A = 6{,}022\\,140\\,76 / 10^{23}\\ \\mathrm{mol^{-1}}\\quad \\text{(wartość dokładna)}",
+        "N_A = 6{,}022\\cdot140\\,76 \\cdot 10^{23}\\ \\mathrm{mol^{-1}}\\quad \\text{(wartość dokładna)}",
+        "N_A = 6{,}022\\,140\\,76 \\cdot 10^{23}\\ \\mathrm{mol^{+1}}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Uniwersalna stała gazowa",
+      "symbol": "R",
+      "correct_latex": "R = 8{,}314\\,462\\,618\\,2\\ \\mathrm{J/(K\\cdot mol)}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "R = 8{,}314\\,462\\,618\\,2\\ \\mathrm{J/(K/ mol)}\\quad \\text{(wartość dokładna)}",
+        "R = 8{,}314\\,462\\,618\\,2\\ \\mathrm{J\\cdot(K\\cdot mol)}\\quad \\text{(wartość dokładna)}",
+        "R = 8{,}314\\cdot462\\,618\\,2\\ \\mathrm{J/(K\\cdot mol)}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Stała grawitacji",
+      "symbol": "G",
+      "correct_latex": "G = 6{,}674 \\cdot 10^{-11}\\ \\mathrm{N\\cdot m^2 / kg^2}",
+      "distractors": [
+        "G = 6{,}674 / 10^{-11}\\ \\mathrm{N\\cdot m^2 / kg^2}",
+        "G = 6{,}674 \\cdot 10^{-11}\\ \\mathrm{N\\cdot m^2 \\cdot kg^2}",
+        "G = 6{,}674 \\cdot 10^{+11}\\ \\mathrm{N\\cdot m^2 / kg^2}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Przenikalność magnetyczna próżni",
+      "symbol": "\\mu_0",
+      "correct_latex": "\\mu_0 = 4\\pi \\cdot 10^{-7}\\ \\mathrm{N/A^2}",
+      "distractors": [
+        "\\mu_0 = 4\\pi / 10^{-7}\\ \\mathrm{N/A^2}",
+        "\\mu_0 = 4\\pi \\cdot 10^{-7}\\ \\mathrm{N\\cdotA^2}",
+        "\\mu_0 = 4\\pi \\cdot 10^{+7}\\ \\mathrm{N/A^2}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Przenikalność elektryczna próżni i stała k",
+      "symbol": "\\varepsilon_0",
+      "correct_latex": "\\varepsilon_0 = 8{,}854\\,187\\,81 \\cdot 10^{-12}\\ \\mathrm{C^2/(N\\cdot m^2)}\\,,\\quad k = \\dfrac{1}{4\\pi\\varepsilon_0} = 8{,}987\\,551\\,8 \\cdot 10^9\\ \\mathrm{N\\cdot m^2/C^2}",
+      "distractors": [
+        "\\varepsilon_0 = 8{,}854\\,187\\,81 \\cdot 10^{-12}\\ \\mathrm{C^2/(N\\cdot m^2)}\\,,\\quad k = \\dfrac{4\\pi\\varepsilon_0}{1} = 8{,}987\\,551\\,8 \\cdot 10^9\\ \\mathrm{N\\cdot m^2/C^2}",
+        "\\varepsilon_0 = 8{,}854\\,187\\,81 \\cdot 10^{-12}\\ \\mathrm{C^2/(N\\cdot m^2)}\\,,\\quad k = 1\\,4\\pi\\varepsilon_0 = 8{,}987\\,551\\,8 \\cdot 10^9\\ \\mathrm{N\\cdot m^2/C^2}",
+        "\\varepsilon_0 = 8{,}854\\,187\\,81 / 10^{-12}\\ \\mathrm{C^2/(N\\cdot m^2)}\\,,\\quad k = \\dfrac{1}{4\\pi\\varepsilon_0} = 8{,}987\\,551\\,8 \\cdot 10^9\\ \\mathrm{N\\cdot m^2/C^2}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Związek c, μ₀, ε₀",
+      "symbol": "c^2",
+      "correct_latex": "c^2 = \\dfrac{1}{\\varepsilon_0 \\mu_0}",
+      "distractors": [
+        "c^2 = \\dfrac{\\varepsilon_0 \\mu_0}{1}",
+        "c^2 = 1\\,\\varepsilon_0 \\mu_0",
+        "c^2 = \\tfrac{1}{\\varepsilon_0 \\mu_0}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Masa elektronu",
+      "symbol": "m_e",
+      "correct_latex": "m_e = 9{,}109\\,383\\,7 \\cdot 10^{-31}\\ \\mathrm{kg}",
+      "distractors": [
+        "m_e = 9{,}109\\,383\\,7 / 10^{-31}\\ \\mathrm{kg}",
+        "m_e = 9{,}109\\cdot383\\,7 \\cdot 10^{-31}\\ \\mathrm{kg}",
+        "m_e = 9{,}109\\,383\\,7 \\cdot 10^{+31}\\ \\mathrm{kg}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Masa protonu",
+      "symbol": "m_p",
+      "correct_latex": "m_p = 1{,}672\\,621\\,92 \\cdot 10^{-27}\\ \\mathrm{kg}",
+      "distractors": [
+        "m_p = 1{,}672\\,621\\,92 / 10^{-27}\\ \\mathrm{kg}",
+        "m_p = 1{,}672\\cdot621\\,92 \\cdot 10^{-27}\\ \\mathrm{kg}",
+        "m_p = 1{,}672\\,621\\,92 \\cdot 10^{+27}\\ \\mathrm{kg}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Masa neutronu",
+      "symbol": "m_n",
+      "correct_latex": "m_n = 1{,}674\\,927\\,49 \\cdot 10^{-27}\\ \\mathrm{kg}",
+      "distractors": [
+        "m_n = 1{,}674\\,927\\,49 / 10^{-27}\\ \\mathrm{kg}",
+        "m_n = 1{,}674\\cdot927\\,49 \\cdot 10^{-27}\\ \\mathrm{kg}",
+        "m_n = 1{,}674\\,927\\,49 \\cdot 10^{+27}\\ \\mathrm{kg}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych",
+      "name": "Jednostka masy atomowej",
+      "symbol": "1\\ \\mathrm{u}",
+      "correct_latex": "1\\ \\mathrm{u} = 1{,}660\\,539\\,066 \\cdot 10^{-27}\\ \\mathrm{kg}",
+      "distractors": [
+        "1\\ \\mathrm{u} = 1{,}660\\,539\\,066 / 10^{-27}\\ \\mathrm{kg}",
+        "1\\ \\mathrm{u} = 1{,}660\\cdot539\\,066 \\cdot 10^{-27}\\ \\mathrm{kg}",
+        "1\\ \\mathrm{u} = 1{,}660\\,539\\,066 \\cdot 10^{+27}\\ \\mathrm{kg}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych — cd.",
+      "name": "Przyspieszenie ziemskie standardowe",
+      "symbol": "g",
+      "correct_latex": "g = 9{,}806\\,65\\ \\mathrm{m/s^2}\\quad \\text{(wartość dokładna wg karty)}",
+      "distractors": [
+        "g = 9{,}806\\,65\\ \\mathrm{m\\cdots^2}\\quad \\text{(wartość dokładna wg karty)}",
+        "g = 9{,}806\\cdot65\\ \\mathrm{m/s^2}\\quad \\text{(wartość dokładna wg karty)}",
+        "g = 9{,}806\\,65\\ \\mathrm{m/s^3}\\quad \\text{(wartość dokładna wg karty)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych — cd.",
+      "name": "Stała Wiena",
+      "symbol": "b",
+      "correct_latex": "b = 2{,}897\\,771\\,955\\ldots \\cdot 10^{-3}\\ \\mathrm{m\\cdot K}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "b = 2{,}897\\,771\\,955\\ldots / 10^{-3}\\ \\mathrm{m\\cdot K}\\quad \\text{(wartość dokładna)}",
+        "b = 2{,}897\\cdot771\\,955\\ldots \\cdot 10^{-3}\\ \\mathrm{m\\cdot K}\\quad \\text{(wartość dokładna)}",
+        "b = 2{,}897\\,771\\,955\\ldots \\cdot 10^{+3}\\ \\mathrm{m\\cdot K}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych stałych fizycznych — cd.",
+      "name": "Stała Stefana–Boltzmanna",
+      "symbol": "\\sigma",
+      "correct_latex": "\\sigma = 5{,}670\\,374\\,419\\ldots \\cdot 10^{-8}\\ \\mathrm{W/(m^2\\cdot K^4)}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "\\sigma = 5{,}670\\,374\\,419\\ldots / 10^{-8}\\ \\mathrm{W/(m^2\\cdot K^4)}\\quad \\text{(wartość dokładna)}",
+        "\\sigma = 5{,}670\\,374\\,419\\ldots \\cdot 10^{-8}\\ \\mathrm{W\\cdot(m^2\\cdot K^4)}\\quad \\text{(wartość dokładna)}",
+        "\\sigma = 5{,}670\\cdot374\\,419\\ldots \\cdot 10^{-8}\\ \\mathrm{W/(m^2\\cdot K^4)}\\quad \\text{(wartość dokładna)}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Jednostka astronomiczna",
+      "symbol": "1\\ \\mathrm{au}",
+      "correct_latex": "1\\ \\mathrm{au} = 1{,}495\\,978\\,707 \\cdot 10^{11}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "1\\ \\mathrm{au} = 1{,}495\\,978\\,707 / 10^{11}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}",
+        "1\\ \\mathrm{au} = 1{,}495\\cdot978\\,707 \\cdot 10^{11}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}",
+        "1\\ \\mathrm{au} = 1{,}495\\,978\\,707 \\cdot 10^{11}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}\\quad\\text{(×1)}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Parsek",
+      "symbol": "1\\ \\mathrm{pc}",
+      "correct_latex": "1\\ \\mathrm{pc} = 3{,}085\\,677\\,581\\,49 \\cdot 10^{16}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}",
+      "distractors": [
+        "1\\ \\mathrm{pc} = 3{,}085\\,677\\,581\\,49 / 10^{16}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}",
+        "1\\ \\mathrm{pc} = 3{,}085\\cdot677\\,581\\,49 \\cdot 10^{16}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}",
+        "1\\ \\mathrm{pc} = 3{,}085\\,677\\,581\\,49 \\cdot 10^{16}\\ \\mathrm{m}\\quad \\text{(wartość dokładna)}\\quad\\text{(×1)}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Rok świetlny",
+      "symbol": "1\\ \\mathrm{ly}",
+      "correct_latex": "1\\ \\mathrm{ly} = 0{,}946\\,073\\ldots \\cdot 10^{16}\\ \\mathrm{m} = 0{,}306\\,601\\ldots\\ \\mathrm{pc}",
+      "distractors": [
+        "1\\ \\mathrm{ly} = 0{,}946\\,073\\ldots / 10^{16}\\ \\mathrm{m} = 0{,}306\\,601\\ldots\\ \\mathrm{pc}",
+        "1\\ \\mathrm{ly} = 0{,}946\\cdot073\\ldots \\cdot 10^{16}\\ \\mathrm{m} = 0{,}306\\,601\\ldots\\ \\mathrm{pc}",
+        "1\\ \\mathrm{ly} = 0{,}946\\,073\\ldots \\cdot 10^{16}\\ \\mathrm{m} = 0{,}306\\,601\\ldots\\ \\mathrm{pc}\\quad\\text{(×1)}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Masa Słońca",
+      "symbol": "M_S",
+      "correct_latex": "M_S = 1{,}988 \\cdot 10^{30}\\ \\mathrm{kg}",
+      "distractors": [
+        "M_S = 1{,}988 / 10^{30}\\ \\mathrm{kg}",
+        "M_S = 1{,}988 \\cdot 10^{30}\\ \\mathrm{kg}^2",
+        "M_S = 2\\,1{,}988 \\cdot 10^{30}\\ \\mathrm{kg}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Odległość Słońca od centrum Galaktyki",
+      "symbol": "R_0",
+      "correct_latex": "R_0 \\approx 27\\ \\mathrm{kly}",
+      "distractors": [
+        "R_0 \\approx 27\\ \\mathrm{kly}^2",
+        "R_0 \\approx 2\\,27\\ \\mathrm{kly}",
+        "R_0 \\approx \\dfrac{27\\ \\mathrm{kly}}{2}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Masa Ziemi",
+      "symbol": "M_Z",
+      "correct_latex": "M_Z = 5{,}972 \\cdot 10^{24}\\ \\mathrm{kg}",
+      "distractors": [
+        "M_Z = 5{,}972 / 10^{24}\\ \\mathrm{kg}",
+        "M_Z = 5{,}972 \\cdot 10^{24}\\ \\mathrm{kg}^2",
+        "M_Z = 2\\,5{,}972 \\cdot 10^{24}\\ \\mathrm{kg}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Promień równikowy Ziemi",
+      "symbol": "R_Z",
+      "correct_latex": "R_Z = 6{,}378 \\cdot 10^{6}\\ \\mathrm{m}",
+      "distractors": [
+        "R_Z = 6{,}378 / 10^{6}\\ \\mathrm{m}",
+        "R_Z = 6{,}378 \\cdot 10^{6}\\ \\mathrm{m}^2",
+        "R_Z = 2\\,6{,}378 \\cdot 10^{6}\\ \\mathrm{m}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Stała Hubble'a",
+      "symbol": "H_0",
+      "correct_latex": "H_0 \\approx 70\\ \\mathrm{(km/s)/Mpc}",
+      "distractors": [
+        "H_0 \\approx 70\\ \\mathrm{(km\\cdots)/Mpc}",
+        "H_0 \\approx 70\\ \\mathrm{(km/s)/Mpc}^2",
+        "H_0 \\approx 2\\,70\\ \\mathrm{(km/s)/Mpc}"
+      ]
+    },
+    {
+      "topic": "Wybrane stałe i parametry astrofizyczne",
+      "name": "Temperatura promieniowania tła",
+      "symbol": "T_0",
+      "correct_latex": "T_0 = 2{,}7\\ \\mathrm{K}",
+      "distractors": [
+        "T_0 = 2{,}7\\ \\mathrm{K}^2",
+        "T_0 = 2\\,2{,}7\\ \\mathrm{K}",
+        "T_0 = \\dfrac{2{,}7\\ \\mathrm{K}}{2}"
+      ]
+    },
+    {
+      "topic": "Wartości wybranych jednostek spoza układu SI",
+      "name": "Przeliczniki i stałe pomocnicze",
+      "symbol": "\\begin{array}{l}1\\ \\mathrm{eV}",
+      "correct_latex": "\\begin{array}{l}1\\ \\mathrm{eV} = 1{,}602\\,176\\,634 \\cdot 10^{-19}\\ \\mathrm{J}\\ \\text{(dokładnie)}\\\\0^\\circ\\mathrm{C} \\equiv 273{,}15\\ \\mathrm{K}\\\\1\\ \\mathrm{atm} \\equiv 101\\,325\\ \\mathrm{Pa}\\\\1\\ \\mathrm{G} \\equiv 10^{-4}\\ \\mathrm{T}\\\\1\\ \\mathrm{\\AA} = 0{,}1\\ \\mathrm{nm}\\\\\\pi = 3{,}141\\,592\\,653\\,589\\,793\\ldots\\\\e = 2{,}718\\,281\\,828\\,459\\,045\\ldots\\end{array}",
+      "distractors": [
+        "\\begin{array}{l}1\\ \\mathrm{eV} = 1{,}602\\,176\\,634 / 10^{-19}\\ \\mathrm{J}\\ \\text{(dokładnie)}\\\\0^\\circ\\mathrm{C} \\equiv 273{,}15\\ \\mathrm{K}\\\\1\\ \\mathrm{atm} \\equiv 101\\,325\\ \\mathrm{Pa}\\\\1\\ \\mathrm{G} \\equiv 10^{-4}\\ \\mathrm{T}\\\\1\\ \\mathrm{\\AA} = 0{,}1\\ \\mathrm{nm}\\\\\\pi = 3{,}141\\,592\\,653\\,589\\,793\\ldots\\\\e = 2{,}718\\,281\\,828\\,459\\,045\\ldots\\end{array}",
+        "\\begin{array}{l}1\\ \\mathrm{eV} = 1{,}602\\cdot176\\,634 \\cdot 10^{-19}\\ \\mathrm{J}\\ \\text{(dokładnie)}\\\\0^\\circ\\mathrm{C} \\equiv 273{,}15\\ \\mathrm{K}\\\\1\\ \\mathrm{atm} \\equiv 101\\,325\\ \\mathrm{Pa}\\\\1\\ \\mathrm{G} \\equiv 10^{-4}\\ \\mathrm{T}\\\\1\\ \\mathrm{\\AA} = 0{,}1\\ \\mathrm{nm}\\\\\\pi = 3{,}141\\,592\\,653\\,589\\,793\\ldots\\\\e = 2{,}718\\,281\\,828\\,459\\,045\\ldots\\end{array}",
+        "\\begin{array}{l}1\\ \\mathrm{eV} = 1{,}602\\,176\\,634 \\cdot 10^{+19}\\ \\mathrm{J}\\ \\text{(dokładnie)}\\\\0^\\circ\\mathrm{C} \\equiv 273{,}15\\ \\mathrm{K}\\\\1\\ \\mathrm{atm} \\equiv 101\\,325\\ \\mathrm{Pa}\\\\1\\ \\mathrm{G} \\equiv 10^{+4}\\ \\mathrm{T}\\\\1\\ \\mathrm{\\AA} = 0{,}1\\ \\mathrm{nm}\\\\\\pi = 3{,}141\\,592\\,653\\,589\\,793\\ldots\\\\e = 2{,}718\\,281\\,828\\,459\\,045\\ldots\\end{array}"
+      ]
+    }
+  ]
+}

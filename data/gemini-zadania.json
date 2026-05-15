@@ -1,0 +1,225 @@
+{
+  "patches": [
+    {
+      "levelId": "lo-rozszerzenie",
+      "appendSections": [
+        {
+          "id": "praca-moc-energia",
+          "title": "Praca, Moc, Energia",
+          "tasks": [
+            {
+              "title": "Kąt działania siły",
+              "question": "Ciągnąc wózek siłą o wartości $60\\,\\text{N}$ na drodze $30\\,\\text{m}$, wykonano pracę $900\\,\\text{J}$. Oblicz kąt, pod jakim działała ta siła w stosunku do wektora przemieszczenia.",
+              "answer": "$\\alpha = 60^\\circ$",
+              "sheetCardRefs": [["Dynamika", "Praca siły"]],
+              "formulas": [],
+              "solutionSteps": [
+                "Zapisujemy wzór na pracę stałej siły: $W = F \\cdot s \\cdot \\cos\\alpha$.",
+                "Przekształcamy wzór, aby wyznaczyć cosinus kąta: $\\cos\\alpha = \\dfrac{W}{F \\cdot s}$.",
+                "Podstawiamy dane liczbowe z zadania: $\\cos\\alpha = \\dfrac{900}{60 \\cdot 30}$.",
+                "Wykonujemy obliczenia: $\\cos\\alpha = \\dfrac{900}{1800} = 0{,}5$.",
+                "Odczytujemy z tabeli funkcji trygonometrycznych kąt, dla którego cosinus wynosi $0{,}5$: $\\alpha = 60^\\circ$."
+              ]
+            },
+            {
+              "title": "Współczynnik tarcia z pracy",
+              "question": "Przesuwając ruchem jednostajnym skrzynię o masie $100\\,\\text{kg}$ na odległość $5\\,\\text{m}$ po poziomej podłodze, wykonano pracę $1500\\,\\text{J}$. Oblicz współczynnik tarcia kinetycznego między skrzynią a podłogą. Przyjmij $g = 10\\,\\text{m/s}^2$.",
+              "answer": "$\\mu = 0{,}3$",
+              "sheetCardRefs": [
+                ["Dynamika", "Praca siły"],
+                ["Siły tarcia i siła sprężystości", "Siła tarcia kinetycznego"]
+              ],
+              "formulas": [
+                "przy ruchu jednostajnym na poziomie: $F = T$ (siła ciągnięcia równoważy tarcie)",
+                "nacisk: $F_N \\approx mg$"
+              ],
+              "solutionSteps": [
+                "Skoro ruch jest jednostajny, siła ciągnąca $F$ równoważy siłę tarcia $T$, stąd $F = T$.",
+                "Praca wykonana przez siłę to $W = F \\cdot s$, co można zapisać jako $W = T \\cdot s$.",
+                "Siłę tarcia wyrażamy wzorem $T = \\mu \\cdot F_N = \\mu \\cdot m \\cdot g$.",
+                "Łączymy powyższe wzory w jedno równanie: $W = \\mu \\cdot m \\cdot g \\cdot s$.",
+                "Przekształcamy równanie, wyznaczając współczynnik tarcia: $\\mu = \\dfrac{W}{m \\cdot g \\cdot s}$.",
+                "Podstawiamy wartości: $\\mu = \\dfrac{1500}{100 \\cdot 10 \\cdot 5} = \\dfrac{1500}{5000}$.",
+                "Otrzymujemy ostateczny wynik: $\\mu = 0{,}3$."
+              ]
+            },
+            {
+              "title": "Rodzaj ruchu przy podnoszeniu",
+              "question": "Skrzynkę z narzędziami o masie $5\\,\\text{kg}$ podniesiono pionowo na wysokość $1{,}2\\,\\text{m}$, wykonując przy tym pracę $70\\,\\text{J}$. Oblicz wartość siły, z jaką podnoszono skrzynkę, i oceń, czy ruch był jednostajny. Przyjmij $g = 10\\,\\text{m/s}^2$.",
+              "answer": "$F \\approx 58{,}3\\,\\text{N}$, ruch był przyspieszony.",
+              "sheetCardRefs": [
+                ["Dynamika", "Praca siły"],
+                ["Grawitacja i elementy astronomii", "Natężenie pola grawitacyjnego i przyspieszenie grawitacyjne"],
+                ["Dynamika", "II zasada dynamiki (układ inercjalny)"]
+              ],
+              "formulas": ["$F = W/h$ przy sile stałej wzdłuż przemieszczenia pionowego", "$F_g = m g$"],
+              "solutionSteps": [
+                "Korzystamy ze wzoru na pracę wykonaną na danej drodze: $W = F \\cdot h$.",
+                "Wyznaczamy siłę pionową działającą na skrzynkę: $F = \\dfrac{W}{h}$.",
+                "Podstawiamy dane liczbowe: $F = \\dfrac{70}{1{,}2} \\approx 58{,}33\\,\\text{N}$.",
+                "Aby sprawdzić rodzaj ruchu, obliczamy siłę ciężkości skrzynki: $F_g = m \\cdot g = 5 \\cdot 10 = 50\\,\\text{N}$.",
+                "Porównujemy obie siły. Ponieważ siła podnosząca $F$ jest większa od siły ciężkości $F_g$ ($58{,}3\\,\\text{N} > 50\\,\\text{N}$), istnieje niezerowa siła wypadkowa skierowana w górę.",
+                "Zgodnie z II zasadą dynamiki Newtona, skrzynkę podnoszono ruchem przyspieszonym."
+              ]
+            },
+            {
+              "title": "Pchanie a ciągnięcie pod kątem",
+              "question": "Magazynier przesuwa paletę o masie $40\\,\\text{kg}$, ciągnąc ją za linę pod kątem $30^\\circ$ do poziomu, lub popychając pod tym samym kątem w dół. Współczynnik tarcia kinetycznego wynosi $0{,}2$. Wyjaśnij fizycznie, bez wykonywania obliczeń, dlaczego do pchania palety potrzebna jest większa siła niż do jej ciągnięcia ruchem jednostajnym.",
+              "answer": "Pchanie zwiększa siłę nacisku na podłoże, co powoduje wzrost siły tarcia.",
+              "sheetCardRefs": [["Siły tarcia i siła sprężystości", "Siła tarcia kinetycznego"]],
+              "formulas": [
+                "składowa pionowa siły zmienia $F_N$: przy pchaniu w dół $F_N \\approx mg + F\\sin\\alpha$, przy ciągnięciu w górę $F_N \\approx mg - F\\sin\\alpha$"
+              ],
+              "solutionSteps": [
+                "Rozkładamy siłę działającą na paletę na dwie składowe: poziomą (nadającą ruch) i pionową.",
+                "Podczas pchania pod kątem w dół, pionowa składowa siły sumuje się z siłą ciężkości. Siła nacisku na podłoże wynosi $F_N = m \\cdot g + F \\cdot \\sin\\alpha$.",
+                "Ponieważ siła tarcia jest proporcjonalna do nacisku ($T = \\mu \\cdot F_N$), pchanie znacznie zwiększa opory ruchu.",
+                "Podczas ciągnięcia pod kątem w górę, pionowa składowa skierowana jest przeciwnie do grawitacji. Siła nacisku maleje: $F_N = m \\cdot g - F \\cdot \\sin\\alpha$.",
+                "Zmniejszony nacisk skutkuje mniejszym tarciem, dlatego potrzebna jest mniejsza siła do przesunięcia palety ruchem jednostajnym."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dynamika-lo",
+          "title": "Dynamika i Zasady Zachowania",
+          "tasks": [
+            {
+              "title": "Zasada zachowania pędu na deskorolkach",
+              "question": "Dwaj chłopcy jadą z naprzeciwka na deskorolkach. Pierwszy (masa z deską $50\\,\\text{kg}$) jedzie z prędkością $5\\,\\text{m/s}$ i wyrzuca przed siebie plecak o masie $5\\,\\text{kg}$ z prędkością $3\\,\\text{m/s}$ względem siebie. Drugi chłopiec ($45\\,\\text{kg}$) jedzie z prędkością $4\\,\\text{m/s}$ w stronę pierwszego i łapie plecak. Oblicz prędkości obu chłopców względem ziemi po rzucie i złapaniu plecaka.",
+              "answer": "Pierwszy chłopiec: $4{,}7\\,\\text{m/s}$. Drugi chłopiec: $2{,}8\\,\\text{m/s}$.",
+              "sheetCardRefs": [["Dynamika", "Pęd"]],
+              "formulas": ["zachowanie pędu (brak zewnętrznego impulsu)"],
+              "solutionSteps": [
+                "Rozdzielamy proces na dwa etapy: rzut plecaka i jego złapanie, dla obu stosujemy zasadę zachowania pędu.",
+                "Prędkość plecaka względem ziemi to prędkość pierwszego chłopca plus prędkość wyrzutu: $v_p = 5 + 3 = 8\\,\\text{m/s}$.",
+                "Dla rzutu (chłopiec 1): Pęd początkowy układu to $(m_1 + m_p)v_1$. Równanie: $(50 + 5) \\cdot 5 = 50 \\cdot v_1' + 5 \\cdot 8$.",
+                "Obliczamy $v_1'$: $275 = 50 \\cdot v_1' + 40$, skąd $235 = 50 \\cdot v_1'$, więc $v_1' = 4{,}7\\,\\text{m/s}$.",
+                "Dla złapania (chłopiec 2): Pamiętamy o przeciwnych zwrotach. Chłopiec 2 ma pęd ujemny. Równanie: $m_2 \\cdot (-v_2) + m_p \\cdot v_p = (m_2 + m_p) \\cdot v_2'$.",
+                "Podstawiamy: $45 \\cdot (-4) + 5 \\cdot 8 = (45 + 5) \\cdot v_2'$, co daje $-180 + 40 = 50 \\cdot v_2'$.",
+                "Otrzymujemy $-140 = 50 \\cdot v_2'$, więc $v_2' = -2{,}8\\,\\text{m/s}$. Wartość prędkości (szybkość) to $2{,}8\\,\\text{m/s}$."
+              ]
+            },
+            {
+              "title": "Nacisk w przyspieszającej windzie",
+              "question": "W windzie położono walizkę o masie $20\\,\\text{kg}$. Oblicz różnicę wartości sił nacisku walizki na podłogę pomiędzy sytuacją, gdy winda rusza w górę z przyspieszeniem $1{,}5\\,\\text{m/s}^2$, a sytuacją, gdy rusza w dół z tym samym przyspieszeniem. Przyjmij $g = 10\\,\\text{m/s}^2$.",
+              "answer": "$60\\,\\text{N}$",
+              "sheetCardRefs": [["Dynamika", "Siła nacisku przy przyspieszeniu układu w kierunku pionowym"]],
+              "formulas": ["$\\Delta F = F_{N1} - F_{N2} = 2ma$"],
+              "solutionSteps": [
+                "W windzie poruszającej się z przyspieszeniem działa dodatkowa siła bezwładności $F_b = m \\cdot a$.",
+                "Gdy winda rusza w górę, siła bezwładności jest skierowana w dół (wciska walizkę). Nacisk wynosi $F_1 = m(g + a)$.",
+                "Gdy winda rusza w dół, siła bezwładności jest skierowana w górę. Nacisk wynosi $F_2 = m(g - a)$.",
+                "Obliczamy różnicę: $\\Delta F = F_1 - F_2 = m(g + a) - m(g - a)$.",
+                "Po redukcji grawitacji zostaje uproszczony wzór: $\\Delta F = 2 \\cdot m \\cdot a$.",
+                "Podstawiamy liczby: $\\Delta F = 2 \\cdot 20 \\cdot 1{,}5 = 60\\,\\text{N}$."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ruch-po-okregu-lo",
+          "title": "Ruch po okręgu",
+          "tasks": [
+            {
+              "title": "Siła odśrodkowa w wirówce",
+              "question": "Bęben wirówki laboratoryjnej o średnicy $50\\,\\text{cm}$ wykonuje $600$ obrotów na minutę. Oblicz, ile razy wartość siła odśrodkowej bezwładności przy samej ściance bębna jest większa od wartości siły ciężkości działającej na próbkę. Przyjmij $g = 10\\,\\text{m/s}^2$ i $\\pi^2 \\approx 10$.",
+              "answer": "$100$ razy",
+              "sheetCardRefs": [
+                ["Kinematyka", "Ruch jednostajny po okręgu (okres, częstotliwość)"],
+                ["Kinematyka", "Przyspieszenie dośrodkowe"],
+                ["Grawitacja i elementy astronomii", "Natężenie pola grawitacyjnego i przyspieszenie grawitacyjne"]
+              ],
+              "formulas": ["$F_o = m\\,a_{\\mathrm{do}}$, $F_g = mg$"],
+              "solutionSteps": [
+                "Określamy promień wirówki: średnica to $50\\,\\text{cm}$, więc promień $R = 0{,}25\\,\\text{m}$.",
+                "Obliczamy częstotliwość $f$: $600\\,\\text{obr/min} = 10\\,\\text{Hz}$.",
+                "Znajdujemy prędkość kątową: $\\omega = 2 \\pi \\cdot 10 = 20\\pi\\,\\text{rad/s}$. Kwadrat prędkości to $\\omega^2 = 400\\pi^2$.",
+                "Szukamy stosunku sił $n = \\dfrac{F_o}{F_g} = \\dfrac{m \\cdot \\omega^2 \\cdot R}{m \\cdot g}$. Masa $m$ się skraca.",
+                "Podstawiamy dane do uproszczonego wzoru: $n = \\dfrac{400\\pi^2 \\cdot 0{,}25}{10}$.",
+                "Przyjmując $\\pi^2 \\approx 10$, mamy: $n = \\dfrac{400 \\cdot 10 \\cdot 0{,}25}{10} = 400 \\cdot 0{,}25 = 100$."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "termodynamika-lo",
+          "title": "Termodynamika",
+          "tasks": [
+            {
+              "title": "Topnienie lodu w wodzie",
+              "question": "Do naczynia z $1000\\,\\text{g}$ wody o temperaturze $50^\\circ\\text{C}$ wrzucono $200\\,\\text{g}$ lodu o temp. $-10^\\circ\\text{C}$. Oblicz temperaturę końcową po stopieniu lodu, wiedząc, że układ oddał do otoczenia $20\\,\\text{kJ}$ ciepła. Ciepło właściwe lodu $c_l = 2100\\,\\text{J/(kg}\\cdot\\text{K)}$, wody $c_w = 4200\\,\\text{J/(kg}\\cdot\\text{K)}$, ciepło topnienia lodu $L = 334\\,\\text{kJ/kg}$.",
+              "answer": "$T \\approx 23{,}6^\\circ\\text{C}$",
+              "sheetCardRefs": [
+                ["Termodynamika", "Ciepło właściwe"],
+                ["Termodynamika", "Ciepło przemiany fazowej"]
+              ],
+              "formulas": ["bilans ciepła w układzie (rozwiązanie zadania)"],
+              "solutionSteps": [
+                "Zamieniamy dane na jednostki układu SI: masa wody $m_w = 1\\,\\text{kg}$, masa lodu $m_l = 0{,}2\\,\\text{kg}$, straty $Q_s = 20000\\,\\text{J}$.",
+                "Zapisujemy ciepło oddane przez stygnącą wodę: $Q_{\\text{odd}} = 1 \\cdot 4200 \\cdot (50 - T) = 210000 - 4200T$.",
+                "Zapisujemy pobór ciepła przez lód (3 etapy). Etap 1 (ogrzewanie lodu do zera): $Q_1 = 0{,}2 \\cdot 2100 \\cdot 10 = 4200\\,\\text{J}$.",
+                "Etap 2 (topnienie lodu): $Q_2 = m_l \\cdot L = 0{,}2 \\cdot 334000 = 66800\\,\\text{J}$.",
+                "Etap 3 (ogrzewanie stopionej wody): $Q_3 = 0{,}2 \\cdot 4200 \\cdot (T - 0) = 840T$.",
+                "Zestawiamy bilans: $210000 - 4200T = 4200 + 66800 + 840T + 20000$.",
+                "Grupujemy wyrazy: $210000 - 91000 = 4200T + 840T \\Rightarrow 119000 = 5040T$.",
+                "Obliczamy wynik: $T = \\dfrac{119000}{5040} \\approx 23{,}61^\\circ\\text{C}$."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "elektrycznosc-lo",
+          "title": "Elektryczność i Magnetyzm",
+          "tasks": [
+            {
+              "title": "Opór rzeczywistego woltomierza",
+              "question": "W układzie równoległym opornika i woltomierza rzeczywistego amperomierz wskazuje prąd całkowity w obwodzie $I_A = 150\\,\\mu\\text{A}$. Woltomierz wskazuje napięcie $U = 9\\,\\text{V}$, a jego opór wewnętrzny to $R_v = 1\\,\\text{M}\\Omega$. Oblicz opór $R$ badanego opornika.",
+              "answer": "$R \\approx 63{,}8\\,\\text{k}\\Omega$",
+              "sheetCardRefs": [
+                ["Prąd elektryczny", "Definicja oporu przewodnika"],
+                ["Prąd elektryczny", "Opór zastępczy połączenia równoległego"]
+              ],
+              "formulas": ["I prawo Kirchhoffa (węzły): $I_A = I_R + I_v$"],
+              "solutionSteps": [
+                "Zgodnie z I prawem Kirchhoffa, całkowity prąd zasilający rozgałęzia się na opornik i woltomierz: $I_A = I_R + I_v$.",
+                "Obliczamy prąd upływający przez rzeczywisty woltomierz: $I_v = \\dfrac{U}{R_v} = \\dfrac{9}{10^6} = 9\\,\\mu\\text{A}$.",
+                "Znajdujemy rzeczywisty prąd płynący przez badany opornik: $I_R = I_A - I_v = 150 - 9 = 141\\,\\mu\\text{A}$.",
+                "Zamieniamy prąd na ampery: $I_R = 141 \\cdot 10^{-6}\\,\\text{A}$.",
+                "Korzystając z Prawa Ohma, wyznaczamy szukany opór: $R = \\dfrac{U}{I_R} = \\dfrac{9}{141 \\cdot 10^{-6}}$.",
+                "Wykonujemy dzielenie: $R \\approx 63829\\,\\Omega$, co po zaokrągleniu daje $63{,}8\\,\\text{k}\\Omega$."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "levelId": "sp",
+      "appendSections": [
+        {
+          "id": "praca-energia-sp",
+          "title": "Praca, Moc, Energia",
+          "tasks": [
+            {
+              "title": "Praca przy rozpędzaniu",
+              "question": "Oblicz pracę niezbędną do rozpędzenia pociągu o masie $30\\,\\text{t}$ do prędkości $50\\,\\text{m/s}$, zakładając brak oporów ruchu.",
+              "answer": "$W = 37{,}5\\,\\text{MJ}$",
+              "sheetCardRefs": [["Dynamika", "Energia kinetyczna ruchu postępowego"]],
+              "formulas": ["$W = \\Delta E_k$ (twierdzenie o pracy i energii kinetycznej)"],
+              "solutionSteps": [
+                "Zgodnie z twierdzeniem o pracy i energii mechanicznej, całkowita wykonana praca równa się zmianie energii kinetycznej.",
+                "Pociąg rusza z miejsca, więc początkowa energia to $0$. Obliczamy tylko energię końcową.",
+                "Przeliczamy masę na jednostki SI: $m = 30\\,\\text{t} = 30000\\,\\text{kg}$.",
+                "Podstawiamy do wzoru: $W = \\dfrac{30000 \\cdot 50^2}{2}$.",
+                "Podnosimy do kwadratu prędkość: $50^2 = 2500$.",
+                "Mnożymy: $W = \\dfrac{30000 \\cdot 2500}{2} = 15000 \\cdot 2500 = 37500000\\,\\text{J}$.",
+                "Zapisujemy wynik w wygodniejszych jednostkach: $37\\,500\\,000\\,\\text{J} = 37{,}5\\,\\text{MJ}$."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

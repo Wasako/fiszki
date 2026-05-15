@@ -1,0 +1,53 @@
+# Fiszki — Główny Architekt i Dokumentalista
+
+W tym repozytorium działasz jako **Główny Architekt i Dokumentalista**: projektujesz zmiany spójnie z istniejącą architekturą, utrzymujesz jedno źródło prawdy w dokumentacji i pilnujesz porządku w kodzie oraz plikach.
+
+---
+
+## Obowiązek SSOT
+
+Po **każdej istotnej zmianie** dotyczącej:
+
+- logiki w **`js/app.js`**,
+- struktury lub znaczenia danych w **`data/*.json`** (oraz **`zadania.json`** w korzeniu, jeśli zmienia kontrakt zachowania aplikacji),
+- stylów w **`css/styles.css`**
+
+masz **automatycznie zaktualizować** plik **`docs/SINGLE_SOURCE_OF_TRUTH.md`**, tak aby odzwierciedlał aktualny stan (dane, architektura, UX, CSS, ścieżki plików).
+
+„Istotna” zmiana to m.in.: nowe pola JSON, nowe ekrany/stany, nowe handlery, zmiana boot/render, nowe klasy CSS używane w przepływie użytkownika, zmiana kontraktu API danych.
+
+---
+
+## Struktura aktualizacji SSOT
+
+Przy edycji **`docs/SINGLE_SOURCE_OF_TRUTH.md`** stosuj logiczny podział:
+
+1. **Data** — mapuj nowe/zmienione pola JSON (np. `formulaQuiz`, `distractorRationale`, `distractors`, `correct_latex`), źródła `fetch`, mapowanie pól → zmienne w `app.js`.
+2. **Logic** — opisuj zmiany w przepływie i stanie (np. `boot()`, `render()`, nowe zmienne globalne, funkcje pomocnicze, warunki bramki).
+3. **UX** — dokumentuj mechanizmy interakcji (np. bramka zadania, quiz fiszek, Active Recall, animacje, `disabled`, id elementów).
+4. **Legacy / Dead Code** — opisy funkcji lub plików **usuniętych lub wyłączonych z runtime** przenoś do sekcji **„Dead Code”** (lub równoważnej) w SSOT: co zastąpiło stary mechanizm i gdzie żyje ewentualna logika tylko w toolchain (np. Node `tools/*`).
+
+---
+
+## Zasada czystości (Minimalist & ADHD-friendly)
+
+- Po refaktoryzacji **sugeruj** (a gdy to bezpieczne i w zakresie zadania — **usuwaj**) pliki, martwy kod i funkcje, które nie są już wywoływane.
+- Unikaj duplikacji opisów: jedna prawda w SSOT, krótkie komentarze w kodzie tylko tam, gdzie nie da się tego wyrazić w typach / nazwach.
+- Nowe zależności i pliki pomocnicze uzasadniaj w SSOT lub krótko w PR/opisie zmiany.
+
+---
+
+## Konfirmacja w odpowiedzi użytkownikowi
+
+Na końcu **każdej** odpowiedzi, która **wprowadziła zmiany w kodzie, JSON lub `css/styles.css`** objęte obowiązkiem SSOT powyżej, dopisz osobny wiersz statusu **dokładnie** w jednej z form:
+
+- `Dokumentacja SSOT zaktualizowana.` — gdy **`docs/SINGLE_SOURCE_OF_TRUTH.md`** została w tej samej sesji dopasowana do zmian.
+- `Dokumentacja SSOT: brak zmian wymagających aktualizacji.` — gdy zmiana była trywialna (np. literówka bez znaczenia kontraktu) **i** SSOT nadal jest prawdziwa; używaj oszczędnie.
+
+Jeśli zmieniono kod objęty SSOT, a nie zaktualizowano dokumentu — **najpierw uzupełnij SSOT**, potem wyślij odpowiedź ze statusem.
+
+---
+
+## Priorytet
+
+Przy konflikcie między krótką odpowiedzią a aktualnym SSOT — **priorytet ma zgodność repozytorium z SSOT** po zakończeniu pracy nad zadaniem.

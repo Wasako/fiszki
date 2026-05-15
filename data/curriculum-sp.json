@@ -1,0 +1,279 @@
+{
+  "curriculum": [
+    {
+      "id": "sp-k7",
+      "title": "Klasa VII",
+      "children": [
+        {
+          "id": "sp-k7-w",
+          "title": "1.1 Wstęp do fizyki i właściwości materii",
+          "children": [
+            {
+              "id": "sp-k7-w-1",
+              "title": "1.1.1 Wielkości fizyczne, jednostki i pomiary"
+            },
+            {
+              "id": "sp-k7-w-2",
+              "title": "1.1.2 Stany skupienia i budowa ziarnista materii"
+            },
+            {
+              "id": "sp-k7-w-3",
+              "title": "1.1.3 Zjawiska włoskowatości i napięcie powierzchniowe"
+            },
+            {
+              "id": "sp-k7-w-4",
+              "title": "1.1.4 Gęstość substancji"
+            }
+          ]
+        },
+        {
+          "id": "sp-k7-kin",
+          "title": "1.2 Kinematyka",
+          "children": [
+            {
+              "id": "sp-k7-kin-1",
+              "title": "1.2.1 Ruch i jego względność, tor i droga"
+            },
+            {
+              "id": "sp-k7-kin-2",
+              "title": "1.2.2 Ruch prostoliniowy jednostajny"
+            },
+            {
+              "id": "sp-k7-kin-3",
+              "title": "1.2.3 Ruch prostoliniowy jednostajnie przyspieszony"
+            }
+          ]
+        },
+        {
+          "id": "sp-k7-dyn",
+          "title": "1.3 Dynamika",
+          "children": [
+            {
+              "id": "sp-k7-dyn-1",
+              "title": "1.3.1 Oddziaływania i siły (wypadkowa i równoważąca)"
+            },
+            {
+              "id": "sp-k7-dyn-2",
+              "title": "1.3.2 I zasada dynamiki Newtona i bezwładność"
+            },
+            {
+              "id": "sp-k7-dyn-3",
+              "title": "1.3.3 II zasada dynamiki Newtona"
+            },
+            {
+              "id": "sp-k7-dyn-4",
+              "title": "1.3.4 III zasada dynamiki Newtona (zjawisko odrzutu)"
+            },
+            {
+              "id": "sp-k7-dyn-5",
+              "title": "1.3.5 Opory ruchu: tarcie statyczne i kinetyczne"
+            }
+          ]
+        },
+        {
+          "id": "sp-k7-pme",
+          "title": "1.4 Praca, moc, energia",
+          "children": [
+            {
+              "id": "sp-k7-pme-1",
+              "title": "1.4.1 Praca mechaniczna"
+            },
+            {
+              "id": "sp-k7-pme-2",
+              "title": "1.4.2 Moc urządzeń"
+            },
+            {
+              "id": "sp-k7-pme-3",
+              "title": "1.4.3 Energia potencjalna grawitacji i sprężystości"
+            },
+            {
+              "id": "sp-k7-pme-4",
+              "title": "1.4.4 Energia kinetyczna"
+            },
+            {
+              "id": "sp-k7-pme-5",
+              "title": "1.4.5 Zasada zachowania energii mechanicznej"
+            }
+          ]
+        },
+        {
+          "id": "sp-k7-hyd",
+          "title": "1.5 Hydrostatyka i aerostatyka",
+          "children": [
+            {
+              "id": "sp-k7-hyd-1",
+              "title": "1.5.1 Parcie i ciśnienie"
+            },
+            {
+              "id": "sp-k7-hyd-2",
+              "title": "1.5.2 Ciśnienie hydrostatyczne i atmosferyczne"
+            },
+            {
+              "id": "sp-k7-hyd-3",
+              "title": "1.5.3 Prawo Pascala i prasa hydrauliczna"
+            },
+            {
+              "id": "sp-k7-hyd-4",
+              "title": "1.5.4 Prawo Archimedesa i warunki pływania ciał"
+            }
+          ]
+        },
+        {
+          "id": "sp-k7-ter",
+          "title": "1.6 Termodynamika (zjawiska cieplne)",
+          "children": [
+            {
+              "id": "sp-k7-ter-1",
+              "title": "1.6.1 Temperatura i energia wewnętrzna"
+            },
+            {
+              "id": "sp-k7-ter-2",
+              "title": "1.6.2 Przekazywanie ciepła (przewodnictwo, konwekcja, promieniowanie)"
+            },
+            {
+              "id": "sp-k7-ter-3",
+              "title": "1.6.3 Ciepło właściwe"
+            },
+            {
+              "id": "sp-k7-ter-4",
+              "title": "1.6.4 Zmiany stanów skupienia (topnienie, parowanie, skraplanie)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sp-k8",
+      "title": "Klasa VIII",
+      "children": [
+        {
+          "id": "sp-k8-el",
+          "title": "2.1 Elektrostatyka",
+          "children": [
+            {
+              "id": "sp-k8-el-1",
+              "title": "2.1.1 Ładunek elektryczny i budowa atomu"
+            },
+            {
+              "id": "sp-k8-el-2",
+              "title": "2.1.2 Sposoby elektryzowania ciał"
+            },
+            {
+              "id": "sp-k8-el-3",
+              "title": "2.1.3 Zasada zachowania ładunku"
+            },
+            {
+              "id": "sp-k8-el-4",
+              "title": "2.1.4 Przewodniki i izolatory"
+            },
+            {
+              "id": "sp-k8-el-5",
+              "title": "2.1.5 Napięcie elektryczne (podstawy)"
+            }
+          ]
+        },
+        {
+          "id": "sp-k8-prad",
+          "title": "2.2 Prąd elektryczny",
+          "children": [
+            {
+              "id": "sp-k8-prad-1",
+              "title": "2.2.1 Natężenie prądu elektrycznego"
+            },
+            {
+              "id": "sp-k8-prad-2",
+              "title": "2.2.2 Obwody elektryczne (symbole, schematy)"
+            },
+            {
+              "id": "sp-k8-prad-3",
+              "title": "2.2.3 Prawo Ohma i opór elektryczny"
+            },
+            {
+              "id": "sp-k8-prad-4",
+              "title": "2.2.4 Łączenie szeregowe i równoległe oporników"
+            },
+            {
+              "id": "sp-k8-prad-5",
+              "title": "2.2.5 Praca i moc prądu elektrycznego"
+            }
+          ]
+        },
+        {
+          "id": "sp-k8-mag",
+          "title": "2.3 Magnetyzm",
+          "children": [
+            {
+              "id": "sp-k8-mag-1",
+              "title": "2.3.1 Magnesy trwałe i pole magnetyczne"
+            },
+            {
+              "id": "sp-k8-mag-2",
+              "title": "2.3.2 Pole magnetyczne przewodnika z prądem (elektromagnesy)"
+            },
+            {
+              "id": "sp-k8-mag-3",
+              "title": "2.3.3 Siła magnetyczna (elektrodynamiczna) i silnik elektryczny"
+            }
+          ]
+        },
+        {
+          "id": "sp-k8-fal",
+          "title": "2.4 Ruch drgający i fale mechaniczne",
+          "children": [
+            {
+              "id": "sp-k8-fal-1",
+              "title": "2.4.1 Amplituda, okres i częstotliwość drgań"
+            },
+            {
+              "id": "sp-k8-fal-2",
+              "title": "2.4.2 Przemiany energii w ruchu drgającym (wahadła)"
+            },
+            {
+              "id": "sp-k8-fal-3",
+              "title": "2.4.3 Powstawanie i cechy fal mechanicznych"
+            },
+            {
+              "id": "sp-k8-fal-4",
+              "title": "2.4.4 Dźwięk, wysokość i głośność dźwięku"
+            }
+          ]
+        },
+        {
+          "id": "sp-k8-opt",
+          "title": "2.5 Optyka",
+          "children": [
+            {
+              "id": "sp-k8-opt-1",
+              "title": "2.5.1 Rozchodzenie się światła i cień"
+            },
+            {
+              "id": "sp-k8-opt-2",
+              "title": "2.5.2 Odbicie i rozproszenie światła (zwierciadła płaskie)"
+            },
+            {
+              "id": "sp-k8-opt-3",
+              "title": "2.5.3 Załamanie światła"
+            },
+            {
+              "id": "sp-k8-opt-4",
+              "title": "2.5.4 Soczewki skupiające i rozpraszające"
+            },
+            {
+              "id": "sp-k8-opt-5",
+              "title": "2.5.5 Powstawanie obrazów w soczewkach i wady wzroku"
+            },
+            {
+              "id": "sp-k8-opt-6",
+              "title": "2.5.6 Rozszczepienie światła białego (barwy)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sp-import",
+      "title": "Importowane (Gemini)",
+      "children": []
+    }
+  ]
+}
