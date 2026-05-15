@@ -1,0 +1,172 @@
+# Decap CMS — edycja data/fiszki-wzory.json i zadania.json
+# Panel: https://fizki.pl/admin/
+# OAuth: api/auth.js + api/callback.js na Vercel (zmienne w .env.example)
+
+backend:
+  name: github
+  repo: Wasako/fiszki
+  branch: master
+  base_url: https://fizki.pl/api
+  auth_endpoint: auth
+
+site_url: https://fizki.pl
+display_url: https://fizki.pl
+
+# Lokalnie: npx decap-server + odkomentuj local_backend
+# local_backend: true
+
+media_folder: images
+public_folder: /images
+
+collections:
+  # --- Fiszki (obiekt JSON: version, source, cards[]) ---
+  - name: fiszki
+    label: Fiszki — Wzory
+    files:
+      - name: baza_fiszek
+        label: Baza fiszek (data/fiszki-wzory.json)
+        file: data/fiszki-wzory.json
+        format: json
+        fields:
+          - label: Wersja
+            name: version
+            widget: number
+            value_type: int
+          - label: Źródło (informacyjnie)
+            name: source
+            widget: string
+            required: false
+          - label: Karty (wzory)
+            name: cards
+            widget: list
+            summary: "{{fields.topic}} — {{fields.name}}"
+            fields:
+              - label: Dział (topic)
+                name: topic
+                widget: string
+              - label: Nazwa wzoru (name → front w aplikacji)
+                name: name
+                widget: string
+              - label: Symbol (LaTeX, lewa strona)
+                name: symbol
+                widget: string
+                required: false
+              - label: Poprawny wzór (correct_latex → back)
+                name: correct_latex
+                widget: text
+              - label: Zakres (cke = matura/rozszerzenie; podstawowka = SP + lo-podstawa)
+                name: scope
+                widget: select
+                options:
+                  - { label: Matura CKE, value: cke }
+                  - { label: Podstawówka / lo-podstawa (PDF), value: podstawowka }
+                default: cke
+              - label: Widoczne w szkole podstawowej
+                name: showSp
+                widget: boolean
+                default: true
+                required: false
+                hint: Odznacz (false), aby ukryć kartę tylko na SP — nadal widoczna w liceum podstawa.
+              - label: Dystraktory quizu (3× LaTeX — tablica stringów)
+                name: distractors
+                widget: list
+                min: 0
+                max: 3
+                field:
+                  label: Błędny wzór LaTeX
+                  widget: string
+
+  # --- Zadania (JSON to TABLICA na korzeniu — nie obiekt z TASK_LEVELS) ---
+  - name: zadania
+    label: Zadania główne
+    files:
+      - name: baza_zadan
+        label: Baza zadań (zadania.json)
+        file: zadania.json
+        format: json
+        fields:
+          # Decap 3.x: jedyna lista na korzeniu = cały plik jako [...]
+          - label: Poziomy edukacji
+            name: ""
+            widget: list
+            summary: "{{fields.id}} — {{fields.title}}"
+            fields:
+              - label: ID poziomu
+                name: id
+                widget: string
+                hint: "np. lo-rozszerzenie, lo-podstawa, sp"
+              - label: Tytuł poziomu
+                name: title
+                widget: string
+              - label: Działy (sections)
+                name: sections
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - label: ID działu
+                    name: id
+                    widget: string
+                  - label: Tytuł działu
+                    name: title
+                    widget: string
+                  - label: Zadania
+                    name: tasks
+                    widget: list
+                    summary: "{{fields.title}}"
+                    fields:
+                      - label: Tytuł zadania
+                        name: title
+                        widget: string
+                      - label: Pytanie (treść, Markdown + $LaTeX$)
+                        name: question
+                        widget: text
+                      - label: Odpowiedź (skrót)
+                        name: answer
+                        widget: text
+                        required: false
+                      - label: Quiz wzorów — bramka (formulaQuiz)
+                        name: formulaQuiz
+                        widget: object
+                        collapsed: true
+                        required: false
+                        hint: Bramka aktywna, gdy choices ma ≥ 4 elementy (app.js → taskNeedsQuizGate).
+                        fields:
+                          - label: Symbol LHS (lhsLatex)
+                            name: lhsLatex
+                            widget: string
+                            required: false
+                          - label: Treść pytania quizu (prompt)
+                            name: prompt
+                            widget: text
+                          - label: Opcje (choices) — dokładnie 4
+                            name: choices
+                            widget: list
+                            min: 4
+                            max: 4
+                            fields:
+                              - label: Wzór KaTeX (katex)
+                                name: katex
+                                widget: text
+                              - label: Poprawna odpowiedź
+                                name: correct
+                                widget: boolean
+                                default: false
+                              - label: Uzasadnienie (distractorRationale)
+                                name: distractorRationale
+                                widget: text
+                                required: false
+                                hint: Wyświetlane po wyborze błędnej opcji.
+                      - label: Wzory pomocnicze (formulas — tablica stringów)
+                        name: formulas
+                        widget: list
+                        required: false
+                        field:
+                          label: Wzór LaTeX
+                          widget: string
+                      - label: Kroki rozwiązania (solutionSteps — tablica stringów)
+                        name: solutionSteps
+                        widget: list
+                        required: false
+                        field:
+                          label: Krok (Markdown + $LaTeX$)
+                          widget: text

@@ -50,6 +50,7 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api")) return;
 
   const isNavigation =
     request.mode === "navigate" ||
