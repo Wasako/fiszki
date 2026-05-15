@@ -6,8 +6,9 @@ backend:
   name: github
   repo: Wasako/fiszki
   branch: master
-  base_url: https://fizki.pl/api
-  auth_endpoint: auth
+  # base_url = origin (bez /api) — Decap porównuje e.origin z base_url przy postMessage
+  base_url: https://fizki.pl
+  auth_endpoint: api/auth
 
 # „Go back to site” prowadzi na stronę główną aplikacji (nie .com)
 site_url: https://fizki.pl
