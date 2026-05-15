@@ -1114,6 +1114,83 @@
     return getTaskSectionView(level, sectionId);
   }
 
+  /**
+   * Kolejność zadań: liście programu (podrozdziały) w kolejności drzewa, potem płaska lista działów.
+   * @param {SchoolLevel} level
+   * @param {string} classId
+   * @returns {{ sectionId: string, taskIndex: number }[]}
+   */
+  function buildTaskNavSequence(level, classId) {
+    /** @type {{ sectionId: string, taskIndex: number }[]} */
+    const slots = [];
+
+    /** @param {TopicSection[]} nodes */
+    function walkCurriculum(nodes) {
+      for (const node of nodes || []) {
+        if (hasNodeChildren(node)) {
+          walkCurriculum(node.children);
+          continue;
+        }
+        const id = String(node.id || "");
+        if (!id || id.endsWith("-import") || id.startsWith("imp-")) continue;
+        const view = getTaskSectionView(level, id);
+        const tasks = view && Array.isArray(view.tasks) ? view.tasks : [];
+        for (let i = 0; i < tasks.length; i++) slots.push({ sectionId: id, taskIndex: i });
+      }
+    }
+
+    const roots = curriculumVisibleClassRoots(level);
+    const scopes = classId ? roots.filter((r) => r.id === classId) : roots;
+    if (scopes.length && level.curriculum) {
+      for (const classNode of scopes) {
+        if (hasNodeChildren(classNode)) walkCurriculum(classNode.children);
+      }
+      if (slots.length) return slots;
+    }
+
+    for (const s of sectionsForTaskClassFilter(level, classId)) {
+      const tasks = Array.isArray(s.tasks) ? s.tasks : [];
+      for (let i = 0; i < tasks.length; i++) slots.push({ sectionId: s.id, taskIndex: i });
+    }
+    return slots;
+  }
+
+  /**
+   * @param {SchoolLevel | null | undefined} level
+   * @param {string} classId
+   * @param {string} sectionId
+   * @param {number} index
+   * @returns {number}
+   */
+  function findTaskNavIndex(level, classId, sectionId, index) {
+    if (!level || !sectionId) return -1;
+    const seq = buildTaskNavSequence(level, classId);
+    return seq.findIndex((s) => s.sectionId === sectionId && s.taskIndex === index);
+  }
+
+  /**
+   * @param {number} delta — -1 poprzednie, +1 następne (przechodzi do sąsiedniego działu / podrozdziału)
+   * @returns {boolean}
+   */
+  function navigateTaskBy(delta) {
+    const level = taskLevelId ? getLevel(taskLevelId) : null;
+    if (!level || !taskSectionId) return false;
+    const seq = buildTaskNavSequence(level, taskClassTabId);
+    const idx = findTaskNavIndex(level, taskClassTabId, taskSectionId, taskIndex);
+    if (idx < 0) return false;
+    const nextIdx = idx + delta;
+    if (nextIdx < 0 || nextIdx >= seq.length) return false;
+    const target = seq[nextIdx];
+    if (target.sectionId !== taskSectionId) pushAppHistory();
+    taskSectionId = target.sectionId;
+    taskIndex = target.taskIndex;
+    taskAnswerVisible = false;
+    taskFormulasVisible = false;
+    taskSolutionVisible = false;
+    render();
+    return true;
+  }
+
   /** @param {number} n */
   function tasksLabel(n) {
     if (n === 1) return "1 zadanie";
@@ -2163,6 +2240,11 @@
       const unlockAnimClass = taskQuizUnlockAnim ? " task-quiz-unlock-anim" : "";
       taskQuizUnlockAnim = false;
 
+      const navSeq = level ? buildTaskNavSequence(level, taskClassTabId) : [];
+      const navIdx = level ? findTaskNavIndex(level, taskClassTabId, taskSectionId, taskIndex) : -1;
+      const canTaskPrev = navIdx > 0;
+      const canTaskNext = navIdx >= 0 && navIdx < navSeq.length - 1;
+
       app.innerHTML = `
         ${homeNavTabsHtml()}
         <div class="top-bar">
@@ -2200,8 +2282,8 @@
           ${quizLegendHtml}
         </div>
         <div class="btn-row">
-          <button type="button" class="btn btn-secondary" id="btn-task-prev">Poprzednie</button>
-          <button type="button" class="btn btn-secondary" id="btn-task-next">Następne</button>
+          <button type="button" class="btn btn-secondary" id="btn-task-prev"${canTaskPrev ? "" : " disabled"}>Poprzednie</button>
+          <button type="button" class="btn btn-secondary" id="btn-task-next"${canTaskNext ? "" : " disabled"}>Następne</button>
         </div>
       `;
 
@@ -2249,23 +2331,11 @@
       };
 
       document.getElementById("btn-task-prev").onclick = () => {
-        if (taskIndex > 0) {
-          taskIndex -= 1;
-          taskAnswerVisible = false;
-          taskFormulasVisible = false;
-          taskSolutionVisible = false;
-          render();
-        }
+        navigateTaskBy(-1);
       };
 
       document.getElementById("btn-task-next").onclick = () => {
-        if (taskIndex < sec.tasks.length - 1) {
-          taskIndex += 1;
-          taskAnswerVisible = false;
-          taskFormulasVisible = false;
-          taskSolutionVisible = false;
-          render();
-        }
+        navigateTaskBy(1);
       };
       return;
     }
