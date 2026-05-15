@@ -753,6 +753,8 @@ h1 {
 }
 
 .tabs {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: 0;
   margin: 0 0 1.25rem;
@@ -762,7 +764,22 @@ h1 {
   border: 1px solid var(--border-color);
 }
 
+.tab-slider {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: var(--slider-left, 0);
+  width: var(--slider-width, 0);
+  background: var(--accent-fizki);
+  border-radius: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
 .tab {
+  position: relative;
+  z-index: 2;
   flex: 1;
   border: none;
   border-radius: 10px;
@@ -772,7 +789,7 @@ h1 {
   cursor: pointer;
   background: transparent;
   color: var(--text-muted);
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: color 0.3s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -781,8 +798,8 @@ h1 {
 }
 
 .tab[aria-selected="true"] {
-  background: var(--accent-fizki);
-  color: var(--accent-on-fizki);
+  background: transparent !important;
+  color: #000000;
   box-shadow: none;
 }
 
@@ -1449,4 +1466,84 @@ h1 {
   margin: 0.5rem 0;
   background: color-mix(in srgb, var(--bg-card) 60%, var(--text-main));
   border: 1px solid var(--border-color);
+}
+
+/* Bottom Navigation — główne moduły (Fiszki / Karta / Zadania) na mobile */
+@media (max-width: 768px) {
+  #app {
+    padding-bottom: 80px;
+  }
+
+  .tabs-main {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    margin: 0;
+    border-radius: 0;
+    background: var(--bg-main);
+    border: none;
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .tabs-main .tab,
+  .tabs-main button {
+    flex: 1;
+    padding: 1rem 0;
+    border-radius: 0;
+  }
+}
+
+/* View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out, slide-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in, slide-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
 }

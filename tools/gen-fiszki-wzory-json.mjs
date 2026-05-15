@@ -1,6 +1,7 @@
 /**
- * Generuje data/fiszki-wzory.json z js/cards-wzory-cke.js.
- * Dystraktory: ta sama lewa strona (LHS) i pierwszy operator relacji co w poprawnym wzorze.
+ * Generuje data/fiszki-wzory.json z:
+ * - js/cards-wzory-cke.js (scope: cke — pełna karta maturalna, tylko rozszerzenie)
+ * - js/cards-wzory-podstawowka.js (scope: podstawowka — SP i liceum podstawa)
  */
 import { createRequire } from "module";
 import { writeFileSync } from "fs";
@@ -80,170 +81,54 @@ function isSameFormulaUpToEqSideSwap(a, b) {
   const na = String(a).replace(/\s+/g, " ").trim();
   const nb = String(b).replace(/\s+/g, " ").trim();
   if (na === nb) return true;
-  const swA = swapEqSidesAtDepthZero(na);
-  if (swA != null && swA.replace(/\s+/g, " ").trim() === nb) return true;
-  const swB = swapEqSidesAtDepthZero(nb);
-  if (swB != null && swB.replace(/\s+/g, " ").trim() === na) return true;
-  return false;
+  const sw = swapEqSidesAtDepthZero(na);
+  return sw === nb || swapEqSidesAtDepthZero(nb) === na;
 }
 
-function stripVecNotation(tex) {
-  const t = tex.replace(/\\vec\{([^{}]+)\}/g, "$1");
-  return t === tex ? null : t;
-}
-
-function onceReplace(tex, from, to) {
-  const i = tex.indexOf(from);
-  if (i === -1) return null;
-  return tex.slice(0, i) + to + tex.slice(i + from.length);
-}
-
-const QUIZ_FALLBACK_DISTRACTORS = [
-  String.raw`\omega = \dfrac{v}{t}`,
-  String.raw`v = \omega \cdot t`,
-  String.raw`a = \dfrac{v}{t}`,
-  String.raw`a = \dfrac{s}{t}`,
-  String.raw`F = m \cdot t`,
-  String.raw`F = \dfrac{m}{v}`,
-  String.raw`p = \dfrac{m}{t}`,
-  String.raw`E_{\mathrm{kin}} = m v^{2}`,
-  String.raw`P = U \cdot R`,
-  String.raw`U = I + R`,
-  String.raw`T = \dfrac{2\pi}{v}`,
-  String.raw`\varepsilon = \dfrac{\omega}{t^{2}}`,
-  String.raw`v = \dfrac{s}{t^{2}}`,
-  String.raw`Q = I \cdot R`,
-];
-
-function collectWrongTexCandidates(correct) {
-  const c = String(correct).trim();
-  const out = [];
-  const add = (x) => {
-    if (x == null) return;
-    const t = String(x).trim();
-    if (!t || t === c) return;
-    if (hasMalformedFracInTex(t)) return;
-    if (isSameFormulaUpToEqSideSwap(t, c)) return;
-    if (out.some((u) => u.replace(/\s+/g, " ") === t.replace(/\s+/g, " "))) return;
-    out.push(t);
-  };
-  add(invertFirstFrac(c));
-  add(fracToImplicitProduct(c));
-  add(stripVecNotation(c));
-  add(onceReplace(c, "\\cdot", "/"));
-  add(onceReplace(c, "/", "\\cdot"));
-  add(onceReplace(c, "\\,", "\\cdot"));
-  add(c.replace(/\\Delta/g, ""));
-  add(c.replace(/\+/g, "-"));
-  add(c.replace(/-/g, "+"));
-  const inv = invertFirstFrac(c);
-  if (inv) add(invertFirstFrac(inv));
-  add(onceReplace(c, "\\dfrac", "\\tfrac"));
-  add(c.replace(/\^2/g, "^3"));
-  for (const d of QUIZ_FALLBACK_DISTRACTORS) add(d);
-  return out;
+function norm(s) {
+  return String(s).replace(/\s+/g, " ").trim();
 }
 
 function splitLhsRhs(tex) {
-  const t = String(tex || "").trim();
-  const relMarkers = ["=", "\\le", "\\ge", "\\approx"];
-  let cut = -1;
-  let relStr = "";
-  let relLen = 0;
   let depth = 0;
-  for (let i = 0; i < t.length; i++) {
-    const c = t[i];
-    if (c === "{") depth++;
-    else if (c === "}") depth = Math.max(0, depth - 1);
-    if (depth !== 0) continue;
-    for (const m of relMarkers) {
-      if (t.startsWith(m, i)) {
-        cut = i;
-        relStr = m;
-        relLen = m.length;
-        break;
-      }
+  for (let k = 0; k < tex.length; k++) {
+    const ch = tex[k];
+    if (ch === "{") depth++;
+    else if (ch === "}") depth = Math.max(0, depth - 1);
+    else if (ch === "=" && depth === 0) {
+      const lhs = tex.slice(0, k).trim();
+      const rhs = tex.slice(k + 1).trim();
+      if (!lhs || !rhs) return null;
+      return { lhs, rhs, rel: "=" };
+    } else if ((ch === "\\le" || ch === "\\ge" || ch === "\\approx") && depth === 0) {
+      const lhs = tex.slice(0, k).trim();
+      const rhs = tex.slice(k + ch.length).trim();
+      if (!lhs || !rhs) return null;
+      return { lhs, rhs, rel: ch };
     }
-    if (cut >= 0) break;
   }
-  if (cut <= 0) return null;
-  return {
-    lhs: t.slice(0, cut).trim(),
-    rel: relStr,
-    relLen,
-    rhs: t.slice(cut + relLen).trim(),
-  };
+  return null;
 }
 
-function norm(x) {
-  return String(x).replace(/\s+/g, " ").trim();
-}
-
-function isUglyDistractor(tex) {
-  const t = String(tex);
-  if (/\\cdot,/.test(t)) return true;
-  if (/\\cdott/.test(t)) return true;
-  if (/\\cdot\\quad/.test(t) && /,,/.test(t)) return true;
-  if (/\\dfrac\{2\}\{1\}/.test(t)) return true;
-  if (/1\\,2\s*a/.test(t)) return true;
-  return false;
-}
-
-function joinLhsRelRhs(sp, rhs) {
-  const gap = sp.rel === "=" ? " = " : " " + sp.rel + " ";
-  return sp.lhs + gap + rhs;
-}
-
-function rhsOnlyMutations(rhs) {
-  const out = [];
-  const add = (x) => {
-    if (x == null) return;
-    const t = String(x).trim();
-    if (!t || norm(t) === norm(rhs)) return;
-    if (hasMalformedFracInTex(t)) return;
-    if (out.some((u) => norm(u) === norm(t))) return;
-    out.push(t);
-  };
-  add(invertFirstFrac(rhs));
-  add(fracToImplicitProduct(rhs));
-  add(onceReplace(rhs, "\\cdot", "/"));
-  add(onceReplace(rhs, "\\dfrac", "\\tfrac"));
-  add(rhs.replace(/\^2/g, "^3"));
-  add(onceReplace(rhs, "+", "-"));
-  if (!rhs.includes("=") && rhs.length > 0 && rhs.length < 72) {
-    add(rhs + "^2");
-    add("2\\," + rhs);
-    add("\\dfrac{" + rhs + "}{2}");
-    add("\\dfrac{2}{" + rhs + "}");
-  }
-  return out;
+function joinLhsRelRhs(sp, rhsOverride) {
+  return sp.lhs + sp.rel + (rhsOverride != null ? rhsOverride : sp.rhs);
 }
 
 function collectSameLhsDistractors(correct) {
   const sp = splitLhsRhs(correct);
   if (!sp) return [];
-  const pool = collectWrongTexCandidates(correct);
   const out = [];
-  for (const w of pool) {
-    const sw = splitLhsRhs(w);
-    if (!sw) continue;
-    if (norm(sw.lhs) !== norm(sp.lhs) || sw.rel !== sp.rel) continue;
-    if (norm(w) === norm(correct)) continue;
-    if (isSameFormulaUpToEqSideSwap(w, correct)) continue;
-    if (hasMalformedFracInTex(w)) continue;
-    if (isUglyDistractor(w)) continue;
-    out.push(w);
+  const inv = invertFirstFrac(sp.rhs);
+  if (inv && !isSameFormulaUpToEqSideSwap(joinLhsRelRhs(sp, inv), correct)) {
+    out.push(joinLhsRelRhs(sp, inv));
   }
-  for (const rhsAlt of rhsOnlyMutations(sp.rhs)) {
-    const w = joinLhsRelRhs(sp, rhsAlt);
-    if (norm(w) === norm(correct)) continue;
-    if (isSameFormulaUpToEqSideSwap(w, correct)) continue;
-    if (hasMalformedFracInTex(w)) continue;
-    if (isUglyDistractor(w)) continue;
-    if (out.some((u) => norm(u) === norm(w))) continue;
-    out.push(w);
+  const prod = fracToImplicitProduct(sp.rhs);
+  if (prod && !isSameFormulaUpToEqSideSwap(joinLhsRelRhs(sp, prod), correct)) {
+    out.push(joinLhsRelRhs(sp, prod));
   }
-  return out;
+  const sw = swapEqSidesAtDepthZero(correct);
+  if (sw && !isSameFormulaUpToEqSideSwap(sw, correct)) out.push(sw);
+  return out.filter((d) => !hasMalformedFracInTex(d));
 }
 
 function padSameLhs(correct, existing) {
@@ -274,35 +159,86 @@ function symbolFromLhs(lhs) {
   return s.slice(0, 37) + "...";
 }
 
-const require = createRequire(import.meta.url);
-globalThis.window = globalThis;
-require(join(root, "js", "cards-wzory-cke.js"));
-const raw = globalThis.window.__WZORY_CKE_CARDS__;
-if (!Array.isArray(raw)) throw new Error("Brak __WZORY_CKE_CARDS__");
+function cardKey(topic, front) {
+  return norm(topic) + "\x1e" + norm(front);
+}
 
-const cards = [];
-for (const c of raw) {
-  const correct_latex = String(c.back || "").trim();
+function buildCardRow(topic, name, correct_latex, scope, showSp) {
   const sp = splitLhsRhs(correct_latex);
   const symbol = sp ? symbolFromLhs(sp.lhs) : "";
   let distractors = collectSameLhsDistractors(correct_latex);
   distractors = padSameLhs(correct_latex, distractors);
-
-  cards.push({
-    topic: c.topic,
-    name: c.front,
+  const row = {
+    topic,
+    name,
     symbol,
     correct_latex,
     distractors,
-  });
+    scope,
+  };
+  if (scope === "podstawowka" && showSp === false) row.showSp = false;
+  return row;
+}
+
+const require = createRequire(import.meta.url);
+globalThis.window = globalThis;
+require(join(root, "js", "cards-wzory-cke.js"));
+require(join(root, "js", "cards-wzory-podstawowka.js"));
+
+const ckeRaw = globalThis.window.__WZORY_CKE_CARDS__;
+const podRaw = globalThis.window.__WZORY_PODSTAWOWKA_CARDS__;
+if (!Array.isArray(ckeRaw)) throw new Error("Brak __WZORY_CKE_CARDS__");
+if (!Array.isArray(podRaw)) throw new Error("Brak __WZORY_PODSTAWOWKA_CARDS__");
+
+/** @type {Map<string, { topic: string, front: string, back: string }>} */
+const ckeByKey = new Map();
+for (const c of ckeRaw) {
+  ckeByKey.set(cardKey(c.topic, c.front), c);
+}
+
+const cards = [];
+
+for (const c of ckeRaw) {
+  const topic = String(c.topic || "");
+  const name = String(c.front || "");
+  const correct_latex = String(c.back || "").trim();
+  cards.push(buildCardRow(topic, name, correct_latex, "cke"));
+}
+
+let podAdded = 0;
+
+for (const c of podRaw) {
+  let topic = String(c.topic || "");
+  let name = String(c.front || "");
+  let correct_latex = String(c.back || "").trim();
+
+  if (Array.isArray(c.ckeRef) && c.ckeRef.length >= 2) {
+    const ref = ckeByKey.get(cardKey(c.ckeRef[0], c.ckeRef[1]));
+    if (ref) {
+      topic = String(ref.topic || topic);
+      name = String(ref.front || name);
+      correct_latex = String(ref.back || "").trim();
+    } else {
+      console.warn("Brak ckeRef:", c.ckeRef.join(" / "));
+    }
+  }
+
+  if (!correct_latex) {
+    console.warn("Pominięto (brak LaTeX):", topic, name);
+    continue;
+  }
+
+  const showSp = c.showSp !== false;
+  cards.push(buildCardRow(topic, name, correct_latex, "podstawowka", showSp));
+  podAdded++;
 }
 
 const payload = {
-  version: 1,
-  source: "js/cards-wzory-cke.js",
+  version: 2,
+  source: "js/cards-wzory-cke.js + js/cards-wzory-podstawowka.js",
   cards,
 };
 
 const outPath = join(root, "data", "fiszki-wzory.json");
 writeFileSync(outPath, JSON.stringify(payload, null, 2) + "\n", "utf8");
-console.log("Wrote", outPath, "cards:", cards.length);
+console.log("Wrote", outPath, "| cke:", ckeRaw.length, "| podstawowka:", podAdded, "| razem:", cards.length);

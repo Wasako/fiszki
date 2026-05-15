@@ -363,6 +363,8 @@
       topic: String(row.topic || ""),
       front: String(row.name || ""),
       back: String(row.correct_latex || "").trim(),
+      scope: row.scope === "podstawowka" ? "podstawowka" : "cke",
+      showSp: row.showSp !== false,
       symbolLatex: row.symbol != null && String(row.symbol).trim() ? String(row.symbol).trim() : null,
       quizDistractors: Array.isArray(row.distractors)
         ? row.distractors.map((d) => String(d).trim()).filter(Boolean)
@@ -385,15 +387,6 @@
     "Wybrane stałe i parametry astrofizyczne",
   ]);
 
-  /** Tematy niewidoczne w „Szkoła podstawowa” (dostępne od liceum). */
-  const WZORY_EXCLUDE_SP_TOPICS = new Set([
-    ...WZORY_ROZ_ONLY_TOPICS,
-    "Elementy fizyki atomowej i jądrowej",
-    "Wybrane zależności",
-    "Wartości wybranych stałych fizycznych — cd.",
-    "Wartości wybranych jednostek spoza układu SI",
-  ]);
-
   /** Pojedyncze wzory wyłączone z „Liceum — podstawa” (reszta z tematu zostaje). */
   const WZORY_EXCLUDE_LO_P_CARD_KEYS = new Set(
     [
@@ -406,86 +399,27 @@
   );
 
   /**
-   * W SP nie pokazujemy całych działów z `WZORY_EXCLUDE_SP_TOPICS`.
-   * W wybranych działach — tylko karty z białej listy (węższy zakres niż liceum).
-   * @type {Record<string, Set<string>>}
-   */
-  const WZORY_SP_TOPIC_CARD_WHITELIST = {
-    Kinematyka: new Set([
-      "Średnia prędkość na prostej (droga i czas)",
-      "Droga w ruchu jednostajnym prostoliniowym (skalar)",
-    ]),
-    Dynamika: new Set([
-      "Pęd",
-      "II zasada dynamiki (układ inercjalny)",
-      "Praca siły",
-      "Energia kinetyczna ruchu postępowego",
-      "Moc",
-    ]),
-    "Grawitacja i elementy astronomii": new Set([
-      "Prawo powszechnego ciążenia",
-      "Natężenie pola grawitacyjnego i przyspieszenie grawitacyjne",
-      "Energia potencjalna grawitacji",
-      "Zmiana energii potencjalnej przy powierzchni Ziemi",
-    ]),
-    "Drgania, fale mechaniczne i świetlne": new Set([
-      "Prędkość fali (długość, okres, częstotliwość)",
-      "Prawo Snelliusa (załamanie na granicy ośrodków)",
-    ]),
-    Termodynamika: new Set([
-      "I zasada termodynamiki",
-      "Praca siły parcia przy stałym ciśnieniu",
-      "Praca siły parcia a wykres p(V)",
-      "Ciepło właściwe",
-      "Ciepło przemiany fazowej",
-      "Równanie stanu gazu doskonałego (Clapeyrona)",
-    ]),
-    Elektrostatyka: new Set([
-      "Prawo Coulomba i stała elektrostatyczna",
-      "Natężenie pola elektrycznego",
-      "Natężenie pola na zewnątrz sferycznego rozkładu ładunku",
-      "Napięcie a potencjały elektryczne",
-      "Napięcie w polu jednorodnym",
-      "Pojemność kondensatora",
-    ]),
-    "Prąd elektryczny": new Set([
-      "Natężenie prądu",
-      "Definicja oporu przewodnika",
-      "Prawo Ohma (dla stałej temperatury przewodnika)",
-      "Opór przewodnika z drutu",
-      "Moc prądu stałego na oporniku",
-      "Dodawanie napięć między punktami przewodnika",
-      "Opór zastępczy połączenia szeregowego",
-      "Opór zastępczy połączenia równoległego",
-    ]),
-    Magnetyzm: new Set([
-      "Siła Lorentza (wartość; kąt między v i B)",
-      "Siła elektrodynamiczna na odcinku przewodnika",
-      "Pole magnetyczne długiego prostoliniowego przewodnika",
-      "Pole wewnątrz długiej ciasnej zwojnicy",
-      "Strumień magnetyczny przez powierzchnię",
-      "SEM indukcji (Faraday–Lenz)",
-    ]),
-  };
-
-  /**
-   * @param {{ topic: string, front: string }} card
+   * @param {{ topic: string, front: string, scope?: string, showSp?: boolean }} card
    * @param {string} homeLevelId
    */
   function cardVisibleForHomeLevel(card, homeLevelId) {
-    if (homeLevelId === "lo-rozszerzenie") return true;
-    if (WZORY_ROZ_ONLY_TOPICS.has(card.topic)) return false;
-    if (homeLevelId === "lo-podstawa") {
-      if (WZORY_EXCLUDE_LO_P_CARD_KEYS.has(sheetCardRefKey(card))) return false;
+    const scope = card.scope === "podstawowka" ? "podstawowka" : "cke";
+
+    if (homeLevelId === "lo-rozszerzenie") {
+      return scope === "cke";
+    }
+
+    if (homeLevelId === "lo-podstawa" || homeLevelId === "sp") {
+      if (scope !== "podstawowka") return false;
+      if (WZORY_ROZ_ONLY_TOPICS.has(card.topic)) return false;
+      if (homeLevelId === "lo-podstawa" && WZORY_EXCLUDE_LO_P_CARD_KEYS.has(sheetCardRefKey(card))) {
+        return false;
+      }
+      if (homeLevelId === "sp" && card.showSp === false) return false;
       return true;
     }
-    if (homeLevelId === "sp") {
-      if (WZORY_EXCLUDE_SP_TOPICS.has(card.topic)) return false;
-      const wl = WZORY_SP_TOPIC_CARD_WHITELIST[card.topic];
-      if (wl) return wl.has(card.front);
-      return true;
-    }
-    return true;
+
+    return scope === "cke";
   }
 
   /**
@@ -810,6 +744,7 @@
       await loadCurriculaAndLinks();
       installAppRootDelegation();
       render();
+      history.replaceState(appHistoryState(), "", "");
     } catch (e) {
       console.error(e);
       showAppBootError();
@@ -817,6 +752,9 @@
   }
 
   const app = document.getElementById("app");
+
+  /** Ostatnie wymiary pill zakładek (przetrwają `innerHTML` w `render`). */
+  const sliderPositionsCache = {};
 
   /** @type {'main' | 'flash-study' | 'flash-complete' | 'task-chapters' | 'task-detail'} */
   let screen = "main";
@@ -886,6 +824,46 @@
   let taskQuizSolved = false;
   /** Jednorazowa animacja po poprawnej odpowiedzi w bramce zadania. */
   let taskQuizUnlockAnim = false;
+
+  function appHistoryState() {
+    return {
+      screen,
+      mainTab,
+      homeLevelId,
+      taskLevelId,
+      taskSectionId,
+      taskCurriculumPath: Array.isArray(taskCurriculumPath) ? taskCurriculumPath.slice() : [],
+      taskIndex,
+    };
+  }
+
+  function pushAppHistory() {
+    history.pushState(appHistoryState(), "", "");
+  }
+
+  /** @param {ReturnType<typeof appHistoryState>} state */
+  function restoreAppHistory(state) {
+    screen = state.screen ?? "main";
+    mainTab = state.mainTab ?? "fiszki";
+    homeLevelId = state.homeLevelId ?? homeLevelId;
+    taskLevelId = state.taskLevelId ?? null;
+    taskSectionId = state.taskSectionId ?? null;
+    taskCurriculumPath = Array.isArray(state.taskCurriculumPath) ? state.taskCurriculumPath.slice() : [];
+    taskIndex = typeof state.taskIndex === "number" ? state.taskIndex : 0;
+  }
+
+  function goToMainFromTasks(tab) {
+    mainTab = tab;
+    taskLevelId = null;
+    taskSectionId = null;
+    taskCurriculumPath = [];
+    lastTaskQuizGateKey = "";
+    taskClassTabId = "";
+    taskCurriculumExpandedIds.clear();
+    screen = "main";
+    render();
+    history.replaceState(appHistoryState(), "", "");
+  }
 
   function getLevel(id) {
     return TASK_LEVELS.find((l) => l.id === id) || null;
@@ -962,7 +940,9 @@
         `<button type="button" class="tab" role="tab" data-task-class="${escapeHtml(id)}" aria-selected="${sel}">${escapeHtml(label)}</button>`
       );
     }
-    return `<div class="tabs tabs-task-class" role="tablist" aria-label="Klasa">
+    const classCache = sliderPositionsCache.class || { left: 0, width: 0 };
+    return `<div class="tabs tabs-task-class" role="tablist" aria-label="Klasa" data-slider-group="class" style="--slider-left:${classCache.left}px;--slider-width:${classCache.width}px">
+          <div class="tab-slider" aria-hidden="true"></div>
           ${parts.join("")}
         </div>`;
   }
@@ -1543,6 +1523,7 @@
     panelFiszki.hidden = tab !== "fiszki";
     panelKartaWzorow.hidden = tab !== "karta-wzorow";
     panelZadania.hidden = tab !== "zadania";
+    requestAnimationFrame(updateTabSliders);
   }
 
   /** Jednorazowa delegacja na `#app` — przetrwa zastępowanie `innerHTML` potomków. Poziomy i zakładki treści także na ekranach zadań. */
@@ -1601,6 +1582,7 @@
         if (mainTabBtn) {
           const which = String(mainTabBtn.dataset.mainTab || mainTabBtn.getAttribute("data-main-tab") || "").trim();
           if (which === "zadania") {
+            pushAppHistory();
             mainTab = "zadania";
             taskLevelId = homeLevelId;
             taskSectionId = null;
@@ -1622,14 +1604,7 @@
               applyMainTabPanels(mainTab);
               return;
             }
-            taskLevelId = null;
-            taskSectionId = null;
-            taskCurriculumPath = [];
-            lastTaskQuizGateKey = "";
-            taskClassTabId = "";
-            taskCurriculumExpandedIds.clear();
-            screen = "main";
-            render();
+            goToMainFromTasks(/** @type {'fiszki' | 'karta-wzorow'} */ (which));
             return;
           }
         }
@@ -1646,6 +1621,7 @@
             flashIndex = 0;
             flashQuizPicked = null;
             flashQuizCache = null;
+            pushAppHistory();
             screen = "flash-study";
             render();
             return;
@@ -1657,6 +1633,7 @@
             flashIndex = 0;
             flashQuizPicked = null;
             flashQuizCache = null;
+            pushAppHistory();
             screen = "flash-study";
             render();
             return;
@@ -1672,6 +1649,7 @@
           flashIndex = 0;
           flashQuizPicked = null;
           flashQuizCache = null;
+          pushAppHistory();
           screen = "flash-study";
           render();
           return;
@@ -1715,17 +1693,25 @@
         )}</button>`;
       })
       .join("");
-    return `<div class="tabs tabs-level" role="tablist" aria-label="Poziom zaawansowania">
+    const lvlCache = sliderPositionsCache.level || { left: 0, width: 0 };
+    const mainCache = sliderPositionsCache.main || { left: 0, width: 0 };
+    return `<div class="tabs tabs-level" role="tablist" aria-label="Poziom zaawansowania" data-slider-group="level" style="--slider-left:${lvlCache.left}px;--slider-width:${lvlCache.width}px">
+          <div class="tab-slider" aria-hidden="true"></div>
           ${homeLevelTabsHtml}
         </div>
-        <div class="tabs tabs-main" role="tablist" aria-label="Treść">
+        <div class="tabs tabs-main" role="tablist" aria-label="Treść" data-slider-group="main" style="--slider-left:${mainCache.left}px;--slider-width:${mainCache.width}px">
+          <div class="tab-slider" aria-hidden="true"></div>
           <button type="button" class="tab" role="tab" id="tab-fiszki" data-main-tab="fiszki" aria-selected="${mainTab === "fiszki" ? "true" : "false"}">Fiszki</button>
           <button type="button" class="tab" role="tab" id="tab-karta-wzorow" data-main-tab="karta-wzorow" aria-selected="${mainTab === "karta-wzorow" ? "true" : "false"}">Karta wzorów</button>
           <button type="button" class="tab" role="tab" id="tab-zadania" data-main-tab="zadania" aria-selected="${mainTab === "zadania" ? "true" : "false"}">Zadania</button>
         </div>`;
   }
 
-  function render() {
+  function render(newScreen) {
+    if (newScreen) screen = newScreen;
+
+    const performRender = () => {
+      try {
     if (screen === "flash-study" || screen === "flash-complete") {
       lastTaskQuizGateKey = "";
       taskQuizPickIndex = null;
@@ -1776,11 +1762,7 @@
       const btnDone = document.getElementById("btn-flash-complete-menu");
       if (btnDone) {
         btnDone.onclick = () => {
-          screen = "main";
-          mainTab = "fiszki";
-          flashQuizPicked = null;
-          flashQuizCache = null;
-          render();
+          history.back();
         };
       }
       return;
@@ -1788,8 +1770,7 @@
 
     else if (screen === "flash-study") {
       if (deck.length === 0) {
-        screen = "main";
-        render();
+        history.back();
         return;
       }
       if (flashIndex >= deck.length) flashIndex = 0;
@@ -1851,11 +1832,7 @@
       `;
 
       document.getElementById("btn-main").onclick = () => {
-        screen = "main";
-        mainTab = "fiszki";
-        flashQuizPicked = null;
-        flashQuizCache = null;
-        render();
+        history.back();
       };
 
       app.querySelectorAll("[data-quiz-opt]").forEach((btn) => {
@@ -1887,6 +1864,7 @@
           flashQuizCache = null;
           render();
         } else if (flashQuizPicked !== null) {
+          pushAppHistory();
           screen = "flash-complete";
           flashQuizPicked = null;
           flashQuizCache = null;
@@ -1938,16 +1916,12 @@
       `;
 
         document.getElementById("btn-back-chapters").onclick = () => {
-          taskSectionId = null;
-          taskAnswerVisible = false;
-          taskFormulasVisible = false;
-          taskSolutionVisible = false;
-          taskCurriculumPath = [];
-          render();
+          history.back();
         };
 
         app.querySelectorAll("[data-task-i]").forEach((btn) => {
           btn.onclick = () => {
+            pushAppHistory();
             taskIndex = Number(btn.getAttribute("data-task-i"));
             taskAnswerVisible = false;
             taskFormulasVisible = false;
@@ -1998,6 +1972,7 @@
         btn.onclick = () => {
           const id = btn.getAttribute("data-section-id");
           if (!id) return;
+          pushAppHistory();
           taskSectionId = id;
           taskIndex = 0;
           taskAnswerVisible = false;
@@ -2012,6 +1987,7 @@
         btn.onclick = () => {
           const id = btn.getAttribute("data-curriculum-leaf-id");
           if (!id) return;
+          pushAppHistory();
           taskSectionId = id;
           taskIndex = 0;
           taskAnswerVisible = false;
@@ -2225,12 +2201,7 @@
       }
 
       document.getElementById("btn-back-list").onclick = () => {
-        screen = "task-chapters";
-        taskAnswerVisible = false;
-        taskFormulasVisible = false;
-        taskSolutionVisible = false;
-        lastTaskQuizGateKey = "";
-        render();
+        history.back();
       };
 
       document.getElementById("btn-toggle-formulas").onclick = () => {
@@ -2279,7 +2250,50 @@
     app.innerHTML = `<div class="app-boot-error"><p class="flash-complete-title">Nieznany stan widoku. Wracam do menu.</p><button type="button" class="btn" id="btn-recover-screen">OK</button></div>`;
     const br = document.getElementById("btn-recover-screen");
     if (br) br.onclick = () => render();
+      } finally {
+        requestAnimationFrame(updateTabSliders);
+      }
+    };
+
+    if (!document.startViewTransition) {
+      performRender();
+    } else {
+      document.startViewTransition(() => {
+        performRender();
+      });
+    }
   }
+
+  function updateTabSliders() {
+    if (!app) return;
+    app.querySelectorAll(".tabs").forEach((container) => {
+      const group = container.dataset.sliderGroup;
+      const activeBtn = container.querySelector('.tab[aria-selected="true"]');
+      if (!(activeBtn instanceof HTMLElement)) {
+        container.style.setProperty("--slider-left", "0px");
+        container.style.setProperty("--slider-width", "0px");
+        if (group) sliderPositionsCache[group] = { left: 0, width: 0 };
+        return;
+      }
+      const left = activeBtn.offsetLeft;
+      const width = activeBtn.offsetWidth;
+      if (group) sliderPositionsCache[group] = { left, width };
+      container.style.setProperty("--slider-left", left + "px");
+      container.style.setProperty("--slider-width", width + "px");
+    });
+  }
+
+  window.addEventListener("resize", updateTabSliders);
+
+  window.addEventListener("popstate", (e) => {
+    if (e.state) {
+      restoreAppHistory(e.state);
+    } else {
+      screen = "main";
+      mainTab = "fiszki";
+    }
+    render();
+  });
 
   boot();
 

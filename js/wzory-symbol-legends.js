@@ -1,6 +1,6 @@
 /**
- * Legenda symboli pod fiszkami (wzory z data/fiszki-wzory.json — pole `name` = `front` w `js/app.js`).
- * Klucz mapy: trim(topic) + '\x1e' + trim(name) — ten sam łańcuch co `sheetSymbolLegendKey(topic, front)` w `js/app.js`.
+ * Legenda symboli pod fiszkami (wzory z data/fiszki-wzory.json — pole `name` = `front` w js/app.js).
+ * Klucz mapy: trim(topic) + '\x1e' + trim(name) — ten sam łańcuch co sheetSymbolLegendKey(topic, front) w js/app.js.
  * Generowanie: python tools/gen_wzory_symbol_legends.py
  */
 (function () {
@@ -1093,10 +1093,6 @@
     [
       "k_B",
       "stała Boltzmanna"
-    ],
-    [
-      "s",
-      "liczba współrzędnych położenia cząsteczki"
     ]
   ],
   "Termodynamika\u001eRównanie stanu gazu doskonałego (Clapeyrona)": [

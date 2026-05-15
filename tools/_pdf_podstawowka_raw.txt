@@ -1,0 +1,1304 @@
+===== PAGE 1 =====
+
+ 
+1
+WZORY Z FIZYKI POZNANE W GIMNAZJUM 
+ 
+1. CięŜar ciała. 
+g
+m
+Fg
+⋅
+=
+ 
+ 
+g
+F
+m
+g
+=
+ 
+Fg – wartość cięŜaru ciała w N, 
+m – masa ciała w kg, 
+g – stały współczynnik zwany przyspieszeniem ziemskim, 
+2
+10
+10
+s
+m
+kg
+N
+g
+=
+≈
+ 
+ 
+2. Gęstość substancji. 
+objetosc
+masa
+gestosc =
+  
+V
+m
+=
+ρ
+ 
+ 
+ρ
+m
+V =
+ 
+V
+m
+⋅
+= ρ
+ 
+Jednostką gęstości w Układzie SI jest 
+3
+1m
+kg
+ 
+ 
+3. 
+Ciśnienie 
+ 
+ 
+S
+Fn
+p =
+, 
+p – ciśnienie w Pa, , 
+Fn – wartość siły nacisku, parcie w N, 
+S – pole powierzchni, na którą działa parcie w m2, 
+Jednostką ciśnienia jest 1 paskal. 
+1 paskal = 1 Pa = 
+2
+1m
+N . 
+1 paskal jest to ciśnienie, jakie wywiera siła nacisku 1 N na powierzchnię 1 m2. 
+ 
+4. 
+Ciśnienie hydrostatyczne 
+h
+g
+p
+⋅
+⋅
+= ρ
+ 
+p- ciśnienie hydrostatyczne w Pa, 
+ρ  - gęstość cieczy w 
+3
+m
+kg , 
+g – przyspieszenie ziemskie 
+kg
+N
+g
+10
+≈
+, 
+h – wysokość słupa cieczy (głębokość) w m. 
+ 
+Ciśnienie atmosferyczne wynosi około pb =  1000 hPa. 
+Ciśnienie w cieczy na głębokości h 
+
+===== PAGE 2 =====
+
+ 
+2
+h
+g
+p
+p
+b
+⋅
+⋅
++
+=
+ρ
+ 
+ 
+5. 
+Wartość siły wyporu = cięŜar wypartej cieczy (gazu) 
+ 
+g
+V
+F
+c
+c
+w
+⋅
+⋅
+= ρ
+ 
+ 
+→
+c
+ρ
+gęstość cieczy (gazu), 
+→
+c
+V
+objętość wypartej cieczy (wypartego gazu), 
+przyspieszenie ziemskie 
+
+
+
+
+
+
+=
+kg
+N
+g
+10
+. 
+ 
+6. 
+Ruch jednostajny prostoliniowy 
+prędkość 
+czas
+droga
+=
+  
+t
+s
+v =
+   
+[ ]
+s
+m
+v =
+ 
+t
+v
+s
+⋅
+=
+ 
+ 
+v
+s
+t =
+ 
+Prędkość – stosunek wektora przesunięcia do czasu, w którym to 
+przemieszczenie nastąpiło. 
+t
+x
+v
+∆
+∆
+=
+r
+r
+ 
+gdzie: vr - prędkość, 
+  
+xr
+∆- przesunięcie, 
+  
+t
+∆- czas trwania przesunięcia. 
+ 
+7. 
+Prędkość średnią obliczamy, dzieląc całkowitą drogę scał przebytą przez ciało 
+(całkowite przemieszczenie 
+cx
+∆) przez czas trwania ruchu tcał ( t
+∆). 
+cal
+cal
+śr
+t
+s
+v
+=
+  
+ 
+c
+c
+śr
+t
+x
+v
+∆
+∆
+=
+ 
+ 
+8. 
+Prędkość chwilową dzieląc drogę przebytą przez ciało w bardzo krótkim czasie 
+przez ten czas. 
+t
+s
+vch
+∆
+∆
+=
+ 
+0
+→
+∆t
+ (czas dąŜy do zera) 
+ 
+9. 
+Ruch jednostajnie przyspieszony prostoliniowy 
+Wartość wektora przyspieszenia: 
+t
+v
+a
+∆
+∆
+=
+ 
+Przyspieszenie a to stosunek przyrostu wartości wektora prędkości v
+∆ do czasu t
+∆, 
+w którym ten przyrost nastąpiło. 
+Jednostką przyspieszenia jest 
+2
+1s
+m . 
+
+===== PAGE 3 =====
+
+ 
+3
+Ciało porusza się z przyspieszeniem o wartości 
+2
+1s
+m , kiedy w czasie 1 s rośnie 
+jego prędkość o 
+s
+m
+1
+. 
+Droga w ruchu jednostajnie przyspieszonym prostoliniowym (bez prędkości 
+początkowej): 
+2
+2t
+a
+s
+⋅
+=
+ 
+Wartość wektora prędkości (szybkość) w ruchu jednostajnie przyspieszonym 
+prostoliniowym (bez prędkości początkowej): 
+t
+a
+v
+⋅
+=
+ 
+ 
+10. 
+Ruch jednostajnie opóźniony prostoliniowy 
+Droga w ruchu jednostajnie opóźnionym prostoliniowym (vp – prędkość 
+początkowa): 
+2
+2t
+a
+t
+v
+s
+p
+⋅
+−
+⋅
+=
+ 
+Wartość wektora prędkości (szybkość) w ruchu jednostajnie opóźnionym 
+prostoliniowym: 
+t
+a
+v
+v
+p
+⋅
+−
+=
+ 
+ 
+11. 
+II zasada dynamiki. 
+m
+F
+a
+r
+r =
+ 
+ 
+a
+F
+m =
+ 
+ 
+a
+m
+F
+⋅
+=
+ 
+ 
+12. 
+Jednostką siły jest 1 niuton. 
+2
+2
+1
+1
+1
+1
+1
+]
+[
+s
+m
+kg
+N
+N
+s
+m
+kg
+F
+⋅
+=
+=
+⋅
+=
+ 
+1 N to siła, która ciału o masie 1 kg nadaje przyspieszenie 
+2
+1 s
+m
+. 
+ 
+13. 
+Spadek swobodny 
+2
+2
+10
+81
+,9
+s
+m
+s
+m
+g
+=
+=
+  
+t
+g
+v
+⋅
+=
+ 
+ 
+2
+2t
+g
+h
+⋅
+=
+ 
+ 
+14. 
+Pęd (pęd masy) 
+pęd = masa * prędkość 
+
+===== PAGE 4 =====
+
+ 
+4
+v
+m
+p
+r
+r
+⋅
+=
+ 
+Jednostką 
+pędu 
+jest 
+s
+m
+kg ⋅
+1
+ 
+ 
+15. 
+Wartość prędkości w ruchu jednostajnym po okręgu: 
+T
+r
+v
+T
+t
+r
+s
+t
+s
+v
+Π
+=
+=
+Π
+=
+=
+2
+2
+ 
+r – promień okręgu, 
+T – czas potrzebny na pokonanie całego okręgu. 
+ 
+16. 
+Wartość siły grawitacji działającej między dwoma ciałami (Prawo powszechnego 
+ciąŜenia). 
+2
+2
+1
+r
+m
+m
+G
+F
+⋅
+⋅
+=
+ 
+gdzie: 
+m1, m2 – masy ciał, 
+r – odległość między ich środkami, 
+G – stała grawitacji. 
+2
+2
+11
+10
+67
+,6
+kg
+m
+N
+G
+⋅
+⋅
+=
+−
+ 
+Stała grawitacji to siła, z którą działają na siebie dwa ciała o masach 1 kg 
+z odległości 1m. 
+ 
+17. 
+Praca mechaniczna 
+praca = siła * przesunięcie 
+s
+F
+W
+⋅
+=
+ (gdy 
+s
+F || ), 
+gdy F jest prostopadłe do s to W = 0 
+Jednostką pracy w Układzie SI jest 1 dŜul. 
+1 dŜul = 1 J = 1N*m 
+
+===== PAGE 5 =====
+
+ 
+5
+Praca ma wartość 1J, gdy została wykonana przez siłę 1N i jeŜeli nastąpiło 
+przesunięcie ciała o 1m. 
+2
+2
+2
+1
+1
+1
+1
+1
+s
+m
+kg
+m
+s
+m
+kg
+m
+N
+J
+⋅
+=
+⋅
+⋅
+=
+⋅
+=
+ 
+ 
+18. 
+Moc (P) to praca (W) wykonana w jednostce czasu. 
+t
+W
+P =
+ 
+ 
+v
+F
+t
+s
+F
+t
+W
+P
+⋅
+=
+⋅
+=
+=
+ 
+Jednostką mocy w Układzie SI jest 1 wat. 
+s
+J
+W
+wat
+1
+1
+1
+1
+=
+=
+ 
+ 
+3
+2
+2
+1
+1
+1
+s
+m
+kg
+s
+m
+s
+m
+kg
+s
+m
+N
+s
+m
+N
+s
+J
+W
+⋅
+=
+⋅
+⋅
+=
+⋅
+=
+⋅
+=
+=
+ 
+1 W to moc takiego urządzenia, które w czasie 1 s wykonuje pracę 1 J. 
+ 
+19. 
+Przyrost energii potencjalnej grawitacji 
+p
+E
+∆
+ względem wybranego poziomu, lub 
+energia potencjalna grawitacji (Ep) względem tego poziomu. 
+h
+g
+m
+Ep
+⋅
+⋅
+=
+∆
+  
+h
+g
+m
+E p
+⋅
+⋅
+=
+ 
+gdzie: 
+p
+E
+∆
+ - przyrost energii potencjalnej w J, 
+m – masa ciała w kilogramach wyniesionego na wysokość h w metrach, 
+g – przyspieszenie ziemskie (g = 10 m/s2). 
+ 
+20. 
+Energia kinetyczna. 
+2
+2
+mv
+Ek =
+ 
+ 
+Jednostka energii kinetycznej: 
+[
+]
+J
+m
+N
+m
+s
+m
+kg
+s
+m
+kg
+Ek
+1
+2
+2
+=
+⋅
+=
+⋅
+⋅
+=
+
+
+
+⋅
+=
+ 
+ 
+21. 
+I zasada termodynamiki 
+ 
+w
+E
+∆
+ = W + Q 
+gdzie: 
+w
+E
+∆
+ - przyrost energii wewnętrznej ciała w J, 
+W – praca wykonana nad ciałem w J, 
+ Q – ilość przekazanego ciepła w J. 
+ 
+22. 
+Ciepło właściwe substancji (c) 
+T
+m
+Q
+c
+∆
+⋅
+=
+ 
+
+===== PAGE 6 =====
+
+ 
+6
+Jednostka ciepła właściwego 
+C
+kg
+J
+c
+o⋅
+=
+]
+[
+ lub 
+K
+kg
+J
+c
+⋅
+=
+]
+[
+. 
+ 
+23. 
+Ciepło Q potrzebne do ogrzania m kilogramów substancji o T
+∆ stopni celsjusza. 
+T
+m
+c
+Q
+∆
+⋅
+⋅
+=
+ 
+Taki sam jest przyrost energii wewnętrznej tego ciała. 
+T
+m
+c
+Q
+Ew
+∆
+⋅
+⋅
+=
+=
+∆
+ 
+ 
+24. 
+Ciepło topnienia (ct)  
+m
+Q
+ct =
+ 
+gdzie: 
+ct – ciepło topnienia 
+
+
+
+
+kg
+J
+, 
+m - masa ciała [kg], 
+Q - ilość ciepła potrzebnego do stopienia ciała stałego w temperaturze topnienia [J]. 
+m
+c
+Q
+t ⋅
+=
+ 
+ 
+25. 
+Ciepło krzepnięcia (ck)  
+m
+Q
+ck =
+ 
+gdzie: 
+ck - ciepło krzepnięcia
+
+
+
+
+kg
+J
+, 
+m - masa ciała [kg], 
+Q - ilość ciepła oddana podczas krzepnięcia [J]. 
+m
+c
+Q
+k ⋅
+=
+ 
+
+===== PAGE 7 =====
+
+ 
+7
+26. 
+Ciepło parowania (cp) w temperaturze wrzenia. 
+m
+Q
+cp =
+ 
+gdzie: 
+cp - ciepło parowania 
+
+
+
+
+kg
+J
+, 
+m - masa ciała [kg], 
+Q - ilość ciepła potrzebnego do wyparowania cieczy w temperaturze wrzenia [J]. 
+m
+c
+Q
+p ⋅
+=
+ 
+ 
+27. 
+Ciepło skraplania (cs) w temperaturze skraplania. 
+m
+Q
+cs =
+ 
+gdzie: 
+cs - ciepło skraplania
+
+
+
+
+kg
+J
+, 
+m - masa ciała [kg], 
+Q - ilość ciepła oddana podczas skraplania [J]. 
+m
+c
+Q
+s ⋅
+=
+ 
+ 
+28. 
+Drgania i fale 
+okres drgań – T, [T] = 1s 
+częstotliwość – f, [f] = 1Hz 
+T
+f
+1
+=
+ 
+f
+T
+1
+=
+s
+Hz
+herc
+f
+1
+1
+1
+]
+[
+=
+=
+=
+ 
+
+===== PAGE 8 =====
+
+ 
+8
+Prędkość rozchodzenia się fali:
+T
+v
+λ
+=
+ 
+f
+v
+⋅
+= λ
+ 
+ 
+29. 
+Siła wzajemnego oddziaływania dwóch naelektryzowanych ciał (Prawo coulomba) 
+2
+2
+1
+r
+q
+q
+k
+F
+⋅
+⋅
+=
+  
+2
+2
+9
+10
+9
+C
+m
+N
+k
+⋅
+⋅
+=
+ 
+ 
+30. 
+NatęŜenie prądu elektrycznego I. 
+t
+q
+I =
+ 
+gdzie: 
+I – natęŜenie prądu elektrycznego w amperach, 
+q – wielkość ładunku przepływającego przez poprzeczny przekrój przewodnika 
+w kulombach, 
+t – czas przepływu danej porcji ładunku w sekundach. 
+Jednostką natęŜenia prądu w Układzie SI jest amper (1A). 
+s
+C
+A
+1
+1
+1
+=
+ 
+ 
+31 
+Opór elektryczny 
+I
+U
+R =
+ 
+ 
+Jednostką oporu elektrycznego jest 1 om. 
+A
+V
+om
+1
+1
+1
+1
+=
+Ω
+=
+ 
+ 
+32. 
+Prawo Ohma 
+U
+R
+I
+⋅
+= 1
+ 
+33. 
+Opór elektryczny (rezystancja) przewodnika 
+S
+l
+R
+⋅
+= ρ
+ 
+R – opór elektryczny przewodnika w omach, 
+l – długość przewodnika w metrach, 
+ρ  - opór właściwy zaleŜny od rodzaju materiału w 
+m
+m2
+⋅
+Ω
+ 
+ 
+34. 
+Moc prądu elektrycznego. 
+I
+U
+P
+⋅
+=
+ 
+ 
+moc = napięcie * natęŜenie 
+Jednostka mocy prądu elektrycznego 
+A
+V
+W
+1
+1
+1
+⋅
+=
+ 
+ 
+35. 
+Praca prądu elektrycznego 
+t
+I
+U
+W
+⋅
+⋅
+=
+ 
+Jednostką pracy prądu elektrycznego i energii elektrycznej jest 
+1 watosekunda = 1 Ws = 1 W * 1 s = 1 J 
+
+===== PAGE 9 =====
+
+ 
+9
+1 kilowatogodzina = 1 kWh = 1kW * 1h = 100 W * 3600 s = 3 600 000 Ws = 
+3 600 000 J. 
+36. 
+Napięcie elektryczne 
+t
+I
+W
+U
+⋅
+=
+ 
+jednostka napięcia – 1 wolt (1V) 
+s
+A
+J
+V
+U
+1
+1
+1
+1
+]
+[
+⋅
+=
+=
+ 
+ 
+37. 
+Energia prądu elektrycznego 
+q
+U
+Eel
+⋅
+=
+. 
+ 
+38. 
+Sprawność urządzenia η . 
+%
+100
+⋅
+=
+d
+u
+W
+W
+η
+ 
+lub 
+%
+100
+⋅
+=
+d
+u
+P
+P
+η
+ 
+Wu – praca uŜyteczna, 
+Wd – praca dostarczona. 
+ 
+39. 
+Połączenie szeregowe odbiorników (oporników): 
+Opór zastępczy R = R1 + R2 + ... 
+ 
+40. 
+Połączenie równoległe odbiorników (oporników) – opór zastępczy 
+...
+1
+1
+1
+2
+1
++
++
+=
+R
+R
+R
+ 
+ 
+41. 
+Wartość siły elektrodynamicznej: 
+l
+I
+B
+F
+⋅
+⋅
+=
+ 
+B - indukcja magnetyczna w testach 
+m
+A
+N
+T
+tesla
+⋅
+=
+=
+1
+1
+1
+ 
+l – długość przewodnika znajdującego się w polu magnetycznym (prostopadle do 
+linii tego pola) w m, 
+I – natęŜenie prądu elektrycznego płynącego przez przewodnik w A. 
+ 
+42 
+Dla transformatora obowiązują następujące zaleŜności: 
+p
+w
+p
+w
+n
+n
+U
+U
+=
+  
+w
+p
+p
+w
+I
+I
+U
+U
+=
+  
+p
+w
+w
+p
+n
+n
+I
+I
+=
+ 
+Przekładnia transformatora 
+p
+w
+n
+n
+ 
+ 
+
+===== PAGE 10 =====
+
+ 
+10
+ 
+43. 
+Prędkość światła c oraz kaŜdej innej fali elektromagnetycznej w próŜni, niezaleŜnie 
+od długości fali i częstotliwości jest zawsze stała i wynosi: 
+s
+km
+s
+km
+c
+300000
+299792
+≈
+=
+ 
+44. 
+Zwierciadła kuliste 
+2
+r
+f ≅
+ 
+Równanie zwierciadła wklęsłego. 
+r
+f
+y
+x
+2
+1
+1
+1
+≈
+=
++
+ 
+Powiększenie obrazu (p).
+1
+2
+h
+h
+p =
+ 
+x
+y
+p =
+ 
+ 
+45. 
+Współczynnik załamania światła (n) ośrodka drugiego względem pierwszego (np. 
+szkła względem powietrza). 
+2
+1
+v
+v
+n =
+ 
+v1 – prędkość światła w ośrodku pierwszym, 
+v2 – prędkość światła w ośrodku drugim. 
+ 
+46. 
+Równanie soczewki.
+f
+y
+x
+1
+1
+1
+=
++
+ 
+Powiększenie obrazu 
+otrzymanego za pomocą soczewki 
+skupiającej. 
+x
+y
+p =
+ 
+ 
+1
+2
+h
+h
+p =
+ 
+Zdolność skupiająca soczewki 
+(Z) to odwrotność jej ogniskowej 
+(f) wyraŜonej w metrach. 
+f
+Z
+1
+=
+ 
+Jednostką zdolności 
+skupiającej jest dioptria. 
+m
+D
+dioptria
+1
+1
+1
+=
+=
+.
+Zdolność skupiająca układu soczewek cienkościennych ustawionych na 
+jednej osi optycznej bardzo blisko siebie. 
+n
+Z
+Z
+Z
+Z
+Z
++
+⋅⋅⋅
++
++
++
+=
+3
+2
+1
+ 
+
