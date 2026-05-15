@@ -82,7 +82,7 @@ collections:
                   name: latex
                   widget: string
 
-  # --- Zadania (JSON to TABLICA na korzeniu — nie obiekt z TASK_LEVELS) ---
+  # --- Zadania (obiekt JSON: { "levels": [ poziomy… ] }) ---
   - name: zadania
     label: Zadania główne
     files:
@@ -91,9 +91,8 @@ collections:
         file: zadania.json
         format: json
         fields:
-          # Decap 3.x: jedyna lista na korzeniu = cały plik jako [...]
           - label: Poziomy edukacji
-            name: ""
+            name: levels
             widget: list
             summary: "{{fields.id}} — {{fields.title}}"
             fields:

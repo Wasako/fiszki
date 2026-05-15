@@ -549,8 +549,12 @@
     const res = await fetch("zadania.json");
     if (!res.ok) throw new Error("HTTP " + res.status + " — zadania.json");
     const data = await res.json();
-    const levels = Array.isArray(data) ? data : [];
-    if (levels.length === 0) throw new Error("zadania.json: pusta tablica poziomów");
+    const levels = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.levels)
+        ? data.levels
+        : [];
+    if (levels.length === 0) throw new Error("zadania.json: brak poziomów (levels)");
     for (const lvl of levels) {
       lvl.sections = Array.isArray(lvl.sections) ? lvl.sections : [];
       for (const sec of lvl.sections) {

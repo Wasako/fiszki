@@ -1,447 +1,449 @@
-[
-  {
-    "id": "lo-rozszerzenie",
-    "title": "Liceum — rozszerzenie",
-    "sections": [
-      {
-        "id": "praca-moc-energia",
-        "title": "Praca, Moc, Energia",
-        "tasks": [
-          {
-            "title": "Kąt działania siły",
-            "question": "Ciągnąc wózek siłą o wartości $60\\,\\text{N}$ na drodze $30\\,\\text{m}$, wykonano pracę $900\\,\\text{J}$. Oblicz kąt, pod jakim działała ta siła w stosunku do wektora przemieszczenia.",
-            "answer": "$\\alpha = 60^\\circ$",
-            "formulaQuiz": {
-              "lhsLatex": "W",
-              "prompt": "Wskaż właściwy wzór na pracę siły stałej działającej pod kątem do przemieszczenia (wszystkie warianty mają tę samą wielkość po lewej stronie).",
-              "choices": [
-                {
-                  "katex": "W = F \\cdot s \\cdot \\cos\\alpha",
-                  "correct": true,
-                  "distractorRationale": "Poprawny wzór na pracę przy stałym kącie między $\\vec{F}$ a $\\vec{s}$."
-                },
-                {
-                  "katex": "W = F \\cdot s \\cdot \\sin\\alpha",
-                  "correct": false,
-                  "distractorRationale": "Typowy błąd: zamiana cosinusa na sinus przy pracy siły."
-                },
-                {
-                  "katex": "W = \\dfrac{F \\cdot s}{\\cos\\alpha}",
-                  "correct": false,
-                  "distractorRationale": "Błędne „odwrócenie” zależności od $\\cos\\alpha$ przy przekształcaniu wzoru."
-                },
-                {
-                  "katex": "W = F \\cdot s",
-                  "correct": false,
-                  "distractorRationale": "Pominięcie czynnika kątowego — poprawne tylko dla $\\alpha = 0$."
-                }
+{
+  "levels": [
+    {
+      "id": "lo-rozszerzenie",
+      "title": "Liceum — rozszerzenie",
+      "sections": [
+        {
+          "id": "praca-moc-energia",
+          "title": "Praca, Moc, Energia",
+          "tasks": [
+            {
+              "title": "Kąt działania siły",
+              "question": "Ciągnąc wózek siłą o wartości $60\\,\\text{N}$ na drodze $30\\,\\text{m}$, wykonano pracę $900\\,\\text{J}$. Oblicz kąt, pod jakim działała ta siła w stosunku do wektora przemieszczenia.",
+              "answer": "$\\alpha = 60^\\circ$",
+              "formulaQuiz": {
+                "lhsLatex": "W",
+                "prompt": "Wskaż właściwy wzór na pracę siły stałej działającej pod kątem do przemieszczenia (wszystkie warianty mają tę samą wielkość po lewej stronie).",
+                "choices": [
+                  {
+                    "katex": "W = F \\cdot s \\cdot \\cos\\alpha",
+                    "correct": true,
+                    "distractorRationale": "Poprawny wzór na pracę przy stałym kącie między $\\vec{F}$ a $\\vec{s}$."
+                  },
+                  {
+                    "katex": "W = F \\cdot s \\cdot \\sin\\alpha",
+                    "correct": false,
+                    "distractorRationale": "Typowy błąd: zamiana cosinusa na sinus przy pracy siły."
+                  },
+                  {
+                    "katex": "W = \\dfrac{F \\cdot s}{\\cos\\alpha}",
+                    "correct": false,
+                    "distractorRationale": "Błędne „odwrócenie” zależności od $\\cos\\alpha$ przy przekształcaniu wzoru."
+                  },
+                  {
+                    "katex": "W = F \\cdot s",
+                    "correct": false,
+                    "distractorRationale": "Pominięcie czynnika kątowego — poprawne tylko dla $\\alpha = 0$."
+                  }
+                ]
+              },
+              "formulas": [
+                "W = F \\cdot s \\cdot \\cos\\alpha",
+                "\\cos\\alpha = \\dfrac{W}{F \\cdot s}"
+              ],
+              "solutionSteps": [
+                "Zapisujemy wzór na pracę stałej siły: $W = F \\cdot s \\cdot \\cos\\alpha$.",
+                "Przekształcamy wzór, aby wyznaczyć cosinus kąta: $\\cos\\alpha = \\dfrac{W}{F \\cdot s}$.",
+                "Podstawiamy dane liczbowe z zadania: $\\cos\\alpha = \\dfrac{900}{60 \\cdot 30}$.",
+                "Wykonujemy obliczenia: $\\cos\\alpha = \\dfrac{900}{1800} = 0{,}5$.",
+                "Odczytujemy kąt, dla którego $\\cos\\alpha = 0{,}5$: $\\alpha = 60^\\circ$."
               ]
             },
-            "formulas": [
-              "W = F \\cdot s \\cdot \\cos\\alpha",
-              "\\cos\\alpha = \\dfrac{W}{F \\cdot s}"
-            ],
-            "solutionSteps": [
-              "Zapisujemy wzór na pracę stałej siły: $W = F \\cdot s \\cdot \\cos\\alpha$.",
-              "Przekształcamy wzór, aby wyznaczyć cosinus kąta: $\\cos\\alpha = \\dfrac{W}{F \\cdot s}$.",
-              "Podstawiamy dane liczbowe z zadania: $\\cos\\alpha = \\dfrac{900}{60 \\cdot 30}$.",
-              "Wykonujemy obliczenia: $\\cos\\alpha = \\dfrac{900}{1800} = 0{,}5$.",
-              "Odczytujemy kąt, dla którego $\\cos\\alpha = 0{,}5$: $\\alpha = 60^\\circ$."
-            ]
-          },
-          {
-            "title": "Współczynnik tarcia z pracy",
-            "question": "Przesuwając ruchem jednostajnym skrzynię o masie $100\\,\\text{kg}$ na odległość $5\\,\\text{m}$ po poziomej podłodze, wykonano pracę $1500\\,\\text{J}$. Oblicz współczynnik tarcia kinetycznego między skrzynią a podłogą. Przyjmij $g = 10\\,\\text{m/s}^2$.",
-            "answer": "$\\mu = 0{,}3$",
-            "formulaQuiz": {
-              "lhsLatex": "\\mu",
-              "prompt": "Który wzór poprawnie wyraża $\\mu$ z pracy przy ruchu jednostajnym po poziomie ($W$ — praca, $m$, $g$, $s$ — masa, przyspieszenie ziemskie, droga)?",
-              "choices": [
-                {
-                  "katex": "\\mu = \\dfrac{W}{m \\cdot g \\cdot s}",
-                  "correct": true,
-                  "distractorRationale": "Z $W = T \\cdot s$ i $T = \\mu m g$ dla poziomu."
-                },
-                {
-                  "katex": "\\mu = \\dfrac{m \\cdot g \\cdot s}{W}",
-                  "correct": false,
-                  "distractorRationale": "Odwrócony ułamek względem poprawnego wzoru."
-                },
-                {
-                  "katex": "\\mu = W \\cdot m \\cdot g \\cdot s",
-                  "correct": false,
-                  "distractorRationale": "Błąd operatora: mnożenie zamiast dzielenia przez iloczyn $m g s$."
-                },
-                {
-                  "katex": "\\mu = \\dfrac{W}{m \\cdot g + s}",
-                  "correct": false,
-                  "distractorRationale": "Błędne grupowanie w mianowniku zamiast iloczynu $m \\cdot g \\cdot s$."
-                }
+            {
+              "title": "Współczynnik tarcia z pracy",
+              "question": "Przesuwając ruchem jednostajnym skrzynię o masie $100\\,\\text{kg}$ na odległość $5\\,\\text{m}$ po poziomej podłodze, wykonano pracę $1500\\,\\text{J}$. Oblicz współczynnik tarcia kinetycznego między skrzynią a podłogą. Przyjmij $g = 10\\,\\text{m/s}^2$.",
+              "answer": "$\\mu = 0{,}3$",
+              "formulaQuiz": {
+                "lhsLatex": "\\mu",
+                "prompt": "Który wzór poprawnie wyraża $\\mu$ z pracy przy ruchu jednostajnym po poziomie ($W$ — praca, $m$, $g$, $s$ — masa, przyspieszenie ziemskie, droga)?",
+                "choices": [
+                  {
+                    "katex": "\\mu = \\dfrac{W}{m \\cdot g \\cdot s}",
+                    "correct": true,
+                    "distractorRationale": "Z $W = T \\cdot s$ i $T = \\mu m g$ dla poziomu."
+                  },
+                  {
+                    "katex": "\\mu = \\dfrac{m \\cdot g \\cdot s}{W}",
+                    "correct": false,
+                    "distractorRationale": "Odwrócony ułamek względem poprawnego wzoru."
+                  },
+                  {
+                    "katex": "\\mu = W \\cdot m \\cdot g \\cdot s",
+                    "correct": false,
+                    "distractorRationale": "Błąd operatora: mnożenie zamiast dzielenia przez iloczyn $m g s$."
+                  },
+                  {
+                    "katex": "\\mu = \\dfrac{W}{m \\cdot g + s}",
+                    "correct": false,
+                    "distractorRationale": "Błędne grupowanie w mianowniku zamiast iloczynu $m \\cdot g \\cdot s$."
+                  }
+                ]
+              },
+              "formulas": [
+                "W = F \\cdot s",
+                "F = T",
+                "T = \\mu \\cdot m \\cdot g",
+                "\\mu = \\dfrac{W}{m \\cdot g \\cdot s}"
+              ],
+              "solutionSteps": [
+                "Przy ruchu jednostajnym siła ciągnięcia równoważy tarcie: $F = T$.",
+                "Praca: $W = F \\cdot s = T \\cdot s$.",
+                "Siła tarcia: $T = \\mu \\cdot m \\cdot g$.",
+                "Stąd $W = \\mu \\cdot m \\cdot g \\cdot s$, więc $\\mu = \\dfrac{W}{m \\cdot g \\cdot s}$.",
+                "Podstawienie: $\\mu = \\dfrac{1500}{100 \\cdot 10 \\cdot 5} = 0{,}3$."
               ]
             },
-            "formulas": [
-              "W = F \\cdot s",
-              "F = T",
-              "T = \\mu \\cdot m \\cdot g",
-              "\\mu = \\dfrac{W}{m \\cdot g \\cdot s}"
-            ],
-            "solutionSteps": [
-              "Przy ruchu jednostajnym siła ciągnięcia równoważy tarcie: $F = T$.",
-              "Praca: $W = F \\cdot s = T \\cdot s$.",
-              "Siła tarcia: $T = \\mu \\cdot m \\cdot g$.",
-              "Stąd $W = \\mu \\cdot m \\cdot g \\cdot s$, więc $\\mu = \\dfrac{W}{m \\cdot g \\cdot s}$.",
-              "Podstawienie: $\\mu = \\dfrac{1500}{100 \\cdot 10 \\cdot 5} = 0{,}3$."
-            ]
-          },
-          {
-            "title": "Rodzaj ruchu przy podnoszeniu",
-            "question": "Skrzynkę z narzędziami o masie $5\\,\\text{kg}$ podniesiono pionowo na wysokość $1{,}2\\,\\text{m}$, wykonując przy tym pracę $70\\,\\text{J}$. Oblicz wartość siły, z jaką podnoszono skrzynkę, i oceń, czy ruch był jednostajny. Przyjmij $g = 10\\,\\text{m/s}^2$.",
-            "answer": "$F \\approx 58{,}3\\,\\text{N}$, ruch był przyspieszony.",
-            "formulaQuiz": {
-              "lhsLatex": "F",
-              "prompt": "Wskaż poprawny wzór na wartość siły stałej wykonującej pracę $W$ na drodze pionowej $h$ (wszystkie warianty zaczynają się od $F$).",
-              "choices": [
-                {
-                  "katex": "F = \\dfrac{W}{h}",
-                  "correct": true,
-                  "distractorRationale": "Praca siły stałej w kierunku ruchu: $W = F \\cdot h$."
-                },
-                {
-                  "katex": "F = W \\cdot h",
-                  "correct": false,
-                  "distractorRationale": "Mnożenie zamiast dzielenia — typowa pomyłka przy przekształcaniu $W = F \\cdot h$."
-                },
-                {
-                  "katex": "F = \\dfrac{h}{W}",
-                  "correct": false,
-                  "distractorRationale": "Odwrócony ułamek względem $F = W/h$."
-                },
-                {
-                  "katex": "F = \\dfrac{W^2}{h}",
-                  "correct": false,
-                  "distractorRationale": "Nieuzasadnione podniesenie $W$ do kwadratu w liczniku."
-                }
+            {
+              "title": "Rodzaj ruchu przy podnoszeniu",
+              "question": "Skrzynkę z narzędziami o masie $5\\,\\text{kg}$ podniesiono pionowo na wysokość $1{,}2\\,\\text{m}$, wykonując przy tym pracę $70\\,\\text{J}$. Oblicz wartość siły, z jaką podnoszono skrzynkę, i oceń, czy ruch był jednostajny. Przyjmij $g = 10\\,\\text{m/s}^2$.",
+              "answer": "$F \\approx 58{,}3\\,\\text{N}$, ruch był przyspieszony.",
+              "formulaQuiz": {
+                "lhsLatex": "F",
+                "prompt": "Wskaż poprawny wzór na wartość siły stałej wykonującej pracę $W$ na drodze pionowej $h$ (wszystkie warianty zaczynają się od $F$).",
+                "choices": [
+                  {
+                    "katex": "F = \\dfrac{W}{h}",
+                    "correct": true,
+                    "distractorRationale": "Praca siły stałej w kierunku ruchu: $W = F \\cdot h$."
+                  },
+                  {
+                    "katex": "F = W \\cdot h",
+                    "correct": false,
+                    "distractorRationale": "Mnożenie zamiast dzielenia — typowa pomyłka przy przekształcaniu $W = F \\cdot h$."
+                  },
+                  {
+                    "katex": "F = \\dfrac{h}{W}",
+                    "correct": false,
+                    "distractorRationale": "Odwrócony ułamek względem $F = W/h$."
+                  },
+                  {
+                    "katex": "F = \\dfrac{W^2}{h}",
+                    "correct": false,
+                    "distractorRationale": "Nieuzasadnione podniesenie $W$ do kwadratu w liczniku."
+                  }
+                ]
+              },
+              "formulas": [
+                "W = F \\cdot h",
+                "F = \\dfrac{W}{h}",
+                "F_g = m \\cdot g"
+              ],
+              "solutionSteps": [
+                "Z $W = F \\cdot h$ mamy $F = \\dfrac{W}{h} \\approx \\dfrac{70}{1{,}2} \\approx 58{,}3\\,\\text{N}$.",
+                "Siła ciężkości: $F_g = m g = 50\\,\\text{N}$.",
+                "Skoro $F > F_g$, jest dodatnia siła wypadkowa w górę — ruch przyspieszony."
               ]
             },
-            "formulas": [
-              "W = F \\cdot h",
-              "F = \\dfrac{W}{h}",
-              "F_g = m \\cdot g"
-            ],
-            "solutionSteps": [
-              "Z $W = F \\cdot h$ mamy $F = \\dfrac{W}{h} \\approx \\dfrac{70}{1{,}2} \\approx 58{,}3\\,\\text{N}$.",
-              "Siła ciężkości: $F_g = m g = 50\\,\\text{N}$.",
-              "Skoro $F > F_g$, jest dodatnia siła wypadkowa w górę — ruch przyspieszony."
-            ]
-          },
-          {
-            "title": "Pchanie a ciągnięcie pod kątem",
-            "question": "Magazynier przesuwa paletę o masie $40\\,\\text{kg}$, ciągnąc ją za linę pod kątem $30^\\circ$ do poziomu, lub popychając pod tym samym kątem w dół. Współczynnik tarcia kinetycznego wynosi $0{,}2$. Wyjaśnij fizycznie, bez wykonywania obliczeń, dlaczego do pchania palety potrzebna jest większa siła niż do jej ciągnięcia ruchem jednostajnym.",
-            "answer": "Pchanie zwiększa siłę nacisku na podłoże, co powoduje wzrost siły tarcia.",
-            "formulaQuiz": {
-              "lhsLatex": "F_N",
-              "prompt": "Wszystkie warianty mają postać $F_N = \\ldots$ dla palety na poziomym podłożu. Który wzór opisuje siłę nacisku przy **pchaniu** pod kątem $\\alpha$ w dół (siła skośna $F$, składowa pionowa w dół)?",
-              "choices": [
-                {
-                  "katex": "F_N = m \\cdot g + F \\cdot \\sin\\alpha",
-                  "correct": true,
-                  "distractorRationale": "Składowa pionowa siły dodaje się do ciężkości — nacisk i tarcie rosną."
-                },
-                {
-                  "katex": "F_N = m \\cdot g - F \\cdot \\sin\\alpha",
-                  "correct": false,
-                  "distractorRationale": "Zapis dla ciągnięcia w górę — podmiana sytuacji fizycznej."
-                },
-                {
-                  "katex": "F_N = m \\cdot g \\cdot F \\cdot \\sin\\alpha",
-                  "correct": false,
-                  "distractorRationale": "Błędny operator: iloczyn zamiast sumy składowych pionowych."
-                },
-                {
-                  "katex": "F_N = \\dfrac{m \\cdot g}{F \\cdot \\sin\\alpha}",
-                  "correct": false,
-                  "distractorRationale": "Niepoprawna struktura ułamka — odwrotność sensownej zależności addytywnej."
-                }
+            {
+              "title": "Pchanie a ciągnięcie pod kątem",
+              "question": "Magazynier przesuwa paletę o masie $40\\,\\text{kg}$, ciągnąc ją za linę pod kątem $30^\\circ$ do poziomu, lub popychając pod tym samym kątem w dół. Współczynnik tarcia kinetycznego wynosi $0{,}2$. Wyjaśnij fizycznie, bez wykonywania obliczeń, dlaczego do pchania palety potrzebna jest większa siła niż do jej ciągnięcia ruchem jednostajnym.",
+              "answer": "Pchanie zwiększa siłę nacisku na podłoże, co powoduje wzrost siły tarcia.",
+              "formulaQuiz": {
+                "lhsLatex": "F_N",
+                "prompt": "Wszystkie warianty mają postać $F_N = \\ldots$ dla palety na poziomym podłożu. Który wzór opisuje siłę nacisku przy **pchaniu** pod kątem $\\alpha$ w dół (siła skośna $F$, składowa pionowa w dół)?",
+                "choices": [
+                  {
+                    "katex": "F_N = m \\cdot g + F \\cdot \\sin\\alpha",
+                    "correct": true,
+                    "distractorRationale": "Składowa pionowa siły dodaje się do ciężkości — nacisk i tarcie rosną."
+                  },
+                  {
+                    "katex": "F_N = m \\cdot g - F \\cdot \\sin\\alpha",
+                    "correct": false,
+                    "distractorRationale": "Zapis dla ciągnięcia w górę — podmiana sytuacji fizycznej."
+                  },
+                  {
+                    "katex": "F_N = m \\cdot g \\cdot F \\cdot \\sin\\alpha",
+                    "correct": false,
+                    "distractorRationale": "Błędny operator: iloczyn zamiast sumy składowych pionowych."
+                  },
+                  {
+                    "katex": "F_N = \\dfrac{m \\cdot g}{F \\cdot \\sin\\alpha}",
+                    "correct": false,
+                    "distractorRationale": "Niepoprawna struktura ułamka — odwrotność sensownej zależności addytywnej."
+                  }
+                ]
+              },
+              "formulas": [
+                "F_N = m \\cdot g \\pm F \\cdot \\sin\\alpha",
+                "T = \\mu \\cdot F_N"
+              ],
+              "solutionSteps": [
+                "Rozkładamy siłę skośną na składowe: poziomą i pionową.",
+                "Przy pchaniu w dół: $F_N = m g + F\\sin\\alpha$ — większy nacisk niż $mg$.",
+                "Tarcie $T = \\mu F_N$ rośnie wraz z $F_N$.",
+                "Przy ciągnięciu w górę: $F_N = m g - F\\sin\\alpha$ — mniejszy nacisk i mniejsze tarcie."
               ]
-            },
-            "formulas": [
-              "F_N = m \\cdot g \\pm F \\cdot \\sin\\alpha",
-              "T = \\mu \\cdot F_N"
-            ],
-            "solutionSteps": [
-              "Rozkładamy siłę skośną na składowe: poziomą i pionową.",
-              "Przy pchaniu w dół: $F_N = m g + F\\sin\\alpha$ — większy nacisk niż $mg$.",
-              "Tarcie $T = \\mu F_N$ rośnie wraz z $F_N$.",
-              "Przy ciągnięciu w górę: $F_N = m g - F\\sin\\alpha$ — mniejszy nacisk i mniejsze tarcie."
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "lo-podstawa",
-    "title": "Liceum — podstawa",
-    "sections": [
-      {
-        "id": "ruch",
-        "title": "Ruch prostoliniowy",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Kinematyka — podstawy ruchu. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "dynamika",
-        "title": "Dynamika Newtona",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Siły i zasady dynamiki. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "grawitacja",
-        "title": "Grawitacja i astronomia",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Oddziaływanie grawitacyjne i Układ Słoneczny. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "energia",
-        "title": "Praca, moc, energia",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Energia mechaniczna i jej przemiany. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "hydrostatyka",
-        "title": "Hydrostatyka i aerostatyka",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Ciśnienie, płyny, Archimedes. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "termodynamika",
-        "title": "Termodynamika",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Ciepło, temperatura, stany skupienia. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "fale",
-        "title": "Drgania i fale mechaniczne",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Drgania, fale, dźwięk. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "elektryczność",
-        "title": "Elektryczność",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Ładunek, prąd, obwody. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "magnetyzm",
-        "title": "Magnetyzm i EM",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Pole magnetyczne, indukcja, fale EM. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "optyka",
-        "title": "Optyka",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Swiatlo, odbicie, zalamanie, soczewki. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "jadro",
-        "title": "Fizyka atomowa i jądrowa",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Atom, jądro, promieniotwórczość. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "sp",
-    "title": "Szkoła podstawowa",
-    "sections": [
-      {
-        "id": "wstep-sp",
-        "title": "Wstęp do fizyki",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Wielkości fizyczne, materia, pomiary. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "ruch",
-        "title": "Ruch",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Tor, droga, ruch prostoliniowy. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "dynamika",
-        "title": "Dynamika",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Siły i zasady Newtona. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "praca-sp",
-        "title": "Praca, moc, energia",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Praca i energia mechaniczna. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "hydrostatyka",
-        "title": "Hydrostatyka",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Ciśnienie, płyny, Archimedes. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "termodynamika",
-        "title": "Termodynamika",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Ciepło i zmiany stanów. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "elektrostatyka-sp",
-        "title": "Elektrostatyka",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Ładunek, pole, napięcie. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "prad-sp",
-        "title": "Prąd elektryczny",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Natężenie, Ohm, obwody. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "magnetyzm-sp",
-        "title": "Magnetyzm",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Magnesy, elektromagnesy, silnik elektryczny. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "fale-sp",
-        "title": "Drgania i fale",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Drgania, fale, dźwięk. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "optyka-sp",
-        "title": "Optyka",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Światło, soczewki, barwy. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      },
-      {
-        "id": "praca-energia-sp",
-        "title": "Energia mechaniczna (SP)",
-        "tasks": [
-          {
-            "title": "Zadanie demonstracyjne",
-            "question": "Zasada zachowania energii — zestaw dodatkowy. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
-            "answer": "—"
-          }
-        ]
-      }
-    ]
-  }
-]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lo-podstawa",
+      "title": "Liceum — podstawa",
+      "sections": [
+        {
+          "id": "ruch",
+          "title": "Ruch prostoliniowy",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Kinematyka — podstawy ruchu. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "dynamika",
+          "title": "Dynamika Newtona",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Siły i zasady dynamiki. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "grawitacja",
+          "title": "Grawitacja i astronomia",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Oddziaływanie grawitacyjne i Układ Słoneczny. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "energia",
+          "title": "Praca, moc, energia",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Energia mechaniczna i jej przemiany. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "hydrostatyka",
+          "title": "Hydrostatyka i aerostatyka",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Ciśnienie, płyny, Archimedes. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "termodynamika",
+          "title": "Termodynamika",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Ciepło, temperatura, stany skupienia. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "fale",
+          "title": "Drgania i fale mechaniczne",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Drgania, fale, dźwięk. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "elektryczność",
+          "title": "Elektryczność",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Ładunek, prąd, obwody. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "magnetyzm",
+          "title": "Magnetyzm i EM",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Pole magnetyczne, indukcja, fale EM. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "optyka",
+          "title": "Optyka",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Swiatlo, odbicie, zalamanie, soczewki. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "jadro",
+          "title": "Fizyka atomowa i jądrowa",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Atom, jądro, promieniotwórczość. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sp",
+      "title": "Szkoła podstawowa",
+      "sections": [
+        {
+          "id": "wstep-sp",
+          "title": "Wstęp do fizyki",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Wielkości fizyczne, materia, pomiary. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "ruch",
+          "title": "Ruch",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Tor, droga, ruch prostoliniowy. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "dynamika",
+          "title": "Dynamika",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Siły i zasady Newtona. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "praca-sp",
+          "title": "Praca, moc, energia",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Praca i energia mechaniczna. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "hydrostatyka",
+          "title": "Hydrostatyka",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Ciśnienie, płyny, Archimedes. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "termodynamika",
+          "title": "Termodynamika",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Ciepło i zmiany stanów. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "elektrostatyka-sp",
+          "title": "Elektrostatyka",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Ładunek, pole, napięcie. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "prad-sp",
+          "title": "Prąd elektryczny",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Natężenie, Ohm, obwody. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "magnetyzm-sp",
+          "title": "Magnetyzm",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Magnesy, elektromagnesy, silnik elektryczny. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "fale-sp",
+          "title": "Drgania i fale",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Drgania, fale, dźwięk. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "optyka-sp",
+          "title": "Optyka",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Światło, soczewki, barwy. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        },
+        {
+          "id": "praca-energia-sp",
+          "title": "Energia mechaniczna (SP)",
+          "tasks": [
+            {
+              "title": "Zadanie demonstracyjne",
+              "question": "Zasada zachowania energii — zestaw dodatkowy. Zestaw dla tego poziomu będzie rozbudowywany — możesz też ćwiczyć na poziomie **Liceum — rozszerzenie** (zakładka u góry).",
+              "answer": "—"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
