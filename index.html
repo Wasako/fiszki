@@ -3,18 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1e3a5f" />
+  <meta name="theme-color" content="#121212" />
   <title>Fizyka — fiszki i zadania</title>
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/styles.css" />
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
     crossorigin="anonymous"
   />
+  <script>
+    (function () {
+      var t = localStorage.getItem("fizki_theme") || "dark";
+      document.documentElement.dataset.theme = t;
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute("content", t === "light" ? "#f4f4f9" : "#121212");
+    })();
+  </script>
 </head>
-  <body>
+<body>
   <!-- #app: cały UI generuje js/app.js (m.in. ekran główny z .tabs.tabs-level i data-home-level). -->
   <div id="app" class="app"></div>
+  <footer class="app-footer">
+    <button type="button" id="theme-toggle" class="btn-theme-toggle" aria-label="Przełącz motyw jasny lub ciemny">🌓 Zmień motyw</button>
+  </footer>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="js/wzory-symbol-legends.js"></script>
   <script defer src="js/app.js"></script>

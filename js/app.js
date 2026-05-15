@@ -788,7 +788,15 @@
     if (b) b.onclick = () => location.reload();
   }
 
+  function initTheme() {
+    const savedTheme = localStorage.getItem("fizki_theme") || "dark";
+    document.documentElement.dataset.theme = savedTheme;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", savedTheme === "light" ? "#f4f4f9" : "#121212");
+  }
+
   async function boot() {
+    initTheme();
     showAppLoadingState();
     try {
       await loadFiszkiWzory();
@@ -1241,13 +1249,13 @@
     return { correct, wrong, unseen };
   }
 
-  /** Pasek: zielony (poprawne) → czerwony (błędne) → granatowy (niewyświetlone), proporcjonalnie. */
+  /** Pasek: kolory z CSS (`--status-*`); proporcje w `--bar-p1` / `--bar-p2`. */
   function flashTopicTriGradientStyle(correct, wrong, unseen) {
     const t = correct + wrong + unseen;
-    if (!t) return "background:rgba(0,0,0,0.08);";
-    const p1 = (correct / t) * 100;
-    const p2 = ((correct + wrong) / t) * 100;
-    return `background:linear-gradient(to right,#2e7d32 0%,#2e7d32 ${p1}%,#c62828 ${p1}%,#c62828 ${p2}%,#1e3a5f ${p2}%,#1e3a5f 100%);`;
+    if (!t) return "";
+    const p1 = ((correct / t) * 100).toFixed(2);
+    const p2 = (((correct + wrong) / t) * 100).toFixed(2);
+    return `--bar-p1:${p1}%;--bar-p2:${p2}%;`;
   }
 
   /**
@@ -1541,6 +1549,22 @@
   function installAppRootDelegation() {
     if (!app || app.dataset.appDelegation === "1") return;
     app.dataset.appDelegation = "1";
+
+    if (document.documentElement.dataset.themeDelegation !== "1") {
+      document.documentElement.dataset.themeDelegation = "1";
+      document.addEventListener("click", (ev) => {
+        const raw = ev.target;
+        const el = raw instanceof Element ? raw : raw && raw.parentElement;
+        if (!(el instanceof Element)) return;
+        if (!el.closest("#theme-toggle")) return;
+        const current = document.documentElement.dataset.theme || "dark";
+        const next = current === "light" ? "dark" : "light";
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem("fizki_theme", next);
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", next === "light" ? "#f4f4f9" : "#121212");
+      });
+    }
 
     app.addEventListener("click", (ev) => {
       const raw = ev.target;
@@ -1965,22 +1989,10 @@
 
       app.innerHTML = `
         ${homeNavTabsHtml()}
-        <p class="task-chapters-toolbar"><button type="button" class="btn-link-back" id="btn-back-levels">← Menu</button></p>
         ${classTabs}
         <p class="panel-title task-dzialy-heading">Działy</p>
         <div class="list-stack task-curriculum-root">${chaptersHtml}</div>
       `;
-
-      document.getElementById("btn-back-levels").onclick = () => {
-        taskCurriculumExpandedIds.clear();
-        screen = "main";
-        mainTab = "fiszki";
-        taskLevelId = null;
-        taskSectionId = null;
-        taskCurriculumPath = [];
-        taskClassTabId = "";
-        render();
-      };
 
       app.querySelectorAll("[data-section-id]").forEach((btn) => {
         btn.onclick = () => {
@@ -2270,4 +2282,12 @@
   }
 
   boot();
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch((err) => {
+        console.warn("Rejestracja Service Workera nie powiodła się:", err);
+      });
+    });
+  }
 })();
