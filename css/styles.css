@@ -1012,13 +1012,6 @@ h1 {
   color: var(--text-muted);
 }
 
-.sheet-scroll {
-  max-height: calc(100dvh - 13.5rem);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-right: 0.15rem;
-}
-
 .sheet-panel-wrap {
   margin-top: 0.25rem;
 }
@@ -1078,8 +1071,6 @@ h1 {
 
 .sheet-topic-content {
   min-width: 0;
-  flex: 1;
-  min-height: 0;
 }
 
 .sheet-card {
@@ -1492,6 +1483,11 @@ h1 {
 @media (max-width: 768px) {
   #app {
     padding-bottom: 80px;
+  }
+
+  .app-footer {
+    margin-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: 0.35rem;
   }
 
   .tabs-main {

@@ -1347,7 +1347,7 @@
         <label class="sheet-topic-label" for="sheet-topic-select">Dział</label>
         <select id="sheet-topic-select" class="sheet-topic-select">${optionsHtml}</select>
       </nav>
-      <div class="sheet-scroll sheet-topic-content" id="sheet-topic-body">${bodyHtml}</div>
+      <div class="sheet-topic-content" id="sheet-topic-body">${bodyHtml}</div>
     </div>`;
   }
 
