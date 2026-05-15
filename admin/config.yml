@@ -74,6 +74,7 @@ collections:
                 max: 3
                 field:
                   label: Błędny wzór LaTeX
+                  name: latex
                   widget: string
 
   # --- Zadania (JSON to TABLICA na korzeniu — nie obiekt z TASK_LEVELS) ---
@@ -162,6 +163,7 @@ collections:
                         required: false
                         field:
                           label: Wzór LaTeX
+                          name: latex
                           widget: string
                       - label: Kroki rozwiązania (solutionSteps — tablica stringów)
                         name: solutionSteps
@@ -169,4 +171,5 @@ collections:
                         required: false
                         field:
                           label: Krok (Markdown + $LaTeX$)
+                          name: step
                           widget: text

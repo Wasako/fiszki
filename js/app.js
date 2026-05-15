@@ -353,6 +353,22 @@
     }
   }
 
+  /** Tablica stringów z JSON lub po edycji w Decap CMS (obiekty { latex, step, … }). */
+  function normalizeJsonStringList(arr) {
+    if (!Array.isArray(arr)) return null;
+    const out = arr
+      .map((item) => {
+        if (typeof item === "string") return item.trim();
+        if (item && typeof item === "object") {
+          const v = item.latex ?? item.step ?? item.value ?? item.distractor ?? item.item;
+          return v != null ? String(v).trim() : "";
+        }
+        return "";
+      })
+      .filter(Boolean);
+    return out.length ? out : null;
+  }
+
   async function loadFiszkiWzory() {
     const res = await fetch("data/fiszki-wzory.json");
     if (!res.ok) throw new Error("HTTP " + res.status + " — data/fiszki-wzory.json");
@@ -366,9 +382,7 @@
       scope: row.scope === "podstawowka" ? "podstawowka" : "cke",
       showSp: row.showSp !== false,
       symbolLatex: row.symbol != null && String(row.symbol).trim() ? String(row.symbol).trim() : null,
-      quizDistractors: Array.isArray(row.distractors)
-        ? row.distractors.map((d) => String(d).trim()).filter(Boolean)
-        : null,
+      quizDistractors: normalizeJsonStringList(row.distractors),
     }));
     rebuildSheetCardBackMap();
   }
@@ -541,6 +555,14 @@
       lvl.sections = Array.isArray(lvl.sections) ? lvl.sections : [];
       for (const sec of lvl.sections) {
         sec.tasks = Array.isArray(sec.tasks) ? sec.tasks : [];
+        for (const task of sec.tasks) {
+          if (Array.isArray(task.formulas)) {
+            task.formulas = normalizeJsonStringList(task.formulas) || [];
+          }
+          if (Array.isArray(task.solutionSteps)) {
+            task.solutionSteps = normalizeJsonStringList(task.solutionSteps) || [];
+          }
+        }
       }
     }
     TASK_LEVELS = levels;

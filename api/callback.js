@@ -26,9 +26,20 @@ function oauthSuccessHtml(accessToken) {
 }
 
 export default async function handler(req, res) {
-  const code = req.query?.code;
+  const q = req.query || {};
+  if (q.error) {
+    const msg = q.error_description || q.error;
+    res.status(400).send(`GitHub OAuth odrzucił logowanie: ${msg}`);
+    return;
+  }
+
+  const code = q.code;
   if (!code) {
-    res.status(400).send("Brak parametru code w callback OAuth.");
+    res
+      .status(400)
+      .send(
+        "Brak parametru code. Zaloguj się z https://fizki.pl/admin/ (przycisk Login with GitHub), nie otwieraj tego adresu ręcznie."
+      );
     return;
   }
 
