@@ -125,6 +125,7 @@ collections:
                       - label: Pytanie (treść, Markdown + $LaTeX$)
                         name: question
                         widget: text
+                        required: false
                       - label: Odpowiedź (skrót)
                         name: answer
                         widget: text
@@ -134,7 +135,7 @@ collections:
                         widget: object
                         collapsed: true
                         required: false
-                        hint: Bramka aktywna, gdy choices ma ≥ 4 elementy (app.js → taskNeedsQuizGate).
+                        hint: "Opcjonalnie. Bramka w aplikacji działa dopiero gdy są 4 wypełnione opcje (katex). Puste quizy — zostaw zwinięte lub usuń cały blok."
                         fields:
                           - label: Symbol LHS (lhsLatex)
                             name: lhsLatex
@@ -143,19 +144,23 @@ collections:
                           - label: Treść pytania quizu (prompt)
                             name: prompt
                             widget: text
-                          - label: Opcje (choices) — dokładnie 4
+                            required: false
+                          - label: Opcje quizu (choices) — dodaj 4, aby włączyć bramkę
                             name: choices
                             widget: list
-                            min: 4
+                            min: 0
                             max: 4
+                            required: false
                             fields:
                               - label: Wzór KaTeX (katex)
                                 name: katex
                                 widget: text
+                                required: false
                               - label: Poprawna odpowiedź
                                 name: correct
                                 widget: boolean
                                 default: false
+                                required: false
                               - label: Uzasadnienie (distractorRationale)
                                 name: distractorRationale
                                 widget: text
