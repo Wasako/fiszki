@@ -65,12 +65,52 @@ body {
   color: var(--text-main);
 }
 
-.app {
+.app-shell {
   max-width: 28rem;
   margin: 0 auto;
-  padding: 1.25rem 1rem 1rem;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-brand {
+  flex-shrink: 0;
+  padding: 0.65rem 1rem 0.15rem;
+  text-align: left;
+}
+
+.app-brand-link {
+  display: inline-block;
+  line-height: 0;
+}
+
+.app-logo {
+  display: block;
+  height: 2.15rem;
+  width: auto;
+  max-width: min(100%, 9.5rem);
+}
+
+.app-logo--theme-light {
+  display: none;
+}
+
+[data-theme="light"] .app-logo--theme-dark {
+  display: none;
+}
+
+[data-theme="light"] .app-logo--theme-light {
+  display: block;
+}
+
+.app {
+  margin: 0;
+  padding: 0.5rem 1rem 1rem;
   flex: 1;
   width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }

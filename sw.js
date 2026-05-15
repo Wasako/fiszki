@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 "use strict";
 
-const CACHE_NAME = "fizki-v2";
+const CACHE_NAME = "fizki-v3";
 
 const PRECACHE_URLS = [
   "/",
@@ -15,6 +15,8 @@ const PRECACHE_URLS = [
   "/data/curriculum-lo-rozszerzenie.json",
   "/data/curriculum-sp.json",
   "/manifest.json",
+  "/logo/fizki_yellow.svg",
+  "/logo/fizki_black.svg",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
 ];
