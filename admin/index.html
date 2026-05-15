@@ -4,6 +4,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Fiszki — panel edycji</title>
+    <script>
+      /* Gdy popup OAuth straci opener (Chrome po GitHub), token wraca przez sessionStorage */
+      (function () {
+        var KEY = "decap_github_auth_pending";
+        var msg = sessionStorage.getItem(KEY);
+        if (!msg) return;
+        sessionStorage.removeItem(KEY);
+        function deliver() {
+          window.postMessage(msg, window.location.origin);
+        }
+        window.addEventListener("load", function () {
+          deliver();
+          setTimeout(deliver, 300);
+        });
+      })();
+    </script>
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js"></script>

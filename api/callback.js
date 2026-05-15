@@ -2,8 +2,9 @@
  * Decap CMS — callback GitHub OAuth; przekazuje token do okna CMS (postMessage).
  */
 function oauthSuccessHtml(accessToken) {
-  const payload = JSON.stringify({ token: accessToken, provider: "github" });
-  const safePayload = JSON.stringify(payload);
+  const inner = JSON.stringify({ token: accessToken, provider: "github" });
+  const authMsg = "authorization:github:success:" + inner;
+  const authMsgJson = JSON.stringify(authMsg);
 
   return `<!DOCTYPE html>
 <html lang="pl">
@@ -11,16 +12,39 @@ function oauthSuccessHtml(accessToken) {
 <body>
 <script>
 (function () {
-  var payload = ${safePayload};
+  var authMsg = ${authMsgJson};
+  var delivered = false;
+
+  function deliver() {
+    if (delivered) return;
+    delivered = true;
+    if (window.opener && !window.opener.closed) {
+      try {
+        window.opener.postMessage(authMsg, "*");
+        window.close();
+        return;
+      } catch (e) {}
+    }
+    try {
+      sessionStorage.setItem("decap_github_auth_pending", authMsg);
+    } catch (e) {}
+    window.location.replace("/admin/");
+  }
+
   function onMessage(e) {
-    window.opener.postMessage("authorization:github:success:" + payload, e.origin);
+    deliver();
     window.removeEventListener("message", onMessage, false);
   }
+
   window.addEventListener("message", onMessage, false);
-  window.opener.postMessage("authorizing:github", "*");
+  if (window.opener && !window.opener.closed) {
+    window.opener.postMessage("authorizing:github", "*");
+  }
+  setTimeout(deliver, 400);
 })();
 </script>
-<p>Logowanie zakończone. Możesz zamknąć to okno.</p>
+<p>Logowanie zakończone. Przekierowanie do panelu…</p>
+<p><a href="/admin/">Kliknij tutaj, jeśli okno się nie zamknie</a></p>
 </body>
 </html>`;
 }

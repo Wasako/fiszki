@@ -9,8 +9,12 @@ backend:
   base_url: https://fizki.pl/api
   auth_endpoint: auth
 
+# „Go back to site” prowadzi na stronę główną aplikacji (nie .com)
 site_url: https://fizki.pl
 display_url: https://fizki.pl
+logo:
+  url: https://fizki.pl
+  text: Fizki
 
 # Lokalnie: npx decap-server + odkomentuj local_backend
 # local_backend: true
