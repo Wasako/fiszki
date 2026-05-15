@@ -314,11 +314,11 @@
       "topic": "Dynamika",
       "name": "Siła nacisku przy przyspieszeniu układu w kierunku pionowym",
       "symbol": "F_N",
-      "correct_latex": "F_N = m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})",
+      "correct_latex": "F_N = m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza})",
       "distractors": [
-        "F_N = m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})^2",
-        "F_N = 2\\,m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})",
-        "F_N = \\dfrac{m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza w górę})}{2}"
+        "F_N = m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza})^2",
+        "F_N = 2\\,m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza})",
+        "F_N = \\dfrac{m(g \\pm a)\\quad (\\text{górny znak, gdy układ przyspiesza})}{2}"
       ]
     },
     {
@@ -853,11 +853,11 @@
       "topic": "Termodynamika",
       "name": "Średnia energia ruchu cząsteczki gazu doskonałego",
       "symbol": "E_{\\mathrm{śr}}",
-      "correct_latex": "E_{\\mathrm{śr}} = \\dfrac{s}{2} k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})",
+      "correct_latex": "E_{\\mathrm{śr}} = \\dfrac{s}{2} k_B T",
       "distractors": [
-        "E_{\\mathrm{śr}} = \\dfrac{2}{s} k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})",
-        "E_{\\mathrm{śr}} = s\\,2 k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})",
-        "E_{\\mathrm{śr}} = \\tfrac{s}{2} k_B T\\quad (s\\ \\text{— liczba współrzędnych położenia cząsteczki})"
+        "E_{\\mathrm{śr}} = \\dfrac{2}{s} k_B T",
+        "E_{\\mathrm{śr}} = s\\,2 k_B T",
+        "E_{\\mathrm{śr}} = \\tfrac{s}{2} k_B T"
       ]
     },
     {

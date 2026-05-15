@@ -100,7 +100,7 @@
     {
       topic: "Dynamika",
       front: "Siła nacisku przy przyspieszeniu układu w kierunku pionowym",
-      back: String.raw`F_N = m(g \pm a)\quad (\text{górny znak, gdy układ przyspiesza w górę})`,
+      back: String.raw`F_N = m(g \pm a)\quad (\text{górny znak, gdy układ przyspiesza})`,
     },
     {
       topic: "Dynamika",
@@ -323,7 +323,7 @@
     {
       topic: "Termodynamika",
       front: "Średnia energia ruchu cząsteczki gazu doskonałego",
-      back: String.raw`E_{\mathrm{śr}} = \dfrac{s}{2} k_B T\quad (s\ \text{— liczba współrzędnych położenia cząsteczki})`,
+      back: String.raw`E_{\mathrm{śr}} = \dfrac{s}{2} k_B T`,
     },
     { topic: "Termodynamika", front: "Równanie stanu gazu doskonałego (Clapeyrona)", back: String.raw`p V = n R T` },
     {

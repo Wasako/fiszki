@@ -18,6 +18,88 @@
     return '<span class="' + cls + '" data-katex="' + encodeURIComponent(t) + '"></span>';
   }
 
+  /**
+   * Dzieli LaTeX fiszki na linie: wzór, warunek w nawiasie, drugie równanie po `,\quad`.
+   * @param {string} tex
+   * @returns {{ type: "katex" | "hint", tex?: string, text?: string }[]}
+   */
+  function parseFlashFormulaLines(tex) {
+    let t = String(tex || "").trim();
+    if (!t) return [{ type: "katex", tex: "" }];
+
+    t = t
+      .replace(
+        /\\quad\s*\(\s*s\\?\s*\\text\{\s*—\s*liczba współrzędnych[^}]*\}\s*\)\s*$/i,
+        ""
+      )
+      .trim();
+
+    let m = t.match(/^(.*)\\quad\s*\(\\text\{((?:[^{}]|\\[{}])+)\}\)\s*$/);
+    if (m && m[1].trim() && m[2]) {
+      return [
+        { type: "katex", tex: m[1].trim() },
+        { type: "hint", text: m[2] },
+      ];
+    }
+
+    m = t.match(/^(.*)\\quad\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)(\^?\{?\d+\}?)?\s*$/);
+    if (m && m[1].trim() && m[2].trim() && !/^\\text\{/.test(m[2].trim())) {
+      const cond = "(" + m[2].trim() + ")" + (m[3] || "");
+      return [
+        { type: "katex", tex: m[1].trim() },
+        { type: "katex", tex: cond },
+      ];
+    }
+
+    const dual = t.match(/^(.*?)(?:,\\,|,)\\quad\s+([\s\S]+)$/);
+    if (dual) {
+      const a = dual[1].trim();
+      const b = dual[2].trim();
+      const hasAssign = (s) =>
+        /(?:^|[^\\<>!])=(?![>])/.test(s) || /\\Delta\s*T\s*=/.test(s);
+      const isRelation = (s) =>
+        hasAssign(s) ||
+        /\\(?:propto|perp|ll|gg|gtrless|approx|mp|pm)\b/.test(s) ||
+        /\\angle\s*\(/.test(s);
+      const isLabelPair = /\\text\{\s*—/.test(t);
+      if (a && b && ((hasAssign(a) && isRelation(b)) || isLabelPair)) {
+        return [
+          { type: "katex", tex: a },
+          { type: "katex", tex: b },
+        ];
+      }
+    }
+
+    return [{ type: "katex", tex: t }];
+  }
+
+  /**
+   * @param {string} tex
+   * @param {{ stackClass?: string, lineClass?: string, singleWrapClass?: string }} [opts]
+   */
+  function flashQuizFormulaBlockHtml(tex, opts) {
+    const stackClass = (opts && opts.stackClass) || "quiz-formula-stack";
+    const lineClass = (opts && opts.lineClass) || "quiz-formula-main";
+    const lines = parseFlashFormulaLines(tex);
+    if (lines.length <= 1 && lines[0].type === "katex") {
+      const only = lines[0].tex || "";
+      const wrap = (opts && opts.singleWrapClass) || "quiz-option-formula";
+      return `<div class="sheet-formula ${wrap}">${katexHostHtml(only, false)}</div>`;
+    }
+    return (
+      `<div class="${stackClass}">` +
+      lines
+        .map((ln) => {
+          if (ln.type === "hint") {
+            return `<p class="quiz-formula-hint">(${escapeHtml(ln.text || "")})</p>`;
+          }
+          return `<div class="sheet-formula ${lineClass}">${katexHostHtml(ln.tex || "", false)}</div>`;
+        })
+        .join("") +
+      `</div>`
+    );
+  }
+
   function mountKatexIn(root) {
     if (!root || typeof root.querySelectorAll !== "function" || typeof window.katex === "undefined") {
       return;
@@ -1221,10 +1303,10 @@
     return cards
       .map((c) => {
         const leg = symbolLegendBlockHtml(getCardSymbolLegendEntries(c));
-        return `<article class="sheet-card"><h4 class="sheet-card-title">${escapeHtml(c.front)}</h4><div class="sheet-formula">${katexHostHtml(
+        return `<article class="sheet-card"><h4 class="sheet-card-title">${escapeHtml(c.front)}</h4>${flashQuizFormulaBlockHtml(
           physicsPlainToLatex(c.back),
-          true
-        )}</div>${leg}</article>`;
+          { stackClass: "quiz-formula-stack sheet-formula-stack", singleWrapClass: "sheet-formula-body" }
+        )}${leg}</article>`;
       })
       .join("");
   }
@@ -1701,7 +1783,7 @@
         ? `<div class="quiz-flip-face" aria-live="polite">
             <span class="label">Pełna fiszka</span>
             <p class="quiz-flip-topic">${escapeHtml(card.topic)} — ${escapeHtml(card.front)}</p>
-            <div class="sheet-formula quiz-flip-formula">${katexHostHtml(correctLatex, true)}</div>
+            ${flashQuizFormulaBlockHtml(correctLatex, { stackClass: "quiz-formula-stack quiz-flip-formula-split" })}
             ${symbolLegendBlockHtml(getCardSymbolLegendEntries(card))}
           </div>`
         : `<div class="quiz-prompt-question">
@@ -1719,7 +1801,7 @@
           }
           const dis = flashQuizPicked !== null ? " disabled" : "";
           return `<button type="button" class="${cls}" data-quiz-opt="${i}" aria-label="Wariant ${i + 1}"${dis}>
-            <div class="sheet-formula quiz-option-formula">${katexHostHtml(tex, true)}</div>
+            ${flashQuizFormulaBlockHtml(tex)}
           </button>`;
         })
         .join("");

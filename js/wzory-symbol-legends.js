@@ -1093,6 +1093,10 @@
     [
       "k_B",
       "stała Boltzmanna"
+    ],
+    [
+      "s",
+      "liczba współrzędnych położenia cząsteczki"
     ]
   ],
   "Termodynamika\u001eRównanie stanu gazu doskonałego (Clapeyrona)": [

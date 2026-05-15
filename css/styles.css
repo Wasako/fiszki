@@ -263,8 +263,8 @@ h1 {
 
 /* Długie / złożone: jedna kolumna */
 .quiz-options--stack {
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, minmax(4.15rem, 1fr));
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(4, minmax(4.15rem, auto));
 }
 
 .quiz-card--flip .quiz-options--stack {
@@ -284,7 +284,10 @@ h1 {
   align-items: center;
   justify-content: center;
   min-height: 0;
+  min-width: 0;
+  max-width: 100%;
   width: 100%;
+  box-sizing: border-box;
   margin: 0;
   padding: 0.55rem 0.7rem;
   border-radius: 12px;
@@ -293,6 +296,7 @@ h1 {
   cursor: pointer;
   text-align: center;
   font: inherit;
+  overflow: hidden;
   -webkit-tap-highlight-color: transparent;
   transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
@@ -321,22 +325,73 @@ h1 {
 
 .quiz-option-formula {
   margin: 0;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: visible;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+  display: block;
+  text-align: center;
+  line-height: 1.35;
 }
 
 /* Większy KaTeX w przyciskach quizu fiszek */
 .quiz-option .quiz-option-formula .katex {
   font-size: 1.45em;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .quiz-option .quiz-option-formula .katex-display {
   margin: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.quiz-formula-stack {
+  width: 100%;
+  min-width: 0;
+}
+
+.quiz-formula-main {
+  margin: 0;
+}
+
+.quiz-formula-hint {
+  margin: 0.35rem 0 0;
+  padding: 0 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.quiz-flip-formula-split .quiz-formula-main .katex {
+  font-size: 1.65em;
+}
+
+.quiz-flip-formula-split .quiz-formula-hint {
+  font-size: 0.9rem;
+}
+
+.quiz-formula-stack .quiz-formula-main + .quiz-formula-main,
+.quiz-formula-stack .quiz-formula-main + .quiz-formula-hint,
+.quiz-formula-stack .quiz-formula-hint {
+  margin-top: 0.32rem;
+}
+
+.sheet-formula-stack .sheet-formula-body .katex {
+  font-size: 0.95em;
+}
+
+.sheet-formula-stack .quiz-formula-main .katex {
+  font-size: 0.95em;
 }
 
 /* Wzory z \\vec — wyraźniejsza kreska wektora i litera pod nią (KaTeX .mord.accent) */
