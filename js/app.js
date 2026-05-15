@@ -2347,25 +2347,62 @@
   /** @type {BeforeInstallPromptEvent | null} */
   let deferredPwaInstall = null;
   const pwaInstallBtn = document.getElementById("pwa-install");
+  const pwaInstallHint = document.getElementById("pwa-install-hint");
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPwaInstall = e;
-    if (pwaInstallBtn) pwaInstallBtn.hidden = false;
-  });
-
-  if (pwaInstallBtn) {
-    pwaInstallBtn.addEventListener("click", async () => {
-      if (!deferredPwaInstall) return;
-      deferredPwaInstall.prompt();
-      await deferredPwaInstall.userChoice;
-      deferredPwaInstall = null;
-      pwaInstallBtn.hidden = true;
-    });
+  function isPwaStandalone() {
+    return (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.matchMedia("(display-mode: fullscreen)").matches ||
+      /** @type {{ standalone?: boolean }} */ (window.navigator).standalone === true
+    );
   }
 
-  window.addEventListener("appinstalled", () => {
-    deferredPwaInstall = null;
-    if (pwaInstallBtn) pwaInstallBtn.hidden = true;
-  });
+  function isMobileUa() {
+    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  }
+
+  function pwaManualInstallText() {
+    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      return "iOS: przycisk Udostępnij → Dodaj do ekranu początkowego.";
+    }
+    if (isMobileUa()) {
+      return "Chrome: menu ⋮ (trzy kropki) → Zainstaluj aplikację lub Dodaj do ekranu.";
+    }
+    return "Chrome/Edge: ikona ⊕ w pasku adresu albo menu ⋮ → Zainstaluj Fizki.";
+  }
+
+  function showPwaInstallHint() {
+    if (!pwaInstallHint || isPwaStandalone() || deferredPwaInstall) return;
+    pwaInstallHint.textContent = pwaManualInstallText();
+    pwaInstallHint.hidden = false;
+  }
+
+  if (!window.location.pathname.startsWith("/admin")) {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      deferredPwaInstall = e;
+      if (pwaInstallBtn) pwaInstallBtn.hidden = false;
+      if (pwaInstallHint) pwaInstallHint.hidden = true;
+    });
+
+    if (pwaInstallBtn) {
+      pwaInstallBtn.addEventListener("click", async () => {
+        if (deferredPwaInstall) {
+          deferredPwaInstall.prompt();
+          await deferredPwaInstall.userChoice;
+          deferredPwaInstall = null;
+          pwaInstallBtn.hidden = true;
+          return;
+        }
+        showPwaInstallHint();
+      });
+    }
+
+    window.addEventListener("appinstalled", () => {
+      deferredPwaInstall = null;
+      if (pwaInstallBtn) pwaInstallBtn.hidden = true;
+      if (pwaInstallHint) pwaInstallHint.hidden = true;
+    });
+
+    window.setTimeout(showPwaInstallHint, 4000);
+  }
 })();

@@ -31,8 +31,11 @@
   <!-- #app: cały UI generuje js/app.js (m.in. ekran główny z .tabs.tabs-level i data-home-level). -->
   <div id="app" class="app"></div>
   <footer class="app-footer">
-    <button type="button" id="pwa-install" class="btn-theme-toggle btn-pwa-install" hidden>📲 Zainstaluj aplikację</button>
-    <button type="button" id="theme-toggle" class="btn-theme-toggle" aria-label="Przełącz motyw jasny lub ciemny">🌓 Zmień motyw</button>
+    <p id="pwa-install-hint" class="pwa-install-hint" hidden></p>
+    <div class="app-footer-actions">
+      <button type="button" id="pwa-install" class="btn-theme-toggle btn-pwa-install" hidden>📲 Zainstaluj aplikację</button>
+      <button type="button" id="theme-toggle" class="btn-theme-toggle" aria-label="Przełącz motyw jasny lub ciemny">🌓 Zmień motyw</button>
+    </div>
   </footer>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="js/wzory-symbol-legends.js"></script>
