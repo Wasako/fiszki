@@ -159,42 +159,58 @@
   }
 
   /**
-   * Quiz fiszek wyłącznie z JSON: `correct_latex` → `back`, `distractors` → `quizDistractors`
-   * (bez dynamicznych dystraktorów). Kolejność opcji po **Fisher–Yates**.
-   * @param {{ back: string, quizDistractors?: string[] | null }} card
+   * Quiz fiszek: jedna poprawna odpowiedź to `back` bieżącej karty; trzy pozostałe to losowe **inne wzory**
+   * (pole `back` innych kart) z **tego samego działu** (`topic`). Gdy zabraknie puli — uzupełnienie z całego poziomu,
+   * potem z `quizDistractors` w JSON, na końcu z globalnej listy `CARDS`.
+   * @param {{ topic: string, front: string, back: string, quizDistractors?: string[] | null }} card
    * @returns {{ choices: string[], correctIndex: number }}
    */
   function buildFlashQuizChoices(card) {
     const norm = (x) => String(x).replace(/\s+/g, " ").trim();
     const correct = physicsPlainToLatex(String(card.back || "")).trim();
-    const raw = Array.isArray(card.quizDistractors) ? card.quizDistractors : [];
+    const refKey = sheetCardRefKey(card);
+    const levelCards = cardsForHomeLevel(homeLevelId);
+    /** @type {string[]} */
     const wrongs = [];
-    for (const d of raw) {
-      const w = physicsPlainToLatex(String(d)).trim();
-      if (!w || norm(w) === norm(correct)) continue;
-      if (wrongs.some((u) => norm(u) === norm(w))) continue;
+
+    function tryAddBack(tex) {
+      const w = physicsPlainToLatex(String(tex || "")).trim();
+      if (!w || norm(w) === norm(correct)) return false;
+      if (wrongs.some((u) => norm(u) === norm(w))) return false;
       wrongs.push(w);
-      if (wrongs.length >= 3) break;
+      return true;
     }
-    const pool = [correct, ...wrongs];
+
+    /** @param {{ topic: string, front: string, back: string }[]} candidates */
+    function addFromCardBacks(candidates) {
+      const shuffled = fisherYatesShuffle(candidates.slice());
+      for (const o of shuffled) {
+        if (wrongs.length >= 3) break;
+        if (sheetCardRefKey(o) === refKey) continue;
+        tryAddBack(o.back);
+      }
+    }
+
+    addFromCardBacks(levelCards.filter((c) => c.topic === card.topic));
+    addFromCardBacks(levelCards);
+    const raw = Array.isArray(card.quizDistractors) ? card.quizDistractors : [];
+    for (const d of raw) {
+      if (wrongs.length >= 3) break;
+      tryAddBack(d);
+    }
+    if (wrongs.length < 3) {
+      addFromCardBacks(CARDS.filter((c) => sheetCardRefKey(c) !== refKey));
+    }
+    let pad = 0;
+    while (wrongs.length < 3) {
+      wrongs.push("\\text{·" + String(++pad) + "}");
+    }
+
+    const pool = [correct, ...wrongs.slice(0, 3)];
     const choices = fisherYatesShuffle(pool);
     let correctIndex = choices.findIndex((x) => norm(x) === norm(correct));
     if (correctIndex < 0) correctIndex = 0;
     return { choices, correctIndex };
-  }
-
-  /**
-   * Czy warianty quizu są na tyle krótkie, że sensowny jest układ 2×2 (mniej przewijania).
-   * @param {string[]} choices
-   */
-  function flashQuizUseCompactGrid2x2(choices) {
-    if (!Array.isArray(choices) || choices.length !== 4) return false;
-    for (const tex of choices) {
-      const s = String(tex).replace(/\s+/g, " ").trim();
-      if (s.length > 96) return false;
-      if (/\\begin\b/.test(s)) return false;
-    }
-    return true;
   }
 
   /**
@@ -204,37 +220,6 @@
   function taskNeedsQuizGate(t) {
     const fq = t && t.formulaQuiz;
     return Boolean(fq && Array.isArray(fq.choices) && fq.choices.length >= 4);
-  }
-
-  /**
-   * Lewa strona wzoru (wielkość przed pierwszym =, ≤, ≥, ≈) do nagłówka quizu fiszek.
-   * @param {string} fullTex
-   * @returns {string|null}
-   */
-  function extractFlashQuizHeadSymbolLatex(fullTex) {
-    const t = String(fullTex || "").trim();
-    if (!t) return null;
-    const relMarkers = ["=", "\\le", "\\ge", "\\approx"];
-    let cut = -1;
-    let depth = 0;
-    for (let i = 0; i < t.length; i++) {
-      const c = t[i];
-      if (c === "{") depth++;
-      else if (c === "}") depth = Math.max(0, depth - 1);
-      if (depth !== 0) continue;
-      for (const m of relMarkers) {
-        if (t.startsWith(m, i)) {
-          cut = i;
-          break;
-        }
-      }
-      if (cut >= 0) break;
-    }
-    if (cut <= 0) return null;
-    let lhs = t.slice(0, cut).trim();
-    if (!lhs || /\\begin\b/.test(lhs)) return null;
-    if (lhs.length > 72) return null;
-    return lhs;
   }
 
   /**
@@ -486,6 +471,10 @@
     sp: "Szkoła podstawowa",
   };
 
+  /** Oficjalna karta wzorów fizyki dla SP (PDF poza repo — otwarcie w nowej karcie). */
+  const SP_OFFICIAL_SHEET_PDF_URL =
+    "https://www.sp-sobienie.pl/images/sampledata/WZORY/wzory%20fizyka.pdf";
+
   function orderedHomeLevelIds() {
     return HOME_LEVEL_TAB_ORDER.slice();
   }
@@ -513,16 +502,16 @@
     "lo-p-k1-kin-2": ["ruch"],
     "lo-p-k1-dyn-2": ["dynamika"],
     "lo-p-k2-pme-1": ["energia"],
-    "lo-p-k2-hyd-1": ["materiał"],
+    "lo-p-k2-hyd-1": ["hydrostatyka"],
     "lo-p-k3-ele-3": ["elektryczność"],
   };
 
   const SP_CURRICULUM_LINKS = {
     "sp-k7-kin-2": ["ruch"],
     "sp-k7-dyn-3": ["dynamika"],
-    "sp-k7-pme-1": ["praca"],
-    "sp-k7-w-4": ["materiał"],
-    "sp-k8-prad-3": ["elektryczność"],
+    "sp-k7-pme-1": ["praca-sp"],
+    "sp-k7-w-4": ["wstep-sp"],
+    "sp-k8-prad-3": ["prad-sp"],
   };
 
   /** Zadania wyłącznie z `zadania.json` w katalogu głównym (bramka `formulaQuiz` w `task-detail`). */
@@ -615,6 +604,56 @@
   }
 
   /**
+   * Liście programu bez wpisu w `*_CURRICULUM_LINKS` dostają zbiorcze `sectionRefs`,
+   * żeby pod poziomami **lo-podstawa** / **sp** lista zadań nie była pusta (treść sekcji rośnie w `zadania.json`).
+   */
+  function applyHeuristicCurriculumSectionRefs(level) {
+    if (!level.curriculum || !Array.isArray(level.sections)) return;
+    const known = new Set(level.sections.map((s) => s.id));
+
+    /** @param {TopicSection[]} nodes */
+    function walk(nodes) {
+      for (const node of nodes || []) {
+        if (hasNodeChildren(node)) {
+          walk(node.children);
+          continue;
+        }
+        const id = String(node.id || "");
+        if (!id || id.endsWith("-import") || id.startsWith("imp-")) continue;
+        if (getLeafSectionRefs(node).length) continue;
+        let ref = "";
+        if (level.id === "lo-podstawa") {
+          if (/^lo-p-k1-kin-/.test(id)) ref = "ruch";
+          else if (/^lo-p-k1-dyn-/.test(id)) ref = "dynamika";
+          else if (/^lo-p-k1-gra-/.test(id)) ref = "grawitacja";
+          else if (/^lo-p-k2-pme-/.test(id)) ref = "energia";
+          else if (/^lo-p-k2-hyd-/.test(id)) ref = "hydrostatyka";
+          else if (/^lo-p-k2-ter-/.test(id)) ref = "termodynamika";
+          else if (/^lo-p-k3-fal-/.test(id)) ref = "fale";
+          else if (/^lo-p-k3-ele-/.test(id)) ref = "elektryczność";
+          else if (/^lo-p-k3-mag-/.test(id)) ref = "magnetyzm";
+          else if (/^lo-p-k3-opt-/.test(id)) ref = "optyka";
+          else if (/^lo-p-k3-ja-/.test(id)) ref = "jadro";
+        } else if (level.id === "sp") {
+          if (/^sp-k7-w-/.test(id)) ref = "wstep-sp";
+          else if (/^sp-k7-kin-/.test(id)) ref = "ruch";
+          else if (/^sp-k7-dyn-/.test(id)) ref = "dynamika";
+          else if (/^sp-k7-pme-/.test(id)) ref = "praca-sp";
+          else if (/^sp-k7-hyd-/.test(id)) ref = "hydrostatyka";
+          else if (/^sp-k7-ter-/.test(id)) ref = "termodynamika";
+          else if (/^sp-k8-el-/.test(id)) ref = "elektrostatyka-sp";
+          else if (/^sp-k8-prad-/.test(id)) ref = "prad-sp";
+          else if (/^sp-k8-mag-/.test(id)) ref = "magnetyzm-sp";
+          else if (/^sp-k8-fal-/.test(id)) ref = "fale-sp";
+          else if (/^sp-k8-opt-/.test(id)) ref = "optyka-sp";
+        }
+        if (ref && known.has(ref)) node.sectionRefs = [ref];
+      }
+    }
+    walk(level.curriculum);
+  }
+
+  /**
    * Stare pliki JSON mogły używać klucza `t` zamiast `title` (węzły folderów).
    * @param {TopicSection[] | undefined} nodes
    */
@@ -642,6 +681,7 @@
         normalizeCurriculumNodes(lvl.curriculum);
         applyStaticCurriculumLinks(lvl);
         augmentGeminiCurriculumRefs(lvl);
+        applyHeuristicCurriculumSectionRefs(lvl);
         syncCurriculumImportFolder(lvl);
       }
     }
@@ -671,10 +711,14 @@
     try {
       await loadFiszkiWzory();
       await loadZadaniaJson();
-      if (!TASK_LEVELS.some((l) => l.id === homeLevelId)) {
+      const hidBoot = String(homeLevelId || "").trim();
+      if (!HOME_LEVEL_TAB_ORDER.includes(hidBoot)) {
         homeLevelId = TASK_LEVELS[0].id;
+      } else {
+        homeLevelId = hidBoot;
       }
       await loadCurriculaAndLinks();
+      installAppRootDelegation();
       render();
     } catch (e) {
       console.error(e);
@@ -703,6 +747,34 @@
   /** @type {{ index: number, choices: string[], correctIndex: number } | null} */
   let flashQuizCache = null;
 
+  /**
+   * Postęp quizu fiszek w `localStorage` (`fiszki_progress`): klucz = `card.front` (nazwa wzoru),
+   * wartość `'correct'` | `'wrong'`. Brak klucza = niewyświetlony.
+   * @type {Record<string, 'correct' | 'wrong'>}
+   */
+  let flashProgress = (function loadFlashProgress() {
+    try {
+      const raw = JSON.parse(localStorage.getItem("fiszki_progress") || "{}");
+      if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+      /** @type {Record<string, 'correct' | 'wrong'>} */
+      const out = {};
+      for (const k of Object.keys(raw)) {
+        if (raw[k] === "correct" || raw[k] === "wrong") out[k] = raw[k];
+      }
+      return out;
+    } catch {
+      return {};
+    }
+  })();
+
+  function persistFlashProgress() {
+    try {
+      localStorage.setItem("fiszki_progress", JSON.stringify(flashProgress));
+    } catch (e) {
+      console.warn("fiszki_progress: zapis do localStorage nie powiódł się", e);
+    }
+  }
+
   /** @type {string | null} */
   let taskLevelId = null;
   /** @type {string | null} */
@@ -710,6 +782,10 @@
   /** Ścieżka w planie programu (id węzłów) — do nawigacji po klasach i działach. */
   /** @type {string[]} */
   let taskCurriculumPath = [];
+  /** `""` = wszystkie działy; inaczej `id` węzła klasy z pierwszego poziomu `level.curriculum` (np. Klasa I). */
+  let taskClassTabId = "";
+  /** Rozwinięte węzły programu (rozdziały) na liście `task-chapters` — `id` z `curriculum`. */
+  let taskCurriculumExpandedIds = new Set();
   let taskIndex = 0;
   let taskAnswerVisible = false;
   let taskFormulasVisible = false;
@@ -745,28 +821,175 @@
     return null;
   }
 
-  /**
-   * @param {SchoolLevel} level
-   * @param {string[]} pathIds
-   */
-  function getCurriculumChildren(level, pathIds) {
-    const cur = level.curriculum;
-    if (!cur) return null;
-    let nodes = cur;
-    for (const pid of pathIds) {
-      const next = nodes.find((n) => n.id === pid);
-      if (!next || !hasNodeChildren(next)) return [];
-      nodes = /** @type {TopicSection[]} */ (next.children);
-    }
-    return nodes;
-  }
-
   /** @param {TopicSection} node */
   function getLeafSectionRefs(node) {
     if (!node) return [];
     if (Array.isArray(node.sectionRefs) && node.sectionRefs.length) return node.sectionRefs.slice();
     if (node.sectionRef) return [node.sectionRef];
     return [];
+  }
+
+  /**
+   * Id sekcji z `level.sections` powiązane z liśćmi programu w poddrzewie węzła (np. jedna klasa).
+   * @param {SchoolLevel} level
+   * @param {TopicSection} rootNode
+   * @returns {Set<string>}
+   */
+  function collectSectionIdsUnderCurriculumSubtree(level, rootNode) {
+    const ids = new Set();
+    /** @param {TopicSection} node */
+    function walk(node) {
+      if (!node) return;
+      if (!hasNodeChildren(node)) {
+        for (const rid of getLeafSectionRefs(node)) {
+          if (rid && level.sections.some((s) => s.id === rid)) ids.add(String(rid));
+        }
+        return;
+      }
+      for (const c of node.children || []) walk(c);
+    }
+    walk(rootNode);
+    return ids;
+  }
+
+  /**
+   * Rząd zakładek „Klasa …” nad listą działów. Pusty, gdy brak sensownego `curriculum`.
+   * @param {SchoolLevel} level
+   * @param {string} selectedClassId
+   */
+  function taskClassTabsHtml(level, selectedClassId) {
+    const roots = level.curriculum && Array.isArray(level.curriculum) ? level.curriculum : [];
+    const visibleRoots = roots.filter((n) => !(String(n.id).endsWith("-import") && !hasNodeChildren(n)));
+    if (!visibleRoots.length) return "";
+    const parts = [
+      `<button type="button" class="tab" role="tab" data-task-class="" aria-selected="${selectedClassId === "" ? "true" : "false"}">Wszystkie</button>`,
+    ];
+    for (const n of visibleRoots) {
+      const id = String(n.id || "");
+      const sel = id === selectedClassId ? "true" : "false";
+      const label = n.title != null && String(n.title).trim() ? String(n.title) : id;
+      parts.push(
+        `<button type="button" class="tab" role="tab" data-task-class="${escapeHtml(id)}" aria-selected="${sel}">${escapeHtml(label)}</button>`
+      );
+    }
+    return `<div class="tabs tabs-task-class" role="tablist" aria-label="Klasa">
+          ${parts.join("")}
+        </div>`;
+  }
+
+  /**
+   * Działy do listy w `task-chapters` — wg wybranej klasy lub wszystkie z JSON (w tym z 0 zadań).
+   * @param {SchoolLevel} level
+   * @param {string} classId
+   * @returns {TopicSection[]}
+   */
+  function sectionsForTaskClassFilter(level, classId) {
+    const all = level.sections || [];
+    if (!classId || !level.curriculum || !all.length) return all.slice();
+    const node = findCurriculumNodeById(level.curriculum, classId);
+    if (!node || !hasNodeChildren(node)) return all.slice();
+    const allowed = collectSectionIdsUnderCurriculumSubtree(level, node);
+    if (!allowed.size) return all.slice();
+    return all.filter((s) => allowed.has(s.id));
+  }
+
+  /** Upewnia się, że `taskClassTabId` wskazuje na istniejący węzeł klasy lub `""`. */
+  function normalizeTaskClassTabId(level) {
+    if (!level.curriculum || !Array.isArray(level.curriculum) || !level.curriculum.length) {
+      taskClassTabId = "";
+      return;
+    }
+    if (!taskClassTabId) return;
+    const node = findCurriculumNodeById(level.curriculum, taskClassTabId);
+    if (!node || !hasNodeChildren(node)) taskClassTabId = "";
+  }
+
+  /** Pierwszy poziom planu jak w `taskClassTabsHtml` (bez pustego „import”). */
+  function curriculumVisibleClassRoots(level) {
+    const roots = level.curriculum && Array.isArray(level.curriculum) ? level.curriculum : [];
+    return roots.filter((n) => !(String(n.id || "").endsWith("-import") && !hasNodeChildren(n)));
+  }
+
+  /** Liczba zadań dla liścia programu (`sectionRefs` / `sectionRef`). */
+  function countTasksOnCurriculumLeaf(level, leafId) {
+    const v = getTaskSectionView(level, leafId);
+    return v && Array.isArray(v.tasks) ? v.tasks.length : 0;
+  }
+
+  /** Suma zadań w poddrzewie (dla nagłówka rozdziału). */
+  function countTasksUnderCurriculumNode(level, node) {
+    if (!node) return 0;
+    if (!hasNodeChildren(node)) return countTasksOnCurriculumLeaf(level, node.id);
+    return (node.children || []).reduce((acc, c) => acc + countTasksUnderCurriculumNode(level, c), 0);
+  }
+
+  /**
+   * Rozwijalny rozdział albo klikalny podrozdział (liść).
+   * @param {SchoolLevel} level
+   * @param {TopicSection} node
+   * @param {number} depth — 0 = pod bezpośrednim „Klasa …”; większe = zagnieżdżenie w planie.
+   */
+  function renderCurriculumSubtree(level, node, depth) {
+    if (!node) return "";
+    const title = node.title != null && String(node.title).trim() ? String(node.title) : String(node.id || "");
+    if (!hasNodeChildren(node)) {
+      const n = countTasksOnCurriculumLeaf(level, node.id);
+      if (depth === 0) {
+        return `<button type="button" class="list-item" data-curriculum-leaf-id="${escapeHtml(node.id)}">
+          ${escapeHtml(title)}
+          <small>${escapeHtml(tasksLabel(n))}</small>
+        </button>`;
+      }
+      const nestCls = " task-podrozdzial-card--nested";
+      return `<button type="button" class="task-podrozdzial-card${nestCls}" data-curriculum-leaf-id="${escapeHtml(node.id)}">
+        <span class="task-podrozdzial-title">${escapeHtml(title)}</span>
+        <small class="task-podrozdzial-meta">${escapeHtml(tasksLabel(n))}</small>
+      </button>`;
+    }
+    const expanded = taskCurriculumExpandedIds.has(node.id);
+    const chevron = expanded ? "▼" : "▶";
+    const total = countTasksUnderCurriculumNode(level, node);
+    const sub = (node.children || []).map((ch) => renderCurriculumSubtree(level, ch, depth + 1)).join("");
+    const nestedCls = depth > 0 ? " task-rozdzial--nested" : "";
+    return `<div class="task-rozdzial${expanded ? " task-rozdzial--open" : ""}${nestedCls}">
+      <button type="button" class="task-rozdzial-head" data-rozdzial-id="${escapeHtml(node.id)}" aria-expanded="${
+        expanded ? "true" : "false"
+      }">
+        <span class="task-rozdzial-chev" aria-hidden="true">${chevron}</span>
+        <span class="task-rozdzial-title-wrap">
+          <span class="task-rozdzial-title">${escapeHtml(title)}</span>
+          <small class="task-rozdzial-meta">${escapeHtml(tasksLabel(total))}</small>
+        </span>
+      </button>
+      <div class="task-podrozdzial-stack"${expanded ? "" : " hidden"}>${sub}</div>
+    </div>`;
+  }
+
+  /**
+   * HTML drzewa działów z planu (`curriculum`) dla ekranu listy zadań.
+   * @param {SchoolLevel} level
+   * @param {string} classId — `""` = wszystkie klasy z planu.
+   * @returns {string} pusty, gdy brak planu lub nic do pokazania.
+   */
+  function renderTaskCurriculumTreeHtml(level, classId) {
+    const roots = curriculumVisibleClassRoots(level);
+    if (!roots.length) return "";
+    const scopes = classId ? roots.filter((r) => r.id === classId) : roots;
+    if (!scopes.length) return "";
+    const parts = [];
+    const showClassTitle = !classId && roots.length > 1;
+    for (const classNode of scopes) {
+      if (showClassTitle) {
+        const t =
+          classNode.title != null && String(classNode.title).trim() ? String(classNode.title) : String(classNode.id || "");
+        parts.push(`<h3 class="task-class-heading">${escapeHtml(t)}</h3>`);
+      }
+      if (!hasNodeChildren(classNode)) continue;
+      for (const child of classNode.children || []) {
+        parts.push(renderCurriculumSubtree(level, child, 0));
+      }
+    }
+    return parts.length ? parts.join("") : "";
   }
 
   /**
@@ -795,45 +1018,6 @@
     return getTaskSectionView(level, sectionId);
   }
 
-  function countTasksInLevel(level) {
-    return level.sections.reduce((n, s) => n + s.tasks.length, 0);
-  }
-
-  function countCurriculumTopNodes(level) {
-    if (level.curriculum && level.curriculum.length) return level.curriculum.length;
-    return level.sections.length;
-  }
-
-  /**
-   * @param {SchoolLevel} level
-   * @param {TopicSection} node
-   */
-  function countTasksOnCurriculumNode(level, node) {
-    if (!hasNodeChildren(node)) {
-      const v = getTaskSectionView(level, node.id);
-      return v && Array.isArray(v.tasks) ? v.tasks.length : 0;
-    }
-    let n = 0;
-    for (const c of node.children || []) n += countTasksOnCurriculumNode(level, c);
-    return n;
-  }
-
-  /**
-   * @param {SchoolLevel} level
-   * @param {string[]} pathIds
-   */
-  function curriculumBreadcrumbTitles(level, pathIds) {
-    const parts = [level.title];
-    let nodes = level.curriculum;
-    for (const pid of pathIds) {
-      const n = nodes ? nodes.find((x) => x.id === pid) : null;
-      if (!n) break;
-      parts.push(n.title);
-      nodes = n.children || null;
-    }
-    return parts;
-  }
-
   /** @param {number} n */
   function tasksLabel(n) {
     if (n === 1) return "1 zadanie";
@@ -841,15 +1025,6 @@
     const m100 = n % 100;
     if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return n + " zadania";
     return n + " zadań";
-  }
-
-  /** @param {number} n */
-  function chaptersLabel(n) {
-    if (n === 1) return "1 dział";
-    const m10 = n % 10;
-    const m100 = n % 100;
-    if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return n + " działy";
-    return n + " działów";
   }
 
   function escapeHtml(s) {
@@ -970,6 +1145,75 @@
     return order.map((topic) => ({ topic, cards: map[topic] }));
   }
 
+  /** @param {{ front: string }[]} cards */
+  function countFlashStatsForCards(cards) {
+    let correct = 0;
+    let wrong = 0;
+    let unseen = 0;
+    for (const c of cards) {
+      const st = flashProgress[c.front];
+      if (st === "correct") correct += 1;
+      else if (st === "wrong") wrong += 1;
+      else unseen += 1;
+    }
+    return { correct, wrong, unseen };
+  }
+
+  /** Pasek: zielony (poprawne) → czerwony (błędne) → granatowy (niewyświetlone), proporcjonalnie. */
+  function flashTopicTriGradientStyle(correct, wrong, unseen) {
+    const t = correct + wrong + unseen;
+    if (!t) return "background:rgba(0,0,0,0.08);";
+    const p1 = (correct / t) * 100;
+    const p2 = ((correct + wrong) / t) * 100;
+    return `background:linear-gradient(to right,#2e7d32 0%,#2e7d32 ${p1}%,#c62828 ${p1}%,#c62828 ${p2}%,#1e3a5f ${p2}%,#1e3a5f 100%);`;
+  }
+
+  /**
+   * Zakładka Fiszki na `main`: tryby globalne + lista działów z postępem.
+   * @param {string} levelId
+   * @param {string} levelTitle
+   */
+  function renderFiszkiPanelInnerHtml(levelId, levelTitle) {
+    const cards = cardsForHomeLevel(levelId);
+    const groups = groupCardsByTopicInOrder(cards);
+    const wrongPool = cards.filter((c) => flashProgress[c.front] === "wrong");
+    const reviewDisabled = wrongPool.length === 0;
+    const reviewDis = reviewDisabled ? " disabled" : "";
+    const quickDisabled = cards.length === 0;
+    const quickDis = quickDisabled ? " disabled" : "";
+    const topicsHtml =
+      groups.length === 0
+        ? `<p class="hint" style="margin:0">Brak fiszek wzorów dla tego poziomu.</p>`
+        : `<div class="flash-topic-grid" role="list">${groups
+            .map((g) => {
+              const st = countFlashStatsForCards(g.cards);
+              const bar = flashTopicTriGradientStyle(st.correct, st.wrong, st.unseen);
+              const aria = `Postęp: ${st.correct} poprawnych, ${st.wrong} błędnych, ${st.unseen} niewyświetlonych, ${g.cards.length} wzorów w dziale`;
+              return `<button type="button" class="flash-topic-tile" role="listitem" data-flash-topic="${escapeHtml(
+                g.topic
+              )}" aria-label="${escapeHtml(g.topic + " — " + aria)}">
+              <span class="flash-topic-tile-top">
+                <span class="flash-topic-tile-title">${escapeHtml(g.topic)}</span>
+                <span class="flash-topic-tile-counts">${st.correct} / ${st.wrong} / ${st.unseen}</span>
+              </span>
+              <div class="flash-topic-bar" style="${bar}" aria-hidden="true"></div>
+              <small class="flash-topic-tile-n">${g.cards.length} wzorów</small>
+            </button>`;
+            })
+            .join("")}</div>`;
+    return `
+          <p class="panel-title">Quiz — rozpoznaj wzór</p>
+          <p class="sub panel-sub" style="margin-top:-0.35rem">Poziom: <strong>${escapeHtml(
+            levelTitle
+          )}</strong> — postęp zapisuje się lokalnie (<code>localStorage</code>, klucz <code>fiszki_progress</code>). Cztery warianty LaTeXu; po odpowiedzi podświetlenie wariantów oraz pełna fiszka z legendą symboli.</p>
+          <div class="flash-mode-row">
+            <button type="button" class="btn" data-flash-mode="quick10"${quickDis}>Szybka 10 (Losowe z całości)</button>
+            <button type="button" class="btn btn-secondary" data-flash-mode="review-wrong"${reviewDis}>Powtórka (Tylko błędy)</button>
+          </div>
+          <p class="panel-title flash-topic-heading">Działy</p>
+          ${topicsHtml}`;
+  }
+
   /**
    * @param {{ topic: string, front: string, back: string }[]} cards
    */
@@ -987,8 +1231,12 @@
 
   function renderKartaWzorowPanelHtml() {
     const groups = groupCardsByTopicInOrder(cardsForHomeLevel(homeLevelId));
+    const officialSpPdf =
+      homeLevelId === "sp"
+        ? `<p class="sheet-official-pdf"><a href="${SP_OFFICIAL_SHEET_PDF_URL}" class="sheet-official-pdf-link" target="_blank" rel="noopener noreferrer">Oficjalna karta wzorów — PDF (SP)</a> <span class="sheet-official-pdf-note">(dokument zewnętrzny)</span></p>`
+        : "";
     if (groups.length === 0) {
-      return `<p class="hint">Brak fiszek wzorów.</p>`;
+      return `${officialSpPdf}<p class="hint">Brak fiszek wzorów.</p>`;
     }
     sheetTopicIndex = Math.max(0, Math.min(sheetTopicIndex, groups.length - 1));
     const optionsHtml = groups
@@ -998,7 +1246,7 @@
       )
       .join("");
     const bodyHtml = renderSheetTopicCardsHtml(groups[sheetTopicIndex].cards);
-    return `<div class="sheet-layout">
+    return `${officialSpPdf}<div class="sheet-layout">
       <nav class="sheet-topic-nav" aria-label="Dział wzorów">
         <label class="sheet-topic-label" for="sheet-topic-select">Dział</label>
         <select id="sheet-topic-select" class="sheet-topic-select">${optionsHtml}</select>
@@ -1187,82 +1435,188 @@
     });
   }
 
-  function bindMainScreen() {
+  /**
+   * Synchronizacja paneli głównych po `innerHTML` (bez podpisywania kliknięć — delegacja na `#app`).
+   * @param {'fiszki' | 'zadania' | 'karta-wzorow'} tab
+   */
+  function applyMainTabPanels(tab) {
     const tabFiszki = document.getElementById("tab-fiszki");
     const tabKartaWzorow = document.getElementById("tab-karta-wzorow");
     const tabZadania = document.getElementById("tab-zadania");
     const panelFiszki = document.getElementById("panel-fiszki");
     const panelKartaWzorow = document.getElementById("panel-karta-wzorow");
     const panelZadania = document.getElementById("panel-zadania");
+    if (!tabFiszki || !tabKartaWzorow || !tabZadania || !panelFiszki || !panelKartaWzorow || !panelZadania) return;
+    tabFiszki.setAttribute("aria-selected", tab === "fiszki" ? "true" : "false");
+    tabKartaWzorow.setAttribute("aria-selected", tab === "karta-wzorow" ? "true" : "false");
+    tabZadania.setAttribute("aria-selected", tab === "zadania" ? "true" : "false");
+    panelFiszki.hidden = tab !== "fiszki";
+    panelKartaWzorow.hidden = tab !== "karta-wzorow";
+    panelZadania.hidden = tab !== "zadania";
+  }
 
-    function setTab(tab) {
-      mainTab = tab;
-      tabFiszki.setAttribute("aria-selected", tab === "fiszki" ? "true" : "false");
-      tabKartaWzorow.setAttribute("aria-selected", tab === "karta-wzorow" ? "true" : "false");
-      tabZadania.setAttribute("aria-selected", tab === "zadania" ? "true" : "false");
-      panelFiszki.hidden = tab !== "fiszki";
-      panelKartaWzorow.hidden = tab !== "karta-wzorow";
-      panelZadania.hidden = tab !== "zadania";
-    }
+  /** Jednorazowa delegacja na `#app` — przetrwa zastępowanie `innerHTML` potomków. Poziomy i zakładki treści także na ekranach zadań. */
+  function installAppRootDelegation() {
+    if (!app || app.dataset.appDelegation === "1") return;
+    app.dataset.appDelegation = "1";
 
-    tabFiszki.onclick = () => setTab("fiszki");
-    tabKartaWzorow.onclick = () => setTab("karta-wzorow");
-    tabZadania.onclick = () => {
-      mainTab = "zadania";
-      taskLevelId = homeLevelId;
-      taskSectionId = null;
-      taskIndex = 0;
-      taskAnswerVisible = false;
-      taskFormulasVisible = false;
-      taskSolutionVisible = false;
-      taskCurriculumPath = [];
-      screen = "task-chapters";
-      render();
-    };
-    setTab(mainTab);
+    app.addEventListener("click", (ev) => {
+      const raw = ev.target;
+      const el = raw instanceof Element ? raw : raw && raw.parentElement;
+      if (!(el instanceof Element)) return;
 
-    document.getElementById("btn-order").onclick = () => {
-      deck = cardsForHomeLevel(homeLevelId).slice();
-      flashIndex = 0;
-      flashQuizPicked = null;
-      flashQuizCache = null;
-      screen = "flash-study";
-      render();
-    };
-    document.getElementById("btn-random").onclick = () => {
-      deck = fisherYatesShuffle(cardsForHomeLevel(homeLevelId));
-      flashIndex = 0;
-      flashQuizPicked = null;
-      flashQuizCache = null;
-      screen = "flash-study";
-      render();
-    };
-
-    document.querySelectorAll("[data-home-level]").forEach((btn) => {
-      btn.onclick = () => {
-        const id = btn.getAttribute("data-home-level");
-        if (!id || !getLevel(id)) return;
-        homeLevelId = id;
-        sheetTopicIndex = 0;
-        deck = cardsForHomeLevel(homeLevelId).slice();
-        taskCurriculumPath = [];
-        if (screen === "task-chapters" && taskLevelId != null) {
+      const navScreens = screen === "main" || screen === "task-chapters" || screen === "task-detail";
+      if (navScreens) {
+        const levelBtn = el.closest("[data-home-level]");
+        if (levelBtn) {
+          const id = String(levelBtn.dataset.homeLevel || levelBtn.getAttribute("data-home-level") || "").trim();
+          if (!id) return;
+          homeLevelId = id;
+          sheetTopicIndex = 0;
+          deck = cardsForHomeLevel(homeLevelId).slice();
+          taskCurriculumPath = [];
+          taskClassTabId = "";
+          taskCurriculumExpandedIds.clear();
           taskLevelId = homeLevelId;
-          taskSectionId = null;
-          taskIndex = 0;
-          taskAnswerVisible = false;
-          taskFormulasVisible = false;
-          taskSolutionVisible = false;
+          if (screen === "task-chapters" || screen === "task-detail") {
+            taskSectionId = null;
+            taskIndex = 0;
+            taskAnswerVisible = false;
+            taskFormulasVisible = false;
+            taskSolutionVisible = false;
+            lastTaskQuizGateKey = "";
+            screen = "task-chapters";
+          }
+          render();
+          return;
         }
-        render();
-      };
+
+        const mainTabBtn = el.closest("[data-main-tab]");
+        if (mainTabBtn) {
+          const which = String(mainTabBtn.dataset.mainTab || mainTabBtn.getAttribute("data-main-tab") || "").trim();
+          if (which === "zadania") {
+            mainTab = "zadania";
+            taskLevelId = homeLevelId;
+            taskSectionId = null;
+            taskIndex = 0;
+            taskAnswerVisible = false;
+            taskFormulasVisible = false;
+            taskSolutionVisible = false;
+            taskCurriculumPath = [];
+            lastTaskQuizGateKey = "";
+            taskClassTabId = "";
+            taskCurriculumExpandedIds.clear();
+            screen = "task-chapters";
+            render();
+            return;
+          }
+          if (which === "fiszki" || which === "karta-wzorow") {
+            mainTab = /** @type {'fiszki' | 'karta-wzorow'} */ (which);
+            if (screen === "main") {
+              applyMainTabPanels(mainTab);
+              return;
+            }
+            taskLevelId = null;
+            taskSectionId = null;
+            taskCurriculumPath = [];
+            lastTaskQuizGateKey = "";
+            taskClassTabId = "";
+            taskCurriculumExpandedIds.clear();
+            screen = "main";
+            render();
+            return;
+          }
+        }
+      }
+
+      if (screen === "main" && mainTab === "fiszki") {
+        const modeBtn = el.closest("[data-flash-mode]");
+        if (modeBtn instanceof HTMLButtonElement && !modeBtn.disabled) {
+          const which = String(modeBtn.getAttribute("data-flash-mode") || "").trim();
+          const pool = cardsForHomeLevel(homeLevelId);
+          if (which === "quick10") {
+            const shuffled = fisherYatesShuffle(pool.slice());
+            deck = shuffled.slice(0, Math.min(10, shuffled.length));
+            flashIndex = 0;
+            flashQuizPicked = null;
+            flashQuizCache = null;
+            screen = "flash-study";
+            render();
+            return;
+          }
+          if (which === "review-wrong") {
+            const wrongOnly = pool.filter((c) => flashProgress[c.front] === "wrong");
+            if (!wrongOnly.length) return;
+            deck = fisherYatesShuffle(wrongOnly.slice());
+            flashIndex = 0;
+            flashQuizPicked = null;
+            flashQuizCache = null;
+            screen = "flash-study";
+            render();
+            return;
+          }
+        }
+        const topicBtn = el.closest("[data-flash-topic]");
+        if (topicBtn instanceof HTMLButtonElement) {
+          const topic = topicBtn.getAttribute("data-flash-topic");
+          if (!topic) return;
+          const subset = cardsForHomeLevel(homeLevelId).filter((c) => c.topic === topic);
+          if (!subset.length) return;
+          deck = fisherYatesShuffle(subset.slice());
+          flashIndex = 0;
+          flashQuizPicked = null;
+          flashQuizCache = null;
+          screen = "flash-study";
+          render();
+          return;
+        }
+      }
     });
 
-    const sheetTopicSel = document.getElementById("sheet-topic-select");
-    if (sheetTopicSel) {
-      sheetTopicSel.addEventListener("change", applySheetTopicSelectChange);
-      sheetTopicSel.addEventListener("input", applySheetTopicSelectChange);
+    app.addEventListener("change", onSheetTopicSelectMaybe);
+    app.addEventListener("input", onSheetTopicSelectMaybe);
+  }
+
+  /** @param {Event} ev */
+  function onSheetTopicSelectMaybe(ev) {
+    const t = ev.target;
+    if (!(t instanceof HTMLSelectElement) || t.id !== "sheet-topic-select") return;
+    if (screen !== "main" || mainTab !== "karta-wzorow") return;
+    applySheetTopicSelectChange();
+  }
+
+  /** Ujednolicenie `homeLevelId` do slotów menu górnego (przed renderem nawigacji / `main`). */
+  function ensureHomeLevelIdInMenuOrder() {
+    homeLevelId = String(homeLevelId || "").trim();
+    if (!homeLevelId) {
+      homeLevelId = TASK_LEVELS[0]?.id || HOME_LEVEL_TAB_ORDER[0];
+    } else if (!HOME_LEVEL_TAB_ORDER.includes(homeLevelId)) {
+      homeLevelId = TASK_LEVELS[0]?.id || HOME_LEVEL_TAB_ORDER[0];
     }
+  }
+
+  /** Dwa rzędy zakładek: poziom (`data-home-level`) + treść (`data-main-tab`) — `main` i widoki zadań. */
+  function homeNavTabsHtml() {
+    ensureHomeLevelIdInMenuOrder();
+    const homeLevelTabsHtml = orderedHomeLevelIds()
+      .map((id) => {
+        const lvl = getLevel(id);
+        const label =
+          lvl && String(lvl.title || "").trim() ? lvl.title : HOME_LEVEL_FALLBACK_TITLES[id] || id;
+        const sel = id === homeLevelId ? "true" : "false";
+        return `<button type="button" class="tab" role="tab" data-home-level="${escapeHtml(id)}" aria-selected="${sel}">${escapeHtml(
+          label
+        )}</button>`;
+      })
+      .join("");
+    return `<div class="tabs tabs-level" role="tablist" aria-label="Poziom zaawansowania">
+          ${homeLevelTabsHtml}
+        </div>
+        <div class="tabs tabs-main" role="tablist" aria-label="Treść">
+          <button type="button" class="tab" role="tab" id="tab-fiszki" data-main-tab="fiszki" aria-selected="${mainTab === "fiszki" ? "true" : "false"}">Fiszki</button>
+          <button type="button" class="tab" role="tab" id="tab-karta-wzorow" data-main-tab="karta-wzorow" aria-selected="${mainTab === "karta-wzorow" ? "true" : "false"}">Karta wzorów</button>
+          <button type="button" class="tab" role="tab" id="tab-zadania" data-main-tab="zadania" aria-selected="${mainTab === "zadania" ? "true" : "false"}">Zadania</button>
+        </div>`;
   }
 
   function render() {
@@ -1277,45 +1631,23 @@
     }
 
     if (screen === "main") {
-      let hl = getLevel(homeLevelId) || TASK_LEVELS[0];
+      ensureHomeLevelIdInMenuOrder();
+
+      const resolvedLevel = getLevel(homeLevelId);
+      let hl = resolvedLevel;
       if (!hl) {
-        const fid = HOME_LEVEL_TAB_ORDER[0];
-        hl = { id: fid, title: HOME_LEVEL_FALLBACK_TITLES[fid] || fid, sections: [] };
+        hl = {
+          id: homeLevelId,
+          title: HOME_LEVEL_FALLBACK_TITLES[homeLevelId] || homeLevelId,
+          sections: [],
+        };
       }
-      homeLevelId = hl.id;
 
-      const homeLevelTabsHtml = orderedHomeLevelIds()
-        .map((id) => {
-          const lvl = getLevel(id);
-          const label =
-            lvl && String(lvl.title || "").trim() ? lvl.title : HOME_LEVEL_FALLBACK_TITLES[id] || id;
-          const sel = id === homeLevelId ? "true" : "false";
-          return `<button type="button" class="tab" role="tab" data-home-level="${escapeHtml(id)}" aria-selected="${sel}">${escapeHtml(
-            label
-          )}</button>`;
-        })
-        .join("");
-
-      const wzoryCount = cardsForHomeLevel(hl.id).length;
 
       app.innerHTML = `
-        <h1>Fizyka</h1>
-        <p class="sub">Wzory z karty CKE, fiszki i zadania — wybierz poziom, potem zakładkę. <strong>Zadania</strong> otwierają od razu listę planu programu / działów.</p>
-        <div class="tabs tabs-level" role="tablist" aria-label="Poziom zaawansowania">
-          ${homeLevelTabsHtml}
-        </div>
-        <div class="tabs tabs-main" role="tablist" aria-label="Treść">
-          <button type="button" class="tab" role="tab" id="tab-fiszki" aria-selected="true">Fiszki</button>
-          <button type="button" class="tab" role="tab" id="tab-karta-wzorow" aria-selected="false">Karta wzorów</button>
-          <button type="button" class="tab" role="tab" id="tab-zadania" aria-selected="false">Zadania</button>
-        </div>
+        ${homeNavTabsHtml()}
         <div id="panel-fiszki" role="tabpanel" aria-labelledby="tab-fiszki">
-          <p class="panel-title">Quiz — rozpoznaj wzór</p>
-          <p class="sub panel-sub" style="margin-top:-0.35rem">Poziom: <strong>${escapeHtml(hl.title)}</strong> — w zestawie <strong>${wzoryCount}</strong> wzorów. Cztery warianty LaTeXu; po odpowiedzi podświetlenie wariantów oraz pełna fiszka z legendą symboli.</p>
-          <div class="intro-actions">
-            <button type="button" class="btn" id="btn-order">Nauka (kolejność)</button>
-            <button type="button" class="btn btn-secondary" id="btn-random">Nauka (losowo)</button>
-          </div>
+          ${renderFiszkiPanelInnerHtml(homeLevelId, hl.title)}
         </div>
         <div id="panel-karta-wzorow" role="tabpanel" aria-labelledby="tab-karta-wzorow" hidden>
           <p class="panel-title">Karta wzorów (CKE)</p>
@@ -1324,7 +1656,7 @@
         </div>
         <div id="panel-zadania" role="tabpanel" aria-labelledby="tab-zadania" hidden></div>
       `;
-      bindMainScreen();
+      applyMainTabPanels(mainTab);
       queueMountKatex();
       return;
     }
@@ -1363,15 +1695,19 @@
       const quiz = flashQuizCache;
       const showFullCard = flashQuizPicked !== null;
       const correctLatex = physicsPlainToLatex(card.back).trim();
-      const headSymbolTex =
-        (card.symbolLatex && String(card.symbolLatex).trim()) || extractFlashQuizHeadSymbolLatex(correctLatex);
-      const titleSuffixHtml =
-        headSymbolTex != null && headSymbolTex !== ""
-          ? ' <span class="quiz-head-symbol">(' + katexHostHtml(headSymbolTex, false) + ")</span>"
-          : "";
-      const quizOptsGridClass = flashQuizUseCompactGrid2x2(quiz.choices)
-        ? "quiz-options quiz-options--grid2"
-        : "quiz-options quiz-options--stack";
+      const quizOptsGridClass = "quiz-options quiz-options--stack";
+
+      const headInnerHtml = showFullCard
+        ? `<div class="quiz-flip-face" aria-live="polite">
+            <span class="label">Pełna fiszka</span>
+            <p class="quiz-flip-topic">${escapeHtml(card.topic)} — ${escapeHtml(card.front)}</p>
+            <div class="sheet-formula quiz-flip-formula">${katexHostHtml(correctLatex, true)}</div>
+            ${symbolLegendBlockHtml(getCardSymbolLegendEntries(card))}
+          </div>`
+        : `<div class="quiz-prompt-question">
+            <span class="label">${escapeHtml(card.topic)}</span>
+            <p class="quiz-question-title">${escapeHtml(card.front)}</p>
+          </div>`;
 
       const optionsHtml = quiz.choices
         .map((tex, i) => {
@@ -1388,15 +1724,6 @@
         })
         .join("");
 
-      const revealHtml = showFullCard
-        ? `<div class="quiz-full-card" aria-live="polite">
-            <span class="label">Pełna fiszka</span>
-            <p class="quiz-full-topic">${escapeHtml(card.topic)} — ${escapeHtml(card.front)}</p>
-            <div class="sheet-formula">${katexHostHtml(correctLatex, true)}</div>
-            ${symbolLegendBlockHtml(getCardSymbolLegendEntries(card))}
-          </div>`
-        : "";
-
       app.innerHTML = `
         <div class="top-bar">
           <button type="button" class="btn btn-secondary btn-back" id="btn-main">← Menu</button>
@@ -1404,13 +1731,11 @@
         </div>
         <p class="progress">${flashIndex + 1} / ${deck.length}</p>
         <div class="quiz-scene">
-          <div class="quiz-card">
-            <span class="label">${escapeHtml(card.topic)}</span>
-            <p class="quiz-question-title">${escapeHtml(card.front)}${titleSuffixHtml}</p>
+          <div class="quiz-card quiz-card--flip">
+            <div class="quiz-prompt-slot">${headInnerHtml}</div>
             <div class="${quizOptsGridClass}" role="group" aria-label="Warianty odpowiedzi">
               ${optionsHtml}
             </div>
-            ${revealHtml}
           </div>
         </div>
         <div class="btn-row">
@@ -1432,6 +1757,9 @@
           if (flashQuizPicked !== null) return;
           const i = Number(btn.getAttribute("data-quiz-opt"));
           if (Number.isNaN(i)) return;
+          const isCorrect = i === quiz.correctIndex;
+          flashProgress[card.front] = isCorrect ? "correct" : "wrong";
+          persistFlashProgress();
           flashQuizPicked = i;
           render();
         };
@@ -1471,7 +1799,7 @@
         return;
       }
 
-      /** Lista zadań w wybranym dziale / liściu programu — ten sam ekran co drzewo (bez pośredniego „pustego” kroku). */
+      /** Lista zadań w wybranym dziale (`level.sections`). */
       if (taskSectionId) {
         const sec = getSection(taskLevelId, taskSectionId);
         if (!sec) {
@@ -1490,21 +1818,15 @@
         </button>`
                 )
                 .join("")
-            : `<p class="hint" style="margin:0">Brak zadań w tej pozycji programu. Wybierz inny temat lub dopisz zestaw w JSON.</p>`;
-
-        const crumb = level.curriculum
-          ? `<p class="curriculum-crumb">${escapeHtml(curriculumBreadcrumbTitles(level, taskCurriculumPath).join(" › "))}</p>`
-          : "";
-
-        const backListLabel = level.curriculum ? "← Plan programu" : "← Działy";
+            : `<p class="hint" style="margin:0">Brak zadań w tym dziale. Wybierz inny dział lub dopisz zestaw w JSON.</p>`;
 
         app.innerHTML = `
+        ${homeNavTabsHtml()}
         <div class="top-bar">
-          <button type="button" class="btn btn-secondary btn-back" id="btn-back-chapters">${backListLabel}</button>
-          <h1>Zadania</h1>
+          <button type="button" class="btn btn-secondary btn-back" id="btn-back-chapters">← Działy</button>
+          <h2 class="top-bar-title">Zadania</h2>
         </div>
         <p class="sub" style="margin-bottom:0.35rem">${escapeHtml(level.title)}</p>
-        ${crumb}
         <p class="panel-title" style="margin-top:0.65rem">${escapeHtml(sec.title)}</p>
         <div class="list-stack">${items}</div>
       `;
@@ -1514,6 +1836,7 @@
           taskAnswerVisible = false;
           taskFormulasVisible = false;
           taskSolutionVisible = false;
+          taskCurriculumPath = [];
           render();
         };
 
@@ -1530,103 +1853,98 @@
         return;
       }
 
-      const crumb = level.curriculum
-        ? `<p class="curriculum-crumb">${escapeHtml(curriculumBreadcrumbTitles(level, taskCurriculumPath).join(" › "))}</p>`
-        : "";
+      normalizeTaskClassTabId(level);
+      const classTabs = taskClassTabsHtml(level, taskClassTabId);
+      const treeHtml = renderTaskCurriculumTreeHtml(level, taskClassTabId);
 
-      let chaptersHtml = "";
-      if (level.curriculum) {
-        let kids = getCurriculumChildren(level, taskCurriculumPath);
-        if (!kids) kids = [];
-        if (taskCurriculumPath.length === 0) {
-          kids = kids.filter((n) => !(n.id.endsWith("-import") && !hasNodeChildren(n)));
-        }
-        chaptersHtml = kids
-          .map((node) => {
-            const nTasks = countTasksOnCurriculumNode(level, node);
-            if (hasNodeChildren(node)) {
-              const nSub = (node.children || []).length;
-              return `<button type="button" class="list-item" data-cnav="${escapeHtml(node.id)}">${escapeHtml(node.title)}<small>${nSub} pozycji · ${tasksLabel(nTasks)}</small></button>`;
-            }
-            return `<button type="button" class="list-item" data-leaf="${escapeHtml(node.id)}">${escapeHtml(node.title)}<small>${tasksLabel(nTasks)}</small></button>`;
-          })
-          .join("");
+      let chaptersHtml;
+      if (treeHtml) {
+        chaptersHtml = treeHtml;
       } else {
-        chaptersHtml = level.sections
-          .map(
-            (s) => `
-        <button type="button" class="list-item" id="chap-${escapeHtml(s.id)}">
+        const filteredSections = sectionsForTaskClassFilter(level, taskClassTabId);
+        chaptersHtml =
+          filteredSections.length > 0
+            ? filteredSections
+                .map((s) => {
+                  const n = Array.isArray(s.tasks) ? s.tasks.length : 0;
+                  return `
+        <button type="button" class="list-item" data-section-id="${escapeHtml(s.id)}">
           ${escapeHtml(s.title)}
-          <small>${tasksLabel(s.tasks.length)}</small>
-        </button>`
-          )
-          .join("");
+          <small>${tasksLabel(n)}</small>
+        </button>`;
+                })
+                .join("")
+            : `<p class="hint" style="margin:0">${
+                classTabs
+                  ? "Brak działów przypisanych do tej klasy w planie — wybierz „Wszystkie” lub inną klasę."
+                  : "Brak zdefiniowanych działów dla tego poziomu. Uzupełnij zadania.json lub wybierz inny poziom w menu."
+              }</p>`;
       }
 
-      const panelTitle = level.curriculum ? "Plan programu" : "Działy";
-      const backLabel = level.curriculum && taskCurriculumPath.length ? "← Wyżej" : "← Menu";
-      const zadaniaMeta = `${tasksLabel(countTasksInLevel(level))} · ${chaptersLabel(countCurriculumTopNodes(level))}`;
-
       app.innerHTML = `
-        <div class="top-bar">
-          <button type="button" class="btn btn-secondary btn-back" id="btn-back-levels">${backLabel}</button>
-          <h1>Zadania</h1>
-        </div>
-        <p class="sub" style="margin-bottom:0.5rem">${escapeHtml(level.title)}</p>
-        <p class="sub" style="margin:0 0 0.75rem;font-size:0.85rem;color:var(--muted)">${escapeHtml(zadaniaMeta)}</p>
-        ${crumb}
-        <p class="panel-title" style="margin-top:0.75rem">${panelTitle}</p>
-        <div class="list-stack">${chaptersHtml}</div>
+        ${homeNavTabsHtml()}
+        <p class="task-chapters-toolbar"><button type="button" class="btn-link-back" id="btn-back-levels">← Menu</button></p>
+        ${classTabs}
+        <p class="panel-title task-dzialy-heading">Działy</p>
+        <div class="list-stack task-curriculum-root">${chaptersHtml}</div>
       `;
 
       document.getElementById("btn-back-levels").onclick = () => {
-        if (level.curriculum && taskCurriculumPath.length > 0) {
-          taskCurriculumPath.pop();
-          render();
-        } else {
-          screen = "main";
-          mainTab = "fiszki";
-          taskLevelId = null;
-          taskCurriculumPath = [];
-          render();
-        }
+        taskCurriculumExpandedIds.clear();
+        screen = "main";
+        mainTab = "fiszki";
+        taskLevelId = null;
+        taskSectionId = null;
+        taskCurriculumPath = [];
+        taskClassTabId = "";
+        render();
       };
 
-      app.querySelectorAll("[data-cnav]").forEach((btn) => {
+      app.querySelectorAll("[data-section-id]").forEach((btn) => {
         btn.onclick = () => {
-          const id = btn.getAttribute("data-cnav");
-          if (id) taskCurriculumPath.push(id);
-          render();
-        };
-      });
-      app.querySelectorAll("[data-leaf]").forEach((btn) => {
-        btn.onclick = () => {
-          const id = btn.getAttribute("data-leaf");
+          const id = btn.getAttribute("data-section-id");
           if (!id) return;
           taskSectionId = id;
           taskIndex = 0;
           taskAnswerVisible = false;
           taskFormulasVisible = false;
           taskSolutionVisible = false;
+          taskCurriculumPath = [];
           render();
         };
       });
 
-      if (!level.curriculum) {
-        level.sections.forEach((s) => {
-          const b = document.getElementById("chap-" + s.id);
-          if (b) {
-            b.onclick = () => {
-              taskSectionId = s.id;
-              taskIndex = 0;
-              taskAnswerVisible = false;
-              taskFormulasVisible = false;
-              taskSolutionVisible = false;
-              render();
-            };
-          }
-        });
-      }
+      app.querySelectorAll("[data-curriculum-leaf-id]").forEach((btn) => {
+        btn.onclick = () => {
+          const id = btn.getAttribute("data-curriculum-leaf-id");
+          if (!id) return;
+          taskSectionId = id;
+          taskIndex = 0;
+          taskAnswerVisible = false;
+          taskFormulasVisible = false;
+          taskSolutionVisible = false;
+          taskCurriculumPath = [];
+          render();
+        };
+      });
+
+      app.querySelectorAll("[data-rozdzial-id]").forEach((btn) => {
+        btn.onclick = () => {
+          const id = btn.getAttribute("data-rozdzial-id");
+          if (!id) return;
+          if (taskCurriculumExpandedIds.has(id)) taskCurriculumExpandedIds.delete(id);
+          else taskCurriculumExpandedIds.add(id);
+          render();
+        };
+      });
+
+      app.querySelectorAll("[data-task-class]").forEach((btn) => {
+        btn.onclick = () => {
+          taskCurriculumExpandedIds.clear();
+          taskClassTabId = btn.getAttribute("data-task-class") || "";
+          render();
+        };
+      });
       return;
     }
 
@@ -1666,7 +1984,7 @@
 
       let formulaQuizHtml = "";
       if (needsQuizGate && fq) {
-        const quizOptsClass = "quiz-options quiz-options--grid2 task-quiz-options";
+        const quizOptsClass = "quiz-options quiz-options--stack task-quiz-options";
         const opts = fq.choices
           .map((ch, i) => {
             let cls = "quiz-option task-quiz-option";
@@ -1750,9 +2068,10 @@
       taskQuizUnlockAnim = false;
 
       app.innerHTML = `
+        ${homeNavTabsHtml()}
         <div class="top-bar">
           <button type="button" class="btn btn-secondary btn-back" id="btn-back-list">← Lista</button>
-          <h1>Zadanie</h1>
+          <h2 class="top-bar-title">Zadanie</h2>
         </div>
         <p class="progress">${taskIndex + 1} / ${sec.tasks.length} · ${escapeHtml(level ? level.title : "")} · ${escapeHtml(sec.title)}</p>
         <div class="task-sheet${unlockAnimClass}">
