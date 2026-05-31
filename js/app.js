@@ -629,9 +629,15 @@
     render();
   }
 
-  function celebrateSuccess() {
+  function triggerSuccessEffect() {
     if (typeof confetti === "function") {
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: ["#ffc800", "#ffffff"] });
+    }
+  }
+
+  function triggerChapterComplete() {
+    if (typeof confetti === "function") {
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
     }
   }
 
@@ -1814,15 +1820,6 @@
   let flashQuizPicked = null;
   /** @type {{ index: number, choices: string[], correctIndex: number } | null} */
   let flashQuizCache = null;
-  /** @type {ReturnType<typeof setTimeout> | null} auto-advance po poprawnej odpowiedzi */
-  let flashAutoAdvanceTimerId = null;
-
-  function clearFlashAutoAdvanceTimer() {
-    if (flashAutoAdvanceTimerId !== null) {
-      clearTimeout(flashAutoAdvanceTimerId);
-      flashAutoAdvanceTimerId = null;
-    }
-  }
 
   function updateFlashProgressBar() {
     const fill = document.getElementById("flash-progress-fill");
@@ -1839,7 +1836,6 @@
 
   /** Przejście do następnej fiszki lub ekranu ukończenia (jak „Dalej”). */
   function advanceFlashStudyCard() {
-    clearFlashAutoAdvanceTimer();
     if (flashIndex < deck.length - 1) {
       flashIndex += 1;
       flashQuizPicked = null;
@@ -1850,20 +1846,9 @@
       screen = "flash-complete";
       flashQuizPicked = null;
       flashQuizCache = null;
-      celebrateSuccess();
+      triggerChapterComplete();
       render();
     }
-  }
-
-  /** Po poprawnej odpowiedzi: auto „Dalej” po 1 s, jeśli użytkownik nie zmienił karty. */
-  function scheduleFlashAutoAdvance(indexAtAnswer) {
-    clearFlashAutoAdvanceTimer();
-    flashAutoAdvanceTimerId = setTimeout(() => {
-      flashAutoAdvanceTimerId = null;
-      if (screen !== "flash-study") return;
-      if (flashIndex !== indexAtAnswer) return;
-      advanceFlashStudyCard();
-    }, 1000);
   }
 
   /**
@@ -2384,19 +2369,6 @@
   }
 
   /**
-   * Legenda symboli — progressive disclosure (domyślnie ukryta).
-   * @param {[string, string][]} entries
-   */
-  function symbolLegendDisclosureHtml(entries) {
-    if (!entries || entries.length === 0) return "";
-    const inner = symbolLegendBlockHtml(entries);
-    return `<div class="symbol-legend-disclosure">
-      <button type="button" class="symbol-legend-toggle" aria-expanded="false">Pokaż legendę symboli</button>
-      <div class="symbol-legend-panel hidden" hidden>${inner}</div>
-    </div>`;
-  }
-
-  /**
    * @param {{ topic: string, front: string, back: string }[]} cards
    */
   function groupCardsByTopicInOrder(cards) {
@@ -2508,7 +2480,6 @@
     flashIndex = 0;
     flashQuizPicked = null;
     flashQuizCache = null;
-    clearFlashAutoAdvanceTimer();
     pushAppHistory();
     screen = "flash-study";
     render();
@@ -2805,20 +2776,6 @@
       const el = raw instanceof Element ? raw : raw && raw.parentElement;
       if (!(el instanceof Element)) return;
 
-      const legendToggle = el.closest(".symbol-legend-toggle");
-      if (legendToggle instanceof HTMLButtonElement) {
-        const disclosure = legendToggle.closest(".symbol-legend-disclosure");
-        const panel = disclosure?.querySelector(".symbol-legend-panel");
-        if (panel instanceof HTMLElement) {
-          const opening = panel.classList.contains("hidden");
-          panel.classList.toggle("hidden", !opening);
-          panel.hidden = !opening;
-          legendToggle.setAttribute("aria-expanded", String(opening));
-          legendToggle.textContent = opening ? "Ukryj legendę symboli" : "Pokaż legendę symboli";
-        }
-        return;
-      }
-
       const navScreens = screen === "main" || screen === "task-chapters" || screen === "task-detail";
       if (navScreens) {
         const mainTabBtn = el.closest("[data-main-tab]");
@@ -2869,7 +2826,6 @@
             flashIndex = 0;
             flashQuizPicked = null;
             flashQuizCache = null;
-            clearFlashAutoAdvanceTimer();
             pushAppHistory();
             screen = "flash-study";
             render();
@@ -2882,7 +2838,6 @@
             flashIndex = 0;
             flashQuizPicked = null;
             flashQuizCache = null;
-            clearFlashAutoAdvanceTimer();
             pushAppHistory();
             screen = "flash-study";
             render();
@@ -3040,7 +2995,7 @@
             <span class="label">Pełna fiszka</span>
             <p class="quiz-flip-topic">${escapeHtml(card.topic)} — ${escapeHtml(card.front)}</p>
             ${flashQuizFormulaBlockHtml(correctLatex, { stackClass: "quiz-formula-stack quiz-flip-formula-split" })}
-            ${symbolLegendDisclosureHtml(getCardSymbolLegendEntries(card))}
+            ${symbolLegendBlockHtml(getCardSymbolLegendEntries(card))}
           </div>`
         : `<div class="quiz-prompt-question">
             <span class="label">${escapeHtml(card.topic)}</span>
@@ -3116,19 +3071,17 @@
           const isCorrect = i === quiz.correctIndex;
           flashProgress[card.front] = isCorrect ? "correct" : "wrong";
           persistFlashProgress();
-          const indexAtAnswer = flashIndex;
           if (isCorrect) btn.innerHTML += " ✅";
           else btn.innerHTML += " ❌";
           flashQuizPicked = i;
           render();
-          if (isCorrect) scheduleFlashAutoAdvance(indexAtAnswer);
+          if (isCorrect) triggerSuccessEffect();
         };
       });
 
       updateFlashProgressBar();
 
       document.getElementById("btn-prev").onclick = () => {
-        clearFlashAutoAdvanceTimer();
         if (flashIndex > 0) {
           flashIndex -= 1;
           flashQuizPicked = null;
@@ -3138,7 +3091,6 @@
       };
 
       document.getElementById("btn-next").onclick = () => {
-        clearFlashAutoAdvanceTimer();
         advanceFlashStudyCard();
       };
       queueMountKatex();
@@ -3539,7 +3491,7 @@
             if (fq.choices[i].correct) {
               taskQuizSolved = true;
               taskQuizUnlockAnim = true;
-              celebrateSuccess();
+              triggerSuccessEffect();
               render();
             } else {
               render();
@@ -3558,7 +3510,7 @@
           if (checkMathAnswer(userVal, String(t.mathValue ?? ""))) {
             taskQuizSolved = true;
             taskQuizUnlockAnim = true;
-            celebrateSuccess();
+            triggerSuccessEffect();
             render();
             return;
           }
@@ -3580,7 +3532,7 @@
             if (abcdOpts[i].isCorrect) {
               taskQuizSolved = true;
               taskQuizUnlockAnim = true;
-              celebrateSuccess();
+              triggerSuccessEffect();
               render();
               return;
             }
