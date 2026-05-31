@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Fizki" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <link rel="stylesheet" href="css/styles.css?v=6" />
+  <link rel="stylesheet" href="css/styles.css?v=21" />
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
@@ -39,13 +39,13 @@
           <div id="app-auth-login" class="app-auth-login">
             <button type="button" id="btn-open-login" class="btn-auth-login">👤 Zaloguj się</button>
           </div>
-          <div id="profile-student" class="app-auth-profile app-auth-profile--student hidden" hidden role="button" tabindex="0" aria-label="Otwórz profil ucznia">
+          <div id="profile-student" class="app-auth-profile app-auth-profile--student user-badge hidden" hidden role="button" tabindex="0" aria-label="Otwórz profil ucznia">
             <img class="app-auth-avatar" src="https://ui-avatars.com/api/?name=Uczen&background=6366f1&color=fff&size=64" alt="" width="32" height="32" decoding="async" />
             <span class="app-auth-streak" aria-label="Seria nauki: 12 dni z rzędu">🔥 12 Dni</span>
             <span class="app-auth-label">Uczeń</span>
             <button type="button" class="btn-auth-logout" data-auth-logout>Wyloguj</button>
           </div>
-          <div id="profile-teacher" class="app-auth-profile app-auth-profile--teacher hidden" hidden role="button" tabindex="0" aria-label="Otwórz profil nauczyciela">
+          <div id="profile-teacher" class="app-auth-profile app-auth-profile--teacher user-badge hidden" hidden role="button" tabindex="0" aria-label="Otwórz profil nauczyciela">
             <img class="app-auth-avatar" src="https://ui-avatars.com/api/?name=Nauczyciel&background=1e3a5f&color=fff&size=64" alt="" width="32" height="32" decoding="async" />
             <span class="app-auth-label">Nauczyciel</span>
             <button type="button" class="btn-auth-logout" data-auth-logout>Wyloguj</button>
@@ -55,7 +55,7 @@
       <button type="button" id="app-mini-breadcrumb" class="app-mini-breadcrumb" hidden aria-label="Zmień szkołę i klasę"></button>
     </header>
     <div id="teacher-task-tools" class="teacher-task-tools hidden" hidden aria-label="Narzędzia nauczyciela w widoku zadań">
-      <p class="teacher-task-tools-label">Tryb Nauczyciela: Jesteś w dziale zadań</p>
+      <p class="teacher-task-tools-label">Narzędzia nauczyciela</p>
       <button type="button" id="btn-open-quiz-creator" class="teacher-task-tools-btn">📝 Przygotuj sprawdzian</button>
     </div>
     <!-- #app: cały UI generuje js/app.js -->
@@ -73,47 +73,71 @@
     <div class="modal-backdrop" id="student-modal-backdrop"></div>
     <div class="modal-content student-dashboard-panel" role="dialog" aria-modal="true" aria-labelledby="student-profile-name">
       <button type="button" id="student-modal-close" class="login-modal-close" aria-label="Zamknij">×</button>
-      <div class="student-profile-hero">
-        <img
-          class="student-profile-avatar"
-          src="https://ui-avatars.com/api/?name=Jan+Kowalski&background=0D8ABC&color=fff&size=128"
-          alt="Jan Kowalski"
-          width="70"
-          height="70"
-          decoding="async"
-        />
-        <h2 id="student-profile-name" class="student-profile-name">Jan Kowalski</h2>
-        <span class="student-dashboard-streak student-profile-streak">🔥 12 Dni Nauki</span>
+      <div class="modal-tabs" role="tablist" aria-label="Sekcje profilu ucznia">
+        <button type="button" id="btn-s-tab-profile" class="btn-s-tab active" role="tab" aria-selected="true" data-student-tab="profile">Profil</button>
+        <button type="button" id="btn-s-tab-tutor" class="btn-s-tab" role="tab" aria-selected="false" data-student-tab="tutor">Korepetycje</button>
       </div>
-      <div class="student-dashboard-stats">
-        <div class="student-stat-card">
-          <span class="student-stat-value">142</span>
-          <span class="student-stat-label">Powtórzone fiszki</span>
-        </div>
-        <div class="student-stat-card">
-          <span class="student-stat-value">28</span>
-          <span class="student-stat-label">Rozwiązane zadania</span>
-        </div>
-      </div>
-      <div class="student-dashboard-curriculum">
-        <p class="student-curriculum-label">Twój program nauczania:</p>
-        <select id="student-level-select" class="form-select" aria-label="Poziom szkoły"></select>
-        <select id="student-grade-select" class="form-select" aria-label="Klasa"></select>
-      </div>
-      <div class="student-dashboard-join">
-        <p class="student-join-label">Nauczyciel podał Ci kod?</p>
-        <div class="student-join-row">
-          <input
-            type="text"
-            id="input-join-code"
-            class="student-join-input"
-            placeholder="Kod klasy"
-            autocomplete="off"
-            inputmode="text"
-            aria-label="Kod klasy od nauczyciela"
+      <div id="s-view-profile" class="s-view">
+        <div class="student-profile-hero">
+          <img
+            class="student-profile-avatar"
+            src="https://ui-avatars.com/api/?name=Jan+Kowalski&background=0D8ABC&color=fff&size=128"
+            alt="Jan Kowalski"
+            width="70"
+            height="70"
+            decoding="async"
           />
-          <button type="button" id="btn-join-class" class="student-join-btn">Dołącz</button>
+          <h2 id="student-profile-name" class="student-profile-name">Jan Kowalski</h2>
+          <span class="student-dashboard-streak student-profile-streak">🔥 12 Dni Nauki</span>
         </div>
+        <div class="student-dashboard-stats">
+          <div class="student-stat-card">
+            <span class="student-stat-value">142</span>
+            <span class="student-stat-label">Powtórzone fiszki</span>
+          </div>
+          <div class="student-stat-card">
+            <span class="student-stat-value">28</span>
+            <span class="student-stat-label">Rozwiązane zadania</span>
+          </div>
+        </div>
+        <div class="student-dashboard-curriculum">
+          <p class="student-curriculum-label">Twój program nauczania:</p>
+          <select id="student-level-select" class="form-select" aria-label="Poziom szkoły"></select>
+          <select id="student-grade-select" class="form-select" aria-label="Klasa"></select>
+        </div>
+        <div class="student-dashboard-join">
+          <p class="student-join-label">Nauczyciel podał Ci kod?</p>
+          <div class="student-join-row">
+            <input
+              type="text"
+              id="input-join-code"
+              class="student-join-input"
+              placeholder="Kod klasy"
+              autocomplete="off"
+              inputmode="text"
+              aria-label="Kod klasy od nauczyciela"
+            />
+            <button type="button" id="btn-join-class" class="student-join-btn">Dołącz</button>
+          </div>
+        </div>
+      </div>
+      <div id="s-view-tutor" class="s-view hidden" aria-hidden="true">
+        <ul class="student-tutor-list">
+          <li class="student-tutor-card">
+            <div class="student-tutor-card-body">
+              <h3 class="student-tutor-name">Dr. Anna N.</h3>
+              <p class="student-tutor-slots">Terminy: Wt, Czw</p>
+            </div>
+            <button type="button" class="student-tutor-book-btn" data-tutor-name="Dr. Anna N.">Zapisz się</button>
+          </li>
+          <li class="student-tutor-card">
+            <div class="student-tutor-card-body">
+              <h3 class="student-tutor-name">mgr inż. Piotr W.</h3>
+              <p class="student-tutor-slots">Terminy: Pon, Śr</p>
+            </div>
+            <button type="button" class="student-tutor-book-btn" data-tutor-name="mgr inż. Piotr W.">Zapisz się</button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -132,6 +156,10 @@
         />
         <h2 id="teacher-profile-name" class="teacher-profile-name">Anna Nauczycielka</h2>
         <span class="teacher-profile-role">👨‍🏫 Nauczyciel Fizyki</span>
+        <div class="teacher-mode-switch" role="tablist" aria-label="Tryb pracy">
+          <button type="button" id="btn-t-mode-classes" class="btn-mode active" role="tab" aria-selected="true" data-teacher-mode="classes">Klasy</button>
+          <button type="button" id="btn-t-mode-tutor" class="btn-mode" role="tab" aria-selected="false" data-teacher-mode="tutor">Korepetycje</button>
+        </div>
       </div>
       <div id="t-view-main" class="t-view">
         <section class="teacher-analytics" aria-label="Zagrożenia w wiedzy">
@@ -162,11 +190,15 @@
           </div>
           <div class="teacher-classes-list">
             <button type="button" class="t-class-nav-btn" data-class-code="FIZ-3B">
-              <span><strong>Klasa 3B</strong> <code class="t-class-code">FIZ-3B</code></span>
+              <span><strong>Klasa 3B</strong> <code class="t-class-code">FIZ-3B</code> <small class="t-class-meta">4 uczniów</small></span>
+              <span class="t-nav-chevron" aria-hidden="true">›</span>
+            </button>
+            <button type="button" class="t-class-nav-btn" data-class-code="FIZ-2C">
+              <span><strong>Klasa 2C</strong> <code class="t-class-code">FIZ-2C</code> <small class="t-class-meta">3 uczniów</small></span>
               <span class="t-nav-chevron" aria-hidden="true">›</span>
             </button>
             <button type="button" class="t-class-nav-btn" data-class-code="FIZ-1A">
-              <span><strong>Klasa 1A</strong> <code class="t-class-code">FIZ-1A</code></span>
+              <span><strong>Klasa 1A</strong> <code class="t-class-code">FIZ-1A</code> <small class="t-class-meta">4 uczniów</small></span>
               <span class="t-nav-chevron" aria-hidden="true">›</span>
             </button>
           </div>
@@ -179,41 +211,39 @@
           <button type="button" id="btn-copy-class-code" class="t-detail-code-btn">📋 Kod</button>
         </div>
         <p class="t-detail-hint">Lista uczniów (kliknij, by rozwinąć):</p>
-        <div id="t-class-students" class="t-students-list">
-          <div class="t-student-group">
-            <div class="t-student-header" data-toggle-target="t-student-body-kamil" role="button" tabindex="0">
-              <span>Kamil W.</span>
-              <span class="t-student-header-right">
-                <span class="text-good">85%</span>
-                <span class="t-chevron" aria-hidden="true">▼</span>
-              </span>
-            </div>
-            <div id="t-student-body-kamil" class="t-student-body hidden">
-              <div class="t-micro-stat"><span>Optyka</span><span class="text-good">90%</span></div>
-              <div class="t-micro-stat"><span>Kinematyka</span><span class="text-critical">30%</span></div>
-            </div>
-          </div>
-          <div class="t-student-group">
-            <div class="t-student-header" data-toggle-target="t-student-body-anna" role="button" tabindex="0">
-              <span>Anna M.</span>
-              <span class="t-student-header-right">
-                <span class="text-warning">42%</span>
-                <span class="t-chevron" aria-hidden="true">▼</span>
-              </span>
-            </div>
-            <div id="t-student-body-anna" class="t-student-body hidden">
-              <div class="t-micro-stat"><span>Dynamika</span><span class="text-warning">45%</span></div>
-              <div class="t-micro-stat"><span>Termodynamika</span><span class="text-critical">20%</span></div>
-            </div>
-          </div>
-        </div>
+        <div id="t-class-students" class="t-students-list"></div>
         <p id="t-class-empty" class="teacher-class-empty hidden">Brak uczniów w tej klasie.</p>
         <span id="teacher-class-code" class="hidden" aria-hidden="true">FIZ-3B</span>
       </div>
+      <div id="t-view-tutor" class="t-view hidden" aria-hidden="true">
+        <div class="t-cal-week-nav calendar-nav" aria-label="Nawigacja tygodnia">
+          <button type="button" id="cal-prev" class="t-cal-week-btn" aria-label="Poprzedni tydzień">«</button>
+          <span id="cal-week-label" class="t-cal-week-label">—</span>
+          <button type="button" id="cal-next" class="t-cal-week-btn" aria-label="Następny tydzień">»</button>
+          <button type="button" id="btn-toggle-edit" class="btn-cal-edit-availability">✏️ Edytuj dostępność</button>
+        </div>
+        <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Kalendarz korepetycji"></div>
+        <p class="t-cal-legend">
+          <span class="t-cal-legend-item"><span class="t-cal-legend-swatch t-cal-legend-swatch--open"></span> Wolne</span>
+          <span class="t-cal-legend-item"><span class="t-cal-legend-swatch t-cal-legend-swatch--booked"></span> Zajęte</span>
+          <span class="t-cal-legend-item"><span class="t-cal-legend-swatch t-cal-legend-swatch--blocked"></span> Niedostępne</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div id="lesson-detail-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="lesson-detail-backdrop"></div>
+    <div class="modal-content lesson-detail-panel" role="dialog" aria-modal="true" aria-labelledby="lesson-detail-student">
+      <button type="button" id="lesson-detail-close" class="login-modal-close" aria-label="Zamknij">×</button>
+      <p class="lesson-detail-status">Przeprowadzona lekcja</p>
+      <h2 id="lesson-detail-student" class="lesson-detail-student">Małgorzata</h2>
+      <p id="lesson-detail-slot" class="lesson-detail-slot"></p>
+      <button type="button" id="btn-reschedule-lesson" class="lesson-detail-reschedule">Przełóż zajęcia</button>
+      <button type="button" id="btn-lesson-no-show" class="lesson-detail-no-show">Uczeń nie pojawił się</button>
     </div>
   </div>
   <div id="login-modal" class="login-modal hidden" aria-hidden="true">
-    <div class="login-modal-backdrop" id="login-modal-backdrop"></div>
+    <div class="modal-backdrop login-modal-backdrop" id="login-modal-backdrop"></div>
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
       <button type="button" id="login-modal-close" class="login-modal-close" aria-label="Zamknij">×</button>
       <h2 id="login-modal-title" class="login-modal-heading">Witaj w Fizkach</h2>
@@ -238,7 +268,7 @@
     </div>
   </div>
   <div id="teacher-modal" class="teacher-modal" hidden aria-hidden="true">
-    <div class="teacher-modal-backdrop" id="teacher-modal-backdrop"></div>
+    <div class="modal-backdrop teacher-modal-backdrop" id="teacher-modal-backdrop"></div>
     <div class="teacher-modal-panel" role="dialog" aria-modal="true" aria-labelledby="teacher-modal-title">
       <header class="teacher-modal-header">
         <h2 id="teacher-modal-title">Znajdź Nauczyciela</h2>
@@ -253,26 +283,7 @@
       <button type="button" id="quiz-creator-close" class="login-modal-close" aria-label="Zamknij">×</button>
       <h2 id="quiz-creator-title" class="quiz-creator-heading">Kreator Sprawdzianu</h2>
       <p class="quiz-creator-intro">Zaznacz zadania do sprawdzianu z bieżącego działu:</p>
-      <ul class="quiz-creator-task-list">
-        <li class="quiz-creator-task-item">
-          <label class="quiz-creator-task-label">
-            <input type="checkbox" class="quiz-creator-checkbox" checked />
-            <span>Zadanie 1: Prędkość i droga</span>
-          </label>
-        </li>
-        <li class="quiz-creator-task-item">
-          <label class="quiz-creator-task-label">
-            <input type="checkbox" class="quiz-creator-checkbox" checked />
-            <span>Zadanie 2: Siły na planszy</span>
-          </label>
-        </li>
-        <li class="quiz-creator-task-item">
-          <label class="quiz-creator-task-label">
-            <input type="checkbox" class="quiz-creator-checkbox" />
-            <span>Zadanie 3: Energia kinetyczna</span>
-          </label>
-        </li>
-      </ul>
+      <ul class="quiz-creator-task-list" id="quiz-creator-task-list" aria-label="Lista zadań do sprawdzianu"></ul>
       <div class="quiz-creator-footer">
         <label class="quiz-creator-class-field" for="quiz-creator-class">
           <span class="quiz-creator-class-label">Przypisz do klasy</span>
@@ -280,8 +291,30 @@
             <option value="3b" selected>Klasa 3B</option>
           </select>
         </label>
-        <button type="button" id="btn-share-quiz" class="quiz-creator-submit">Zapisz i wygeneruj link</button>
+        <div class="quiz-creator-advanced">
+          <details class="quiz-creator-advanced-details">
+            <summary class="quiz-creator-advanced-summary">Opcje zaawansowane</summary>
+            <div class="quiz-creator-advanced-body">
+              <label class="quiz-creator-advanced-option">
+                <input type="checkbox" id="quiz-creator-shuffle" class="quiz-creator-shuffle-checkbox" />
+                <span>Wymieszaj kolejność zadań</span>
+              </label>
+            </div>
+          </details>
+        </div>
+        <div class="quiz-creator-actions">
+          <button type="button" id="btn-preview-quiz" class="quiz-creator-preview">👁️ Podgląd sprawdzianu</button>
+          <button type="button" id="btn-share-quiz" class="quiz-creator-submit">Zapisz i wygeneruj link</button>
+        </div>
       </div>
+    </div>
+  </div>
+  <div id="topic-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="topic-modal-backdrop"></div>
+    <div class="modal-content flash-topic-modal-panel" role="dialog" aria-modal="true" aria-labelledby="topic-modal-title">
+      <button type="button" id="topic-modal-close" class="login-modal-close" aria-label="Zamknij">×</button>
+      <h2 id="topic-modal-title" class="flash-topic-modal-heading">Wybierz dział fizyki</h2>
+      <div id="topic-modal-body" class="flash-topic-modal-body" role="list" aria-label="Działy fizyki"></div>
     </div>
   </div>
   <div id="quiz-success-toast" class="quiz-success-toast hidden" role="status" aria-live="polite">
@@ -290,6 +323,6 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script defer src="js/wzory-symbol-legends.js?v=5"></script>
-  <script defer src="js/app.js?v=5"></script>
+  <script defer src="js/app.js?v=19"></script>
 </body>
 </html>

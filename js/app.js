@@ -32,6 +32,196 @@
     },
   ];
 
+  /**
+   * Mock danych klas nauczyciela (drill-down: klasa → uczniowie → statystyki).
+   * @type {readonly { code: string; name: string; students: { id: string; name: string; overall: number; topics: { name: string; pct: number }[] }[] }[]}
+   */
+  const TEACHER_CLASSES = [
+    {
+      code: "FIZ-3B",
+      name: "Klasa 3B",
+      students: [
+        {
+          id: "kamil",
+          name: "Kamil W.",
+          overall: 85,
+          topics: [
+            { name: "Optyka", pct: 90 },
+            { name: "Kinematyka", pct: 30 },
+          ],
+        },
+        {
+          id: "anna",
+          name: "Anna M.",
+          overall: 42,
+          topics: [
+            { name: "Dynamika", pct: 45 },
+            { name: "Termodynamika", pct: 20 },
+          ],
+        },
+        {
+          id: "paulina",
+          name: "Paulina K.",
+          overall: 68,
+          topics: [
+            { name: "Elektryczność", pct: 72 },
+            { name: "Optyka", pct: 55 },
+          ],
+        },
+        {
+          id: "michal",
+          name: "Michał R.",
+          overall: 91,
+          topics: [
+            { name: "Mechanika", pct: 94 },
+            { name: "Hydrostatyka", pct: 88 },
+          ],
+        },
+      ],
+    },
+    {
+      code: "FIZ-2C",
+      name: "Klasa 2C",
+      students: [
+        {
+          id: "julia",
+          name: "Julia S.",
+          overall: 76,
+          topics: [
+            { name: "Ruch i prędkość", pct: 80 },
+            { name: "Siły", pct: 62 },
+          ],
+        },
+        {
+          id: "tomek",
+          name: "Tomek B.",
+          overall: 53,
+          topics: [
+            { name: "Ciepło", pct: 48 },
+            { name: "Gęstość", pct: 58 },
+          ],
+        },
+        {
+          id: "ola",
+          name: "Ola D.",
+          overall: 39,
+          topics: [
+            { name: "Optyka", pct: 35 },
+            { name: "Praca i moc", pct: 42 },
+          ],
+        },
+      ],
+    },
+    {
+      code: "FIZ-1A",
+      name: "Klasa 1A",
+      students: [
+        {
+          id: "natasza",
+          name: "Natasza L.",
+          overall: 88,
+          topics: [
+            { name: "Jednostki i wielkości", pct: 92 },
+            { name: "Prędkość", pct: 85 },
+          ],
+        },
+        {
+          id: "kuba",
+          name: "Kuba P.",
+          overall: 61,
+          topics: [
+            { name: "Siły", pct: 58 },
+            { name: "Ciśnienie", pct: 65 },
+          ],
+        },
+        {
+          id: "weronika",
+          name: "Weronika T.",
+          overall: 47,
+          topics: [
+            { name: "Gęstość", pct: 44 },
+            { name: "Temperatura", pct: 50 },
+          ],
+        },
+        {
+          id: "filip",
+          name: "Filip G.",
+          overall: 74,
+          topics: [
+            { name: "Ruch", pct: 78 },
+            { name: "Mapa ciała niebieskiego", pct: 70 },
+          ],
+        },
+      ],
+    },
+  ];
+
+  /** @param {number} pct */
+  function teacherPctClass(pct) {
+    if (pct >= 75) return "text-good";
+    if (pct >= 50) return "text-warning";
+    return "text-critical";
+  }
+
+  /** @param {{ id: string; name: string; overall: number; topics: { name: string; pct: number }[] }[]} students */
+  function renderTeacherStudentsHtml(students) {
+    return students
+      .map(
+        (s) => `
+          <div class="t-student-group">
+            <div class="t-student-header" data-toggle-target="t-student-body-${s.id}" role="button" tabindex="0">
+              <span>${escapeHtml(s.name)}</span>
+              <span class="t-student-header-right">
+                <span class="${teacherPctClass(s.overall)}">${s.overall}%</span>
+                <span class="t-chevron" aria-hidden="true">▼</span>
+              </span>
+            </div>
+            <div id="t-student-body-${s.id}" class="t-student-body hidden">
+              ${s.topics
+                .map(
+                  (t) =>
+                    `<div class="t-micro-stat"><span>${escapeHtml(t.name)}</span><span class="${teacherPctClass(
+                      t.pct
+                    )}">${t.pct}%</span></div>`
+                )
+                .join("")}
+            </div>
+          </div>`
+      )
+      .join("");
+  }
+
+  /** @param {string} classCode */
+  function showTeacherClassDetail(classCode) {
+    const cls = TEACHER_CLASSES.find((c) => c.code === classCode);
+    if (!cls) return;
+
+    const tDetailTitle = document.getElementById("t-detail-title");
+    const tClassStudents = document.getElementById("t-class-students");
+    const tClassEmpty = document.getElementById("t-class-empty");
+    const teacherClassCodeEl = document.getElementById("teacher-class-code");
+    const tViewMain = document.getElementById("t-view-main");
+    const tViewClassDetail = document.getElementById("t-view-class-detail");
+
+    if (tDetailTitle instanceof HTMLElement) tDetailTitle.textContent = cls.name;
+    if (teacherClassCodeEl instanceof HTMLElement) teacherClassCodeEl.textContent = cls.code;
+
+    const hasStudents = cls.students.length > 0;
+    if (tClassStudents instanceof HTMLElement) {
+      tClassStudents.innerHTML = hasStudents ? renderTeacherStudentsHtml(cls.students) : "";
+      tClassStudents.classList.toggle("hidden", !hasStudents);
+    }
+    if (tClassEmpty instanceof HTMLElement) {
+      tClassEmpty.classList.toggle("hidden", hasStudents);
+    }
+
+    if (tViewMain) tViewMain.classList.add("hidden");
+    if (tViewClassDetail) {
+      tViewClassDetail.classList.remove("hidden");
+      tViewClassDetail.setAttribute("aria-hidden", "false");
+    }
+  }
+
   /** @param {string} s */
   function texText(s) {
     return String(s)
@@ -379,6 +569,57 @@
     const filled = "⭐".repeat(n);
     const empty = "☆".repeat(3 - n);
     return `<span class="task-difficulty-stars" aria-label="Poziom trudności ${n} z 3">${filled}${empty}</span>`;
+  }
+
+  /** @param {number | string | undefined} difficulty */
+  function quizCreatorDifficultyDotHtml(difficulty) {
+    const n = Math.max(1, Math.min(3, Number(difficulty) || 1));
+    const label = n === 1 ? "Łatwe" : n === 2 ? "Średnie" : "Trudne";
+    const mod = n === 1 ? "easy" : n === 2 ? "medium" : "hard";
+    return `<span class="quiz-creator-difficulty quiz-creator-difficulty--${mod}" title="${label}" aria-label="Trudność: ${label}"><span class="quiz-creator-difficulty-dot" aria-hidden="true"></span></span>`;
+  }
+
+  /** @returns {{ title: string, difficulty?: number|string }[]} */
+  function getQuizCreatorTasks() {
+    if (taskLevelId && taskSectionId) {
+      const sec = getSection(taskLevelId, taskSectionId);
+      if (sec && Array.isArray(sec.tasks) && sec.tasks.length > 0) return sec.tasks;
+    }
+    return [
+      { title: "Prędkość i droga", difficulty: 1 },
+      { title: "Siły na planszy", difficulty: 2 },
+      { title: "Energia kinetyczna", difficulty: 3 },
+    ];
+  }
+
+  function renderQuizCreatorTaskList() {
+    const modal = document.getElementById("quiz-creator-modal");
+    if (!modal) return;
+    const list = modal.querySelector(".quiz-creator-task-list");
+    const intro = modal.querySelector(".quiz-creator-intro");
+    if (!(list instanceof HTMLElement)) return;
+
+    const sec = taskLevelId && taskSectionId ? getSection(taskLevelId, taskSectionId) : null;
+    const tasks = getQuizCreatorTasks();
+
+    if (intro instanceof HTMLElement) {
+      intro.textContent = sec
+        ? `Zaznacz zadania do sprawdzianu z działu „${sec.title}”:`
+        : "Zaznacz zadania do sprawdzianu z bieżącego działu:";
+    }
+
+    list.innerHTML = tasks
+      .map(
+        (t, i) => `
+        <li class="quiz-creator-task-item">
+          <label class="quiz-creator-task-label">
+            <input type="checkbox" class="quiz-creator-checkbox"${i < Math.min(2, tasks.length) ? " checked" : ""} data-task-i="${i}" />
+            <span class="quiz-creator-task-text">${escapeHtml(t.title)}</span>
+            ${quizCreatorDifficultyDotHtml(t.difficulty)}
+          </label>
+        </li>`
+      )
+      .join("");
   }
 
   function unlockTaskWithSolution() {
@@ -1111,6 +1352,172 @@
   /** @type {ReturnType<typeof setTimeout> | null} */
   let copyClassCodeTimerId = null;
 
+  const CAL_DAY_LABELS = ["Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd"];
+  const CAL_MONTHS_PL = [
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+  ];
+  let currentWeekStart = new Date();
+  let isEditMode = false;
+  /** @type {Set<string>} */
+  const calendarAvailableSlots = new Set();
+
+  function startOfWeekMonday(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    const day = d.getDay();
+    d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
+    return d;
+  }
+
+  function formatCalendarWeekRange(weekStart) {
+    const end = new Date(weekStart);
+    end.setDate(weekStart.getDate() + 6);
+    const mStart = CAL_MONTHS_PL[weekStart.getMonth()];
+    const mEnd = CAL_MONTHS_PL[end.getMonth()];
+    return `${mStart} ${weekStart.getDate()} - ${mEnd} ${end.getDate()}`;
+  }
+
+  /** @param {Date} weekStart @param {number} day @param {number} hour */
+  function calendarSlotKey(weekStart, day, hour) {
+    const ws = startOfWeekMonday(weekStart);
+    const y = ws.getFullYear();
+    const m = String(ws.getMonth() + 1).padStart(2, "0");
+    const d = String(ws.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}:${day}:${hour}`;
+  }
+
+  function syncCalendarEditUi() {
+    const btn = document.getElementById("btn-toggle-edit");
+    const grid = document.getElementById("calendar-grid");
+    if (btn instanceof HTMLElement) {
+      btn.classList.toggle("active", isEditMode);
+      btn.setAttribute("aria-pressed", String(isEditMode));
+    }
+    if (grid instanceof HTMLElement) {
+      grid.classList.toggle("calendar-edit-mode", isEditMode);
+    }
+  }
+
+  /** Demo: zabookowane korepetycje (day 0=Pn … 6=Nd, godzina). */
+  const CALENDAR_BOOKED_DEMO = {
+    0: { 16: "Szymon", 17: "Małgorzata" },
+    1: { 15: "Justyna" },
+    2: { 16: "Kamil", 18: "Anna" },
+  };
+
+  function renderCalendar() {
+    const grid = document.getElementById("calendar-grid");
+    const weekLabel = document.getElementById("cal-week-label");
+    if (!grid) return;
+
+    currentWeekStart = startOfWeekMonday(currentWeekStart);
+    const weekStart = currentWeekStart;
+
+    if (weekLabel instanceof HTMLElement) {
+      weekLabel.textContent = formatCalendarWeekRange(weekStart);
+    }
+
+    grid.innerHTML = "";
+
+    const corner = document.createElement("div");
+    corner.className = "cal-header cal-corner";
+    corner.setAttribute("role", "columnheader");
+    grid.appendChild(corner);
+
+    for (let day = 0; day < 7; day += 1) {
+      const dayDate = new Date(weekStart);
+      dayDate.setDate(weekStart.getDate() + day);
+      const header = document.createElement("div");
+      header.className = "cal-header";
+      header.setAttribute("role", "columnheader");
+      header.innerHTML = `${CAL_DAY_LABELS[day]}<br /><span class="cal-date">${dayDate.getDate()}</span>`;
+      grid.appendChild(header);
+    }
+
+    for (let hour = 12; hour <= 22; hour += 1) {
+      const timeLabel = `${String(hour).padStart(2, "0")}:00`;
+      const timeEl = document.createElement("div");
+      timeEl.className = "cal-time";
+      timeEl.setAttribute("role", "rowheader");
+      timeEl.textContent = timeLabel;
+      grid.appendChild(timeEl);
+
+      for (let day = 0; day < 7; day += 1) {
+        const dayDate = new Date(weekStart);
+        dayDate.setDate(weekStart.getDate() + day);
+        const cell = document.createElement("button");
+        cell.type = "button";
+        cell.className = "cal-cell cal-slot";
+        cell.setAttribute("role", "gridcell");
+        const slotLabel = `${CAL_DAY_LABELS[day]} ${dayDate.getDate()}, ${timeLabel}`;
+        cell.setAttribute("aria-label", slotLabel);
+        cell.dataset.day = String(day);
+        cell.dataset.hour = String(hour);
+
+        const slotKey = calendarSlotKey(weekStart, day, hour);
+        if (calendarAvailableSlots.has(slotKey)) {
+          cell.classList.add("available");
+          cell.setAttribute("aria-label", `${slotLabel} — dostępny termin`);
+        }
+
+        const bookedStudent = CALENDAR_BOOKED_DEMO[day]?.[hour];
+        if (bookedStudent) {
+          cell.classList.remove("available");
+          cell.classList.add("booked");
+          cell.dataset.student = bookedStudent;
+          cell.innerHTML = `<span class="cal-cell-name">${escapeHtml(bookedStudent)}</span>`;
+          cell.setAttribute("aria-label", `${slotLabel} — ${bookedStudent}`);
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+    syncCalendarEditUi();
+  }
+
+  /** @param {string} studentName @param {string} [slotLabel] */
+  function openLessonDetailModal(studentName, slotLabel) {
+    const modal = document.getElementById("lesson-detail-modal");
+    if (!modal) return;
+    const nameEl = document.getElementById("lesson-detail-student");
+    const slotEl = document.getElementById("lesson-detail-slot");
+    if (nameEl instanceof HTMLElement) nameEl.textContent = studentName;
+    if (slotEl instanceof HTMLElement) {
+      slotEl.textContent = slotLabel || "";
+      slotEl.hidden = !slotLabel;
+    }
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("login-modal-open");
+    const closeBtn = document.getElementById("lesson-detail-close");
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
+  }
+
+  function closeLessonDetailModal() {
+    const modal = document.getElementById("lesson-detail-modal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    const overlayIds = ["login-modal", "student-dashboard", "teacher-dashboard", "quiz-creator-modal"];
+    const anyOverlayOpen = overlayIds.some((id) => {
+      const el = document.getElementById(id);
+      return el && !el.classList.contains("hidden");
+    });
+    if (!anyOverlayOpen) document.body.classList.remove("login-modal-open");
+  }
+
   /** @param {HTMLElement | null} el @param {boolean} visible */
   function setShellVisible(el, visible) {
     if (!(el instanceof HTMLElement)) return;
@@ -1138,6 +1545,7 @@
   function openQuizCreatorModal(quizCreatorModal) {
     const modal = quizCreatorModal || document.getElementById("quiz-creator-modal");
     if (!modal) return;
+    renderQuizCreatorTaskList();
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("login-modal-open");
@@ -1183,10 +1591,47 @@
     syncRoleMockUi();
   }
 
+  /** @param {"profile" | "tutor"} tab */
+  function setStudentDashboardTab(tab) {
+    const studentDashboard = document.getElementById("student-dashboard");
+    const sViewProfile = document.getElementById("s-view-profile");
+    const sViewTutor = document.getElementById("s-view-tutor");
+
+    if (studentDashboard) {
+      studentDashboard.querySelectorAll(".modal-tabs button").forEach((btn) => {
+        if (!(btn instanceof HTMLElement)) return;
+        const btnTab = btn.getAttribute("data-student-tab");
+        const isActive = btnTab === tab;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", String(isActive));
+      });
+    }
+
+    if (sViewProfile) {
+      sViewProfile.classList.add("hidden");
+      sViewProfile.setAttribute("aria-hidden", "true");
+    }
+    if (sViewTutor) {
+      sViewTutor.classList.add("hidden");
+      sViewTutor.setAttribute("aria-hidden", "true");
+    }
+
+    const activeView = tab === "profile" ? sViewProfile : sViewTutor;
+    if (activeView) {
+      activeView.classList.remove("hidden");
+      activeView.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  function resetStudentDashboardView() {
+    setStudentDashboardTab("profile");
+  }
+
   /** @param {HTMLElement | null} studentModal */
   function openStudentModal(studentModal) {
     const modal = studentModal || document.getElementById("student-dashboard");
     if (!modal) return;
+    resetStudentDashboardView();
     updateStudentDashboard();
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
@@ -1199,6 +1644,7 @@
   function closeStudentModal(studentModal) {
     const modal = studentModal || document.getElementById("student-dashboard");
     if (!modal) return;
+    resetStudentDashboardView();
     modal.classList.add("hidden");
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("login-modal-open");
@@ -1216,7 +1662,58 @@
     if (closeBtn instanceof HTMLElement) closeBtn.focus();
   }
 
+  function setTeacherDashboardMode(mode) {
+    const isClasses = mode === "classes";
+    const tViewMain = document.getElementById("t-view-main");
+    const tViewClassDetail = document.getElementById("t-view-class-detail");
+    const tViewTutor = document.getElementById("t-view-tutor");
+    const btnClasses = document.getElementById("btn-t-mode-classes");
+    const btnTutor = document.getElementById("btn-t-mode-tutor");
+
+    if (btnClasses instanceof HTMLElement) {
+      btnClasses.classList.toggle("active", isClasses);
+      btnClasses.setAttribute("aria-selected", String(isClasses));
+    }
+    if (btnTutor instanceof HTMLElement) {
+      btnTutor.classList.toggle("active", !isClasses);
+      btnTutor.setAttribute("aria-selected", String(!isClasses));
+    }
+
+    if (tViewTutor) {
+      tViewTutor.classList.toggle("hidden", isClasses);
+      tViewTutor.toggleAttribute("aria-hidden", isClasses);
+    }
+
+    if (isClasses) {
+      if (tViewMain) tViewMain.classList.remove("hidden");
+      if (tViewClassDetail) {
+        tViewClassDetail.classList.add("hidden");
+        tViewClassDetail.setAttribute("aria-hidden", "true");
+      }
+      document.querySelectorAll("#t-view-class-detail .t-student-header").forEach((header) => {
+        header.classList.remove("is-open");
+      });
+      document.querySelectorAll("#t-view-class-detail .t-student-body").forEach((body) => {
+        body.classList.add("hidden");
+      });
+    } else {
+      if (tViewMain) tViewMain.classList.add("hidden");
+      if (tViewClassDetail) {
+        tViewClassDetail.classList.add("hidden");
+        tViewClassDetail.setAttribute("aria-hidden", "true");
+      }
+      document.querySelectorAll("#t-view-class-detail .t-student-header").forEach((header) => {
+        header.classList.remove("is-open");
+      });
+      document.querySelectorAll("#t-view-class-detail .t-student-body").forEach((body) => {
+        body.classList.add("hidden");
+      });
+      renderCalendar();
+    }
+  }
+
   function resetTeacherDashboardView() {
+    setTeacherDashboardMode("classes");
     const tViewMain = document.getElementById("t-view-main");
     const tViewClassDetail = document.getElementById("t-view-class-detail");
     if (tViewMain) tViewMain.classList.remove("hidden");
@@ -1288,6 +1785,7 @@
     closeStudentModal();
     closeTeacherDashboardModal();
     closeQuizCreatorModal();
+    closeLessonDetailModal();
     syncRoleMockUi();
   }
 
@@ -1323,6 +1821,19 @@
     if (flashAutoAdvanceTimerId !== null) {
       clearTimeout(flashAutoAdvanceTimerId);
       flashAutoAdvanceTimerId = null;
+    }
+  }
+
+  function updateFlashProgressBar() {
+    const fill = document.getElementById("flash-progress-fill");
+    const bar = document.getElementById("flash-progress-bar");
+    if (!fill || deck.length === 0) return;
+    const percent = (flashIndex / deck.length) * 100;
+    fill.style.width = `${percent}%`;
+    if (bar instanceof HTMLElement) {
+      bar.setAttribute("aria-valuenow", String(Math.round(percent)));
+      bar.setAttribute("aria-valuemax", "100");
+      bar.setAttribute("aria-valuemin", "0");
     }
   }
 
@@ -1873,6 +2384,19 @@
   }
 
   /**
+   * Legenda symboli — progressive disclosure (domyślnie ukryta).
+   * @param {[string, string][]} entries
+   */
+  function symbolLegendDisclosureHtml(entries) {
+    if (!entries || entries.length === 0) return "";
+    const inner = symbolLegendBlockHtml(entries);
+    return `<div class="symbol-legend-disclosure">
+      <button type="button" class="symbol-legend-toggle" aria-expanded="false">Pokaż legendę symboli</button>
+      <div class="symbol-legend-panel hidden" hidden>${inner}</div>
+    </div>`;
+  }
+
+  /**
    * @param {{ topic: string, front: string, back: string }[]} cards
    */
   function groupCardsByTopicInOrder(cards) {
@@ -1912,29 +2436,21 @@
   }
 
   /**
-   * Zakładka Fiszki na `main`: tryby globalne + lista działów z postępem.
-   * @param {string} levelId
-   * @param {string} levelTitle
+   * Kafelki działów fiszek (modal wyboru działu).
+   * @param {{ topic: string, cards: { front: string }[] }[]} groups
    */
-  function renderFiszkiPanelInnerHtml(levelId, levelTitle) {
-    const cards = cardsForHomeLevel(levelId);
-    const groups = groupCardsByTopicInOrder(cards);
-    const wrongPool = cards.filter((c) => flashProgress[c.front] === "wrong");
-    const reviewDisabled = wrongPool.length === 0;
-    const reviewDis = reviewDisabled ? " disabled" : "";
-    const quickDisabled = cards.length === 0;
-    const quickDis = quickDisabled ? " disabled" : "";
-    const topicsHtml =
-      groups.length === 0
-        ? `<p class="hint" style="margin:0">Brak fiszek wzorów dla tego poziomu.</p>`
-        : `<div class="flash-topic-grid" role="list">${groups
-            .map((g) => {
-              const st = countFlashStatsForCards(g.cards);
-              const bar = flashTopicTriGradientStyle(st.correct, st.wrong, st.unseen);
-              const aria = `Postęp: ${st.correct} poprawnych, ${st.wrong} błędnych, ${st.unseen} niewyświetlonych, ${g.cards.length} wzorów w dziale`;
-              return `<button type="button" class="flash-topic-tile" role="listitem" data-flash-topic="${escapeHtml(
-                g.topic
-              )}" aria-label="${escapeHtml(g.topic + " — " + aria)}">
+  function renderFlashTopicGridHtml(groups) {
+    if (groups.length === 0) {
+      return `<p class="hint" style="margin:0">Brak fiszek wzorów dla tego poziomu.</p>`;
+    }
+    return `<div class="flash-topic-grid" role="list">${groups
+      .map((g) => {
+        const st = countFlashStatsForCards(g.cards);
+        const bar = flashTopicTriGradientStyle(st.correct, st.wrong, st.unseen);
+        const aria = `Postęp: ${st.correct} poprawnych, ${st.wrong} błędnych, ${st.unseen} niewyświetlonych, ${g.cards.length} wzorów w dziale`;
+        return `<button type="button" class="flash-topic-tile" role="listitem" data-flash-topic="${escapeHtml(
+          g.topic
+        )}" aria-label="${escapeHtml(g.topic + " — " + aria)}">
               <span class="flash-topic-tile-top">
                 <span class="flash-topic-tile-title">${escapeHtml(g.topic)}</span>
                 <span class="flash-topic-tile-counts">${st.correct} / ${st.wrong} / ${st.unseen}</span>
@@ -1942,19 +2458,83 @@
               <div class="flash-topic-bar" style="${bar}" aria-hidden="true"></div>
               <small class="flash-topic-tile-n">${g.cards.length} wzorów</small>
             </button>`;
-            })
-            .join("")}</div>`;
+      })
+      .join("")}</div>`;
+  }
+
+  function syncTopicModalList() {
+    const body = document.getElementById("topic-modal-body");
+    if (!(body instanceof HTMLElement)) return;
+    const groups = groupCardsByTopicInOrder(cardsForHomeLevel(homeLevelId));
+    body.innerHTML = renderFlashTopicGridHtml(groups);
+  }
+
+  function openTopicModal() {
+    const modal = document.getElementById("topic-modal");
+    if (!modal) return;
+    syncTopicModalList();
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("login-modal-open");
+    const closeBtn = document.getElementById("topic-modal-close");
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
+  }
+
+  function closeTopicModal() {
+    const modal = document.getElementById("topic-modal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    const overlayIds = [
+      "login-modal",
+      "student-dashboard",
+      "teacher-dashboard",
+      "quiz-creator-modal",
+      "topic-modal",
+    ];
+    const anyOverlayOpen = overlayIds.some((id) => {
+      const el = document.getElementById(id);
+      return el && !el.classList.contains("hidden");
+    });
+    if (!anyOverlayOpen) document.body.classList.remove("login-modal-open");
+  }
+
+  /** @param {string} topic */
+  function startFlashQuiz(topic) {
+    const subset = cardsForHomeLevel(homeLevelId).filter((c) => c.topic === topic);
+    if (!subset.length) return;
+    closeTopicModal();
+    deck = fisherYatesShuffle(subset.slice());
+    flashIndex = 0;
+    flashQuizPicked = null;
+    flashQuizCache = null;
+    clearFlashAutoAdvanceTimer();
+    pushAppHistory();
+    screen = "flash-study";
+    render();
+  }
+
+  /**
+   * Zakładka Fiszki na `main`: tryby globalne + wybór działu w modalu.
+   * @param {string} levelId
+   */
+  function renderFiszkiPanelInnerHtml(levelId) {
+    const cards = cardsForHomeLevel(levelId);
+    const wrongPool = cards.filter((c) => flashProgress[c.front] === "wrong");
+    const reviewDisabled = wrongPool.length === 0;
+    const reviewDis = reviewDisabled ? " disabled" : "";
+    const quickDisabled = cards.length === 0;
+    const quickDis = quickDisabled ? " disabled" : "";
     return `
-          <p class="panel-title">Quiz — rozpoznaj wzór</p>
-          <p class="sub panel-sub" style="margin-top:-0.35rem">Poziom: <strong>${escapeHtml(
-            levelTitle
-          )}</strong> — postęp zapisuje się lokalnie (<code>localStorage</code>, klucz <code>fiszki_progress</code>). Cztery warianty LaTeXu; po odpowiedzi podświetlenie wariantów oraz pełna fiszka z legendą symboli.</p>
-          <div class="flash-mode-row">
-            <button type="button" class="btn" data-flash-mode="quick10"${quickDis}>Szybka 10 (Losowe z całości)</button>
-            <button type="button" class="btn btn-secondary" data-flash-mode="review-wrong"${reviewDis}>Powtórka (Tylko błędy)</button>
-          </div>
-          <p class="panel-title flash-topic-heading">Działy</p>
-          ${topicsHtml}`;
+          <div class="flash-panel-minimal">
+            <h2 class="flash-panel-title">Fiszki</h2>
+            <p class="flash-panel-sub">Wybierz tryb nauki lub konkretny dział.</p>
+            <div class="flash-mode-row">
+              <button type="button" class="btn flash-mode-btn" data-flash-mode="quick10"${quickDis}>Szybka 10</button>
+              <button type="button" class="btn btn-secondary flash-mode-btn" data-flash-mode="review-wrong"${reviewDis}>Powtórka błędów</button>
+            </div>
+            <button type="button" id="btn-open-topic-modal" class="flash-pick-topic-btn">📂 Wybierz dział fizyki</button>
+          </div>`;
   }
 
   /**
@@ -2225,6 +2805,20 @@
       const el = raw instanceof Element ? raw : raw && raw.parentElement;
       if (!(el instanceof Element)) return;
 
+      const legendToggle = el.closest(".symbol-legend-toggle");
+      if (legendToggle instanceof HTMLButtonElement) {
+        const disclosure = legendToggle.closest(".symbol-legend-disclosure");
+        const panel = disclosure?.querySelector(".symbol-legend-panel");
+        if (panel instanceof HTMLElement) {
+          const opening = panel.classList.contains("hidden");
+          panel.classList.toggle("hidden", !opening);
+          panel.hidden = !opening;
+          legendToggle.setAttribute("aria-expanded", String(opening));
+          legendToggle.textContent = opening ? "Ukryj legendę symboli" : "Pokaż legendę symboli";
+        }
+        return;
+      }
+
       const navScreens = screen === "main" || screen === "task-chapters" || screen === "task-detail";
       if (navScreens) {
         const mainTabBtn = el.closest("[data-main-tab]");
@@ -2260,6 +2854,11 @@
       }
 
       if (screen === "main" && mainTab === "fiszki") {
+        if (el.closest("#btn-open-topic-modal")) {
+          openTopicModal();
+          return;
+        }
+
         const modeBtn = el.closest("[data-flash-mode]");
         if (modeBtn instanceof HTMLButtonElement && !modeBtn.disabled) {
           const which = String(modeBtn.getAttribute("data-flash-mode") || "").trim();
@@ -2289,22 +2888,6 @@
             render();
             return;
           }
-        }
-        const topicBtn = el.closest("[data-flash-topic]");
-        if (topicBtn instanceof HTMLButtonElement) {
-          const topic = topicBtn.getAttribute("data-flash-topic");
-          if (!topic) return;
-          const subset = cardsForHomeLevel(homeLevelId).filter((c) => c.topic === topic);
-          if (!subset.length) return;
-          deck = fisherYatesShuffle(subset.slice());
-          flashIndex = 0;
-          flashQuizPicked = null;
-          flashQuizCache = null;
-          clearFlashAutoAdvanceTimer();
-          pushAppHistory();
-          screen = "flash-study";
-          render();
-          return;
         }
       }
     });
@@ -2407,7 +2990,7 @@
       app.innerHTML = `
         ${homeNavTabsHtml()}
         <div id="panel-fiszki" role="tabpanel" aria-labelledby="tab-fiszki">
-          ${renderFiszkiPanelInnerHtml(homeLevelId, hl.title)}
+          ${renderFiszkiPanelInnerHtml(homeLevelId)}
         </div>
         <div id="panel-karta-wzorow" role="tabpanel" aria-labelledby="tab-karta-wzorow" hidden>
           <p class="panel-title">Karta wzorów (CKE)</p>
@@ -2457,7 +3040,7 @@
             <span class="label">Pełna fiszka</span>
             <p class="quiz-flip-topic">${escapeHtml(card.topic)} — ${escapeHtml(card.front)}</p>
             ${flashQuizFormulaBlockHtml(correctLatex, { stackClass: "quiz-formula-stack quiz-flip-formula-split" })}
-            ${symbolLegendBlockHtml(getCardSymbolLegendEntries(card))}
+            ${symbolLegendDisclosureHtml(getCardSymbolLegendEntries(card))}
           </div>`
         : `<div class="quiz-prompt-question">
             <span class="label">${escapeHtml(card.topic)}</span>
@@ -2468,13 +3051,18 @@
         .map((tex, i) => {
           let cls = "quiz-option";
           if (/\\vec\b/.test(String(tex))) cls += " is-vector-distractor";
+          let feedbackIcon = "";
+          if (flashQuizPicked !== null) {
+            if (i === quiz.correctIndex) feedbackIcon = " ✅";
+            else if (i === flashQuizPicked) feedbackIcon = " ❌";
+          }
           if (flashQuizPicked !== null) {
             if (i === quiz.correctIndex) cls += " quiz-option--correct";
             else if (i === flashQuizPicked) cls += " quiz-option--wrong-pick";
           }
           const dis = flashQuizPicked !== null ? " disabled" : "";
           return `<button type="button" class="${cls}" data-quiz-opt="${i}" aria-label="Wariant ${i + 1}"${dis}>
-            ${flashQuizFormulaBlockHtml(tex)}
+            ${flashQuizFormulaBlockHtml(tex)}${feedbackIcon}
           </button>`;
         })
         .join("");
@@ -2482,6 +3070,17 @@
       app.innerHTML = `
         <div class="flash-study">
           <div class="flash-study-body">
+            <div
+              id="flash-progress-bar"
+              class="flash-progress-bar"
+              role="progressbar"
+              aria-label="Postęp talii"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div id="flash-progress-fill" class="flash-progress-fill"></div>
+            </div>
             <div class="top-bar">
               <button type="button" class="btn btn-secondary btn-back" id="btn-main">← Menu</button>
               <h1>Fiszki — quiz</h1>
@@ -2518,11 +3117,15 @@
           flashProgress[card.front] = isCorrect ? "correct" : "wrong";
           persistFlashProgress();
           const indexAtAnswer = flashIndex;
+          if (isCorrect) btn.innerHTML += " ✅";
+          else btn.innerHTML += " ❌";
           flashQuizPicked = i;
           render();
           if (isCorrect) scheduleFlashAutoAdvance(indexAtAnswer);
         };
       });
+
+      updateFlashProgressBar();
 
       document.getElementById("btn-prev").onclick = () => {
         clearFlashAutoAdvanceTimer();
@@ -2572,7 +3175,7 @@
         </button>`
                 )
                 .join("")
-            : `<p class="hint" style="margin:0">Brak zadań w tym dziale. Wybierz inny dział lub dopisz zestaw w JSON.</p>`;
+            : `<p class="hint" style="margin:0">Brak zadań w tym dziale.</p>`;
 
         app.innerHTML = `
         ${homeNavTabsHtml()}
@@ -3273,6 +3876,11 @@
     }
     const teacherDashboardEl = document.getElementById("teacher-dashboard");
     if (teacherDashboardEl && !teacherDashboardEl.classList.contains("hidden")) {
+      const lessonDetailEl = document.getElementById("lesson-detail-modal");
+      if (lessonDetailEl && !lessonDetailEl.classList.contains("hidden")) {
+        closeLessonDetailModal();
+        return;
+      }
       closeTeacherDashboardModal(teacherDashboardEl);
       const profileTeacher = document.getElementById("profile-teacher");
       if (profileTeacher instanceof HTMLElement) profileTeacher.focus();
@@ -3283,6 +3891,13 @@
       closeQuizCreatorModal(quizCreatorEl);
       const btnOpenQuiz = document.getElementById("btn-open-quiz-creator");
       if (btnOpenQuiz instanceof HTMLElement) btnOpenQuiz.focus();
+      return;
+    }
+    const topicModalEl = document.getElementById("topic-modal");
+    if (topicModalEl && !topicModalEl.classList.contains("hidden")) {
+      closeTopicModal();
+      const btnOpenTopics = document.getElementById("btn-open-topic-modal");
+      if (btnOpenTopics instanceof HTMLElement) btnOpenTopics.focus();
       return;
     }
     if (teacherModal && !teacherModal.hidden) {
@@ -3315,6 +3930,25 @@
     studentModalBackdrop.addEventListener("click", () => closeStudentModal(studentModal));
   }
 
+  if (studentModal) {
+    studentModal.addEventListener("click", (ev) => {
+      const target = ev.target;
+      if (!(target instanceof Element)) return;
+      const tabBtn = target.closest(".modal-tabs button");
+      if (!tabBtn || !studentModal.contains(tabBtn)) return;
+      const tab = tabBtn.getAttribute("data-student-tab");
+      if (tab === "profile" || tab === "tutor") setStudentDashboardTab(tab);
+    });
+  }
+
+  document.querySelectorAll(".student-tutor-book-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!(btn instanceof HTMLElement)) return;
+      const name = btn.getAttribute("data-tutor-name") || "nauczyciela";
+      showToast(`✅ Wysłano prośbę o zapis do: ${name}`);
+    });
+  });
+
   const teacherDashboardModal = document.getElementById("teacher-dashboard");
   const profileTeacher = document.getElementById("profile-teacher");
   const teacherDashboardBackdrop = document.getElementById("teacher-dashboard-backdrop");
@@ -3346,34 +3980,32 @@
 
   const tViewMain = document.getElementById("t-view-main");
   const tViewClassDetail = document.getElementById("t-view-class-detail");
-  const tDetailTitle = document.getElementById("t-detail-title");
-  const tClassStudents = document.getElementById("t-class-students");
-  const tClassEmpty = document.getElementById("t-class-empty");
-  const teacherClassCodeEl = document.getElementById("teacher-class-code");
   const btnTViewBack = document.getElementById("btn-t-view-back");
   const btnTAddClass = document.getElementById("btn-t-add-class");
+  const tClassStudents = document.getElementById("t-class-students");
 
   document.querySelectorAll(".t-class-nav-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const strong = btn.querySelector("strong");
-      const className = strong instanceof HTMLElement ? strong.innerText.trim() : "";
       const classCode = btn.getAttribute("data-class-code") || "";
-      if (tDetailTitle instanceof HTMLElement && className) {
-        tDetailTitle.innerText = className;
-      }
-      if (teacherClassCodeEl instanceof HTMLElement && classCode) {
-        teacherClassCodeEl.textContent = classCode;
-      }
-      const hasStudents = className === "Klasa 3B";
-      if (tClassStudents) tClassStudents.classList.toggle("hidden", !hasStudents);
-      if (tClassEmpty) tClassEmpty.classList.toggle("hidden", hasStudents);
-      if (tViewMain) tViewMain.classList.add("hidden");
-      if (tViewClassDetail) {
-        tViewClassDetail.classList.remove("hidden");
-        tViewClassDetail.setAttribute("aria-hidden", "false");
-      }
+      if (classCode) showTeacherClassDetail(classCode);
     });
   });
+
+  if (tClassStudents) {
+    tClassStudents.addEventListener("click", (ev) => {
+      const raw = ev.target;
+      if (!(raw instanceof Element)) return;
+      const header = raw.closest(".t-student-header");
+      if (!(header instanceof HTMLElement)) return;
+      const targetId = header.getAttribute("data-toggle-target");
+      if (!targetId) return;
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        targetEl.classList.toggle("hidden");
+        header.classList.toggle("is-open");
+      }
+    });
+  }
 
   if (btnTViewBack) {
     btnTViewBack.addEventListener("click", () => {
@@ -3391,22 +4023,119 @@
     });
   }
 
-  document.querySelectorAll("#t-view-class-detail .t-student-header").forEach((header) => {
-    header.addEventListener("click", () => {
-      if (!(header instanceof HTMLElement)) return;
-      const targetId = header.getAttribute("data-toggle-target");
-      if (!targetId) return;
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        targetEl.classList.toggle("hidden");
-        header.classList.toggle("is-open");
+  if (btnTAddClass instanceof HTMLButtonElement) {
+    btnTAddClass.addEventListener("click", () => {
+      showToast("✅ Utworzono nową klasę!");
+    });
+  }
+
+  document.querySelectorAll("[data-teacher-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!(btn instanceof HTMLElement)) return;
+      const mode = btn.getAttribute("data-teacher-mode");
+      if (mode === "classes" || mode === "tutor") {
+        setTeacherDashboardMode(mode);
       }
     });
   });
 
-  if (btnTAddClass instanceof HTMLButtonElement) {
-    btnTAddClass.addEventListener("click", () => {
-      showToast("✅ Utworzono nową klasę!");
+  currentWeekStart = startOfWeekMonday(new Date());
+  renderCalendar();
+
+  const calendarGrid = document.getElementById("calendar-grid");
+  if (calendarGrid) {
+    calendarGrid.addEventListener("click", (e) => {
+      const raw = e.target;
+      if (!(raw instanceof Element)) return;
+      const cell = raw.closest(".cal-cell");
+      if (!(cell instanceof HTMLElement)) return;
+
+      if (isEditMode) {
+        if (cell.classList.contains("booked")) return;
+        cell.classList.toggle("available");
+        const day = Number(cell.dataset.day);
+        const hour = Number(cell.dataset.hour);
+        if (Number.isFinite(day) && Number.isFinite(hour)) {
+          const slotKey = calendarSlotKey(currentWeekStart, day, hour);
+          if (cell.classList.contains("available")) calendarAvailableSlots.add(slotKey);
+          else calendarAvailableSlots.delete(slotKey);
+        }
+        return;
+      }
+
+      if (!cell.classList.contains("booked")) return;
+      const student = cell.dataset.student || "";
+      if (!student) return;
+      openLessonDetailModal(student, cell.getAttribute("aria-label") || "");
+    });
+  }
+
+  const btnToggleEdit = document.getElementById("btn-toggle-edit");
+  if (btnToggleEdit instanceof HTMLButtonElement) {
+    btnToggleEdit.addEventListener("click", () => {
+      isEditMode = !isEditMode;
+      syncCalendarEditUi();
+    });
+  }
+
+  const calPrev = document.getElementById("cal-prev");
+  const calNext = document.getElementById("cal-next");
+  if (calPrev instanceof HTMLButtonElement) {
+    calPrev.addEventListener("click", () => {
+      currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+      renderCalendar();
+    });
+  }
+  if (calNext instanceof HTMLButtonElement) {
+    calNext.addEventListener("click", () => {
+      currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+      renderCalendar();
+    });
+  }
+
+  const lessonDetailClose = document.getElementById("lesson-detail-close");
+  const lessonDetailBackdrop = document.getElementById("lesson-detail-backdrop");
+  const btnRescheduleLesson = document.getElementById("btn-reschedule-lesson");
+  const btnLessonNoShow = document.getElementById("btn-lesson-no-show");
+
+  if (lessonDetailClose) {
+    lessonDetailClose.addEventListener("click", () => closeLessonDetailModal());
+  }
+  if (lessonDetailBackdrop) {
+    lessonDetailBackdrop.addEventListener("click", () => closeLessonDetailModal());
+  }
+  if (btnRescheduleLesson instanceof HTMLButtonElement) {
+    btnRescheduleLesson.addEventListener("click", () => {
+      closeLessonDetailModal();
+      showToast("✅ Wysłano propozycję nowego terminu!");
+    });
+  }
+  if (btnLessonNoShow instanceof HTMLButtonElement) {
+    btnLessonNoShow.addEventListener("click", () => {
+      closeLessonDetailModal();
+      showToast("Zgłoszono nieobecność ucznia.");
+    });
+  }
+
+  const topicModal = document.getElementById("topic-modal");
+  const topicModalClose = document.getElementById("topic-modal-close");
+  const topicModalBackdrop = document.getElementById("topic-modal-backdrop");
+
+  if (topicModalClose) {
+    topicModalClose.addEventListener("click", () => closeTopicModal());
+  }
+  if (topicModalBackdrop) {
+    topicModalBackdrop.addEventListener("click", () => closeTopicModal());
+  }
+  if (topicModal) {
+    topicModal.addEventListener("click", (e) => {
+      const raw = e.target;
+      if (!(raw instanceof Element)) return;
+      const topicBtn = raw.closest("[data-flash-topic]");
+      if (!(topicBtn instanceof HTMLButtonElement)) return;
+      const topic = topicBtn.getAttribute("data-flash-topic");
+      if (!topic) return;
+      startFlashQuiz(topic);
     });
   }
 
@@ -3488,6 +4217,7 @@
   const quizCreatorModal = document.getElementById("quiz-creator-modal");
   const btnOpenQuizCreator = document.getElementById("btn-open-quiz-creator");
   const btnShareQuiz = document.getElementById("btn-share-quiz");
+  const btnPreviewQuiz = document.getElementById("btn-preview-quiz");
   const quizCreatorClose = document.getElementById("quiz-creator-close");
   const quizCreatorBackdrop = document.getElementById("quiz-creator-backdrop");
 
@@ -3504,6 +4234,15 @@
     btnShareQuiz.addEventListener("click", () => {
       closeQuizCreatorModal(quizCreatorModal);
       showToast("✅ Sprawdzian został przypisany do Klasy 3B!");
+    });
+  }
+  if (btnPreviewQuiz instanceof HTMLButtonElement) {
+    btnPreviewQuiz.addEventListener("click", () => {
+      const shuffleEl = document.getElementById("quiz-creator-shuffle");
+      const shuffleOn = shuffleEl instanceof HTMLInputElement && shuffleEl.checked;
+      const checkedCount = document.querySelectorAll(".quiz-creator-checkbox:checked").length;
+      const orderNote = shuffleOn ? " (kolejność wymieszana)" : "";
+      showToast(`👁️ Podgląd: ${checkedCount} zadań${orderNote}.`);
     });
   }
 
