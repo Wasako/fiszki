@@ -105,7 +105,8 @@ Struktura statyczna (poza `#app` całość UI jest w JS):
 ```
 body (flex column, min-height 100dvh)
 ├─ .app-shell (max-width 28rem, wyśrodkowany)
-│  ├─ header.app-brand — logo + breadcrumb profilu + mock logowanie ról
+│  ├─ header.app-brand — `.app-brand-top`: logo (lewo) + mock logowanie (prawo); breadcrumb pod spodem
+│  ├─ #teacher-task-tools — pasek B2B nauczyciela (nad #app, tylko zadania)
 │  └─ #app.app — dynamiczny UI (render)
 ├─ footer.app-footer (max-width 28rem) — Znajdź Nauczyciela + PWA + motyw
 ├─ #login-modal — modal logowania (mock + demo ról)
@@ -118,9 +119,9 @@ body (flex column, min-height 100dvh)
 
 | Element | Rola UX |
 |---------|---------|
-| **`header.app-brand`** | Wyśrodkowany blok: logo SVG + **`#app-mini-breadcrumb`** + **`nav.app-auth-nav`**. |
-| **`#app-auth-login`** | Przycisk **`#btn-open-login`** („👤 Zaloguj się”) — otwiera modal logowania. Ukrywany po zalogowaniu demo (**`.hidden`**). |
-| **`#profile-student`**, **`#profile-teacher`** | Awatar (ui-avatars.com) + etykieta roli + **`[data-auth-logout]`** „Wyloguj”. Klasa **`.hidden`** gdy nieaktywne. |
+| **`header.app-brand`** | **`.app-brand-top`**: logo SVG (**`.app-brand-link`**, lewo) + **`nav.app-auth-nav`** (prawo). **`#app-mini-breadcrumb`** pod rzędem (gdy widoczny). |
+| **`#app-auth-login`** | Przycisk **`#btn-open-login`** („👤 Zaloguj się”) — otwiera modal logowania. Ukrywany po zalogowaniu demo (**`setShellVisible`**: **`.hidden`** + atrybut **`hidden`**). |
+| **`#profile-student`**, **`#profile-teacher`** | Awatar (ui-avatars.com) + etykieta roli + **`[data-auth-logout]`** „Wyloguj”. Domyślnie **`hidden`** (HTML + klasa); widoczny tylko aktywny profil. |
 | **`#login-modal`** | Modal logowania: **`.modal-content`**, nagłówek „Witaj w Fizkach”, mock formularz (Email/Hasło, zablokowany **Zaloguj**), separator demo, **`#btn-login-demo-student`**, **`#btn-login-demo-teacher`**, **`#login-modal-close`**, **`#login-modal-backdrop`**. Domyślnie **`.hidden`**. |
 | **`#student-dashboard`** | Modal profilu ucznia (po demo ucznia, klik **`#profile-student`**): hero (awatar, imię, streak), statystyki, sekcja programu (**`#student-level-select`**, **`#student-grade-select`**) — zapis **`fizki_config`** bez nawigacji; sekcja dołączenia do klasy (**`#input-join-code`**, **`#btn-join-class`**) — makieta: toast + zamknięcie modala. **`#student-modal-close`**, **`#student-modal-backdrop`**, Escape. |
 | **`#teacher-dashboard`** | Modal profilu nauczyciela (klik **`#profile-teacher`**): hero, drill-down **`#t-view-main`** (analityka + **`t-class-nav-btn`**) ↔ **`#t-view-class-detail`** (**`#btn-t-view-back`**, lista uczniów z akordeonem), **`#btn-t-add-class`** (toast). **`resetTeacherDashboardView()`** przy otwarciu/zamknięciu. |
@@ -131,8 +132,8 @@ body (flex column, min-height 100dvh)
 | **`#quiz-creator-modal`** | Modal kreatora sprawdzianu: checkboxy zadań (mock), **`#quiz-creator-class`**, **`#btn-share-quiz`**. |
 | **`#quiz-success-toast`** | Zielony toast sukcesu (**`showToast()`**); **`aria-live="polite"`**. |
 | **FOUC motywu** | Inline script w `<head>`: `localStorage.fizki_theme` → `document.documentElement.dataset.theme` + `meta theme-color`. |
-| **Style** | `css/styles.css` + KaTeX 0.16.11 z jsDelivr. |
-| **Skrypty `defer`** | `katex.min.js` → **`canvas-confetti`** (jsDelivr 1.9.3) → `wzory-symbol-legends.js` → `app.js`. |
+| **Style** | `css/styles.css?v=6` + KaTeX 0.16.11 z jsDelivr. Przy deployzie shell: podbić **`?v=`** w `index.html`. |
+| **Skrypty `defer`** | `katex.min.js` → **`canvas-confetti`** (jsDelivr 1.9.3) → `wzory-symbol-legends.js?v=5` → `app.js?v=5`. |
 | **PWA meta** | `manifest.json`, ikony `/icons/`, Apple `mobile-web-app-*`, `theme-color` zsynchronizowany z motywem. |
 
 ### 1.6 CMS (Decap) — edycja treści poza runtime ucznia
@@ -239,7 +240,7 @@ flowchart TD
 | **`fisherYatesShuffle`**, **`buildFlashQuizChoices`** | Quiz fiszek: cztery warianty LaTeXu — poprawny `back` + trzy dystraktory z innych wzorów (priorytet: ten sam `topic`, potem poziom, potem `quizDistractors`, potem `CARDS`); **`fisherYatesShuffle`**. |
 | **`taskNeedsQuizGate`**, **`getTaskType`**, **`taskHasInteractiveGate`**, **`taskNeedsAnswerGate`**, **`checkMathAnswer`**, **`handleTaskWrongAttempt`**, **`unlockTaskWithSolution`** | Bramki zadań: open (formulaQuiz), math, abcd; 2-Strike; odblokowanie rozwiązania. |
 | **`celebrateSuccess`** | **`canvas-confetti`** po ukończeniu talii fiszek (`flash-complete`) i po **poprawnej** odpowiedzi w bramce (nie po 2. błędzie). |
-| **`handleLoginStudent`**, **`handleLoginTeacher`**, **`openLoginModal`**, **`closeLoginModal`**, **`openStudentModal`**, **`closeStudentModal`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`**, **`resetMockAuth`**, **`syncRoleMockUi`**, **`showToast`**, **`showQuizSuccessToast`** | Makieta ról: modale profilu, uniwersalny toast (**`#quiz-success-toast`**, stan tylko w pamięci). |
+| **`handleLoginStudent`**, **`handleLoginTeacher`**, **`openLoginModal`**, **`closeLoginModal`**, **`openStudentModal`**, **`closeStudentModal`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`**, **`resetMockAuth`**, **`syncRoleMockUi`**, **`setShellVisible`**, **`showToast`**, **`showQuizSuccessToast`** | Makieta ról: modale profilu, widoczność shell auth (**`.hidden`** + **`hidden`**), uniwersalny toast (**`#quiz-success-toast`**, stan tylko w pamięci). |
 | **`resetTeacherDashboardView`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`** | Drill-down: reset widoków modala nauczyciela. |
 | **`syncTeacherTaskTools`**, **`openQuizCreatorModal`**, **`closeQuizCreatorModal`** | B2B: pasek nauczyciela w zadaniach + kreator sprawdzianu (makieta). |
 | **`renderTeachers`**, **`openTeacherModal`**, **`closeTeacherModal`**, **`onTeacherModalBodyClick`** | Modal „Znajdź Nauczyciela”: karty nauczycieli, rozwijanie `.teacher-calendar`. |
@@ -329,12 +330,12 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 |----------------|---------|-----------|
 | `.app-shell`, `.app-footer` | `max-width: 28rem` | Wąska kolumna na wszystkich urządzeniach |
 | `body` | `flex` column, `min-height: 100dvh` | Footer na dole strony |
-| Logo + breadcrumb | `.app-brand` wyśrodkowany; `.app-mini-breadcrumb` pod logo | Kontekst szkoły/klasy bez zajmowania miejsca trzema zakładkami poziomu |
+| Logo + auth | **`.app-brand-top`**: logo lewo, **`nav.app-auth-nav`** prawo; **`.app-mini-breadcrumb`** pod spodem (pełna szerokość) | Jedna linia nagłówka; breadcrumb bez konfliktu z logowaniem |
 | **`@media (max-width: 768px)`** | `.tabs-main` → `position: fixed; bottom: 0; width: 100%` | Dolny pasek Fiszki/Karta/Zadania; `#app { padding-bottom: 80px }`; footer odsunięty (`margin-bottom: ~4.75rem + safe-area`) |
 | **`@media (max-width: 360px)`** | `.quiz-options--grid2` → 1 kolumna | (grid2 nieużywany w JS — reguła zapasowa) |
 | **`@media (min-width: 28rem)`** | `.task-quiz-symbol-legend` → 2 kolumny | Legenda po bramce zadania |
 
-**Strefy nawigacji na mobile (≤768px):** góra = breadcrumb profilu (shell) + treść `#app`; dół = `tabs-main` fixed + footer. **Jeden** rząd zakładek modułów (bez `tabs-level` u góry treści).
+**Strefy nawigacji na mobile (≤768px):** góra = logo + auth (shell) + treść `#app`; dół = `tabs-main` fixed + footer. **Jeden** rząd zakładek modułów (bez `tabs-level` u góry treści).
 
 ### 3.3 System zakładek (slider) — tylko moduły treści
 
@@ -447,12 +448,14 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 | Element | Zachowanie |
 |---------|------------|
 | **`manifest.json`** | `display: standalone`, `start_url` `/`, ikony 192/512 |
-| **Service Worker** | `sw.js`, cache **`fizki-v4`**; precache HTML/CSS/JS/JSON/logo; nawigacja stale-while-revalidate; `/admin`, `/api` pomijane |
+| **Service Worker** | `sw.js`, cache **`fizki-v5`**; precache HTML/CSS/JS/JSON/logo; **HTML** stale-while-revalidate; **CSS/JS shell** network-first (`/css/styles.css`, `/js/app.js`, `/js/wzory-symbol-legends.js`); reszta cache-first; `/admin`, `/api` pomijane |
 | **Instalacja** | `beforeinstallprompt` → `#pwa-install`; po 4 s bez promptu → `#pwa-install-hint` (`pwaManualInstallText` — iOS/Android/desktop); ukryte w standalone i na `/admin` |
 | **Bez `preventDefault`** na `beforeinstallprompt` | Chrome może pokazać natywny banner |
 | **Apple** | `apple-mobile-web-app-*`, touch icon 192 |
 
-**Audyt offline:** po pierwszej wizycie aplikacja może działać z cache; nowe wersje wymagają odświeżenia SW (brak UI „nowa wersja” poza `console.warn` przy rejestracji).
+**Deploy shell / auth:** przy zmianie `index.html`, `app.js` lub `styles.css` — podbić **`CACHE_NAME`** w `sw.js` **oraz** query **`?v=`** w linkach w `index.html`; inaczej PWA może serwować stary JS/CSS przy nowym HTML (rozjechany mock logowania).
+
+**Audyt offline:** po pierwszej wizycie aplikacja może działać z cache; rejestracja SW woła **`reg.update()`**; nowa wersja wymaga aktywacji SW (odświeżenie lub wyczyść cache).
 
 ### 3.9 Dostępność (a11y)
 
@@ -504,7 +507,7 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 6. **View Transition na każdy `render()`** — także expand rozdziału.
 7. **`quiz-options--grid2`** / **legacy `.card` flip** — martwe ścieżki CSS.
 8. **Brak deep linków** — brak URL per zadanie/fiszka/profil.
-9. **Logo SVG** — bez zewnętrznego DTD; bump cache SW przy zmianie assetów.
+9. **Logo SVG** — bez zewnętrznego DTD; bump **`fizki-vN`** + **`?v=`** w `index.html` przy zmianie shell/CSS/JS.
 10. **Brak przycisku „Menu” na korzeniu `task-chapters`** — zakładki Fiszki/Karta lub historia.
 11. **`history.state` nie zawiera `userLevel`/`userGrade`** — przy `popstate` profil zawsze z `loadFizkiConfig()` z `localStorage`.
 12. **Mock logowanie ról** — **`mockUserRole`** wpływa na widoczność **`#teacher-task-tools`** w ekranach zadań; nie filtruje treści fiszek/zadań. Stan ginie po odświeżeniu (celowo, makieta wideo).
@@ -522,7 +525,7 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 | Separator | **„LUB WYPRÓBUJ WERSJĘ DEMO”** — **`.login-demo-separator`** (linie po bokach). |
 | **`#btn-login-demo-student`** | **`handleLoginStudent()`** + **`closeLoginModal()`** → profil ucznia, ukryty panel nauczyciela. |
 | **`#btn-login-demo-teacher`** | **`handleLoginTeacher()`** + **`closeLoginModal()`** → profil nauczyciela (**`#profile-teacher`**). |
-| **`[data-auth-logout]`** | **`resetMockAuth()`** — reset roli, zamknięcie modala, ukrycie profili/panelu/toastu, ponowne **`#btn-open-login`** / **`#app-auth-login`**. |
+| **`[data-auth-logout]`** | **`resetMockAuth()`** — reset roli, zamknięcie modali, **`syncRoleMockUi()`** / **`setShellVisible`**. |
 
 **Storage:** brak — tylko **`mockUserRole`** w pamięci (do odświeżenia strony).
 
@@ -617,7 +620,7 @@ Użyj przy przeglądzie lub regresji. Oznacz: ✅ OK / ⚠️ do poprawy / ❌ b
 
 - [ ] Instalacja / hint po 4 s (nie w standalone).
 - [ ] Offline: podstawowy flow po precache.
-- [ ] Nowy deploy: użytkownik dostaje świeże logo/CSS (cache bump).
+- [ ] Nowy deploy: podbity **`CACHE_NAME`** w `sw.js` + **`?v=`** w `index.html`; auth pokazuje jeden stan (login **lub** profil).
 
 **A11y**
 
@@ -644,8 +647,8 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 | Klasa / selektor | Rola UX |
 |------------------|---------|
 | **`:root`**, **`[data-theme="light"]`** | Tokeny kolorów — §3.4. |
-| **`.teacher-task-tools*`**, **`.quiz-creator-*`**, **`.quiz-creator-checkbox`**, **`.app-shell`**, **`.app-brand`**, **`.app-logo*`**, **`.app-mini-breadcrumb`**, **`.app-auth-nav`**, **`.btn-auth-login`**, **`.app-auth-profile`**, **`.btn-auth-logout`**, **`.login-modal*`**, **`.modal-content`**, **`.modal`**, **`.modal-backdrop`**, **`.login-modal-input`**, **`.login-demo-*`**, **`.student-dashboard*`**, **`.student-join-*`**, **`.form-select`**, **`.teacher-dashboard-panel`**, **`.teacher-profile-*`**, **`.teacher-classes-manage`**, **`.t-class-*`**, **`.t-student-*`**, **`.t-micro-stat`**, **`.t-chevron`**, **`.teacher-class-empty`**, **`.teacher-analytics`**, **`.analytics-*`**, **`.bg-critical`**, **`.bg-warning`**, **`.bg-good`**, **`.text-critical`**, **`.text-warning`**, **`.text-good`**, **`.quiz-success-toast`**, **`.app-footer*`**, **`.btn-theme-toggle`**, **`.pwa-install-hint`** | Shell: logo, breadcrumb, modale (logowanie, profile, kreator sprawdzianu), toast, footer — §1.5, §3.13. |
-| **`.hidden`** | Ukrycie elementów mock UI (`display: none !important`). |
+| **`.teacher-task-tools*`**, **`.quiz-creator-*`**, **`.quiz-creator-checkbox`**, **`.app-shell`**, **`.app-brand`**, **`.app-brand-top`**, **`.app-brand-link`**, **`.app-logo*`**, **`.app-mini-breadcrumb`**, **`.app-auth-nav`**, **`.btn-auth-login`**, **`.app-auth-profile`**, **`.btn-auth-logout`**, **`.login-modal*`**, **`.modal-content`**, **`.modal`**, **`.modal-backdrop`**, **`.login-modal-input`**, **`.login-demo-*`**, **`.student-dashboard*`**, **`.student-join-*`**, **`.form-select`**, **`.teacher-dashboard-panel`**, **`.teacher-profile-*`**, **`.teacher-classes-manage`**, **`.t-view`**, **`.t-class-nav-btn`**, **`.t-detail-*`**, **`.t-student-*`**, **`.t-micro-stat`**, **`.t-nav-chevron`**, **`.teacher-class-empty`**, **`.teacher-analytics`**, **`.analytics-*`**, **`.bg-critical`**, **`.bg-warning`**, **`.bg-good`**, **`.text-critical`**, **`.text-warning`**, **`.text-good`**, **`.quiz-success-toast`**, **`.app-footer*`**, **`.btn-theme-toggle`**, **`.pwa-install-hint`** | Shell: logo (lewo) + auth (prawo), modale, toast, footer — §1.5, §3.13. |
+| **`.hidden`**, **`[hidden]`** | Ukrycie mock UI (`display: none !important`) — w tym profile auth i **`#teacher-task-tools`**, gdy **`display: flex`** autora nadpisuje natywny **`[hidden]`**. |
 | **`.teacher-modal*`**, **`.teacher-card`**, **`.teacher-calendar`**, **`.time-slot-btn`**, **`.teacher-level-badge`** | Modal „Znajdź Nauczyciela” — §3.13. |
 | **`.flash-study`**, **`.flash-study-body`**, **`.flash-nav`**, **`.flash-nav-row`** | Quiz fiszek: przewijana treść + sticky nawigacja Wstecz/Dalej. |
 | **`.task-answer-gate*`**, **`.task-math-input*`**, **`.task-abcd-option*`**, **`.task-difficulty-stars`**, **`.shake`** | Bramki math/abcd, gwiazdki trudności, animacja błędu. |
@@ -696,7 +699,7 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 | Regeneracja zadań | `scripts/rebuild_zadania.py` | Nie (dev/CI) |
 | Logo | `logo/fizki_yellow.svg`, `logo/fizki_black.svg` | Tak (precache SW) |
 | PWA manifest | `manifest.json` | Tak |
-| Service Worker | `sw.js` (`fizki-v4`) | Tak |
+| Service Worker | `sw.js` (`fizki-v5`) | Tak |
 | Źródło generatora fiszek JSON | `js/cards-wzory-cke.js` | Tylko Node (`tools/gen-fiszki-wzory-json.mjs`) |
 | Generator legendy | `tools/gen_wzory_symbol_legends.py` | Tylko Node |
 | **Ten dokument** | `docs/SINGLE_SOURCE_OF_TRUTH.md` | Spec UX + dane |

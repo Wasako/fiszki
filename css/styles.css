@@ -80,16 +80,32 @@ body {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  padding: 0.55rem 1rem 0.35rem;
+}
+
+.app-brand-top {
+  display: flex;
   align-items: center;
-  padding: 0.65rem 1rem 0.15rem;
-  text-align: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.app-brand-link {
+  display: inline-block;
+  flex-shrink: 0;
+  line-height: 0;
 }
 
 .app-mini-breadcrumb {
   display: block;
-  margin: 0.35rem auto 0;
+  margin: 0;
   padding: 0.25rem 0.55rem;
   max-width: 100%;
+  align-self: flex-start;
   border: none;
   border-radius: 999px;
   background: color-mix(in srgb, var(--bg-card) 88%, transparent);
@@ -122,18 +138,18 @@ body {
 .app-auth-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  flex: 1 1 auto;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 0.55rem;
-  width: 100%;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .app-auth-login {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  justify-content: center;
+  gap: 0.35rem;
+  justify-content: flex-end;
 }
 
 .btn-auth-login {
@@ -167,8 +183,8 @@ body {
 .app-auth-profile {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.28rem 0.65rem 0.28rem 0.35rem;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem 0.28rem 0.35rem;
   border: 1px solid var(--border-color);
   border-radius: 999px;
   background: var(--bg-card);
@@ -176,10 +192,10 @@ body {
 }
 
 .app-auth-profile--student {
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.35rem 0.45rem;
-  padding: 0.32rem 0.55rem 0.32rem 0.32rem;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 0.3rem 0.35rem;
+  padding: 0.28rem 0.5rem 0.28rem 0.28rem;
   cursor: pointer;
 }
 
@@ -231,9 +247,10 @@ body {
 }
 
 .app-auth-label {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-main);
+  white-space: nowrap;
 }
 
 .btn-auth-logout {
@@ -1406,11 +1423,6 @@ body.teacher-modal-open {
 .onboarding-option:focus-visible {
   outline: 2px solid var(--accent-fizki);
   outline-offset: 2px;
-}
-
-.app-brand-link {
-  display: inline-block;
-  line-height: 0;
 }
 
 .app-logo {
