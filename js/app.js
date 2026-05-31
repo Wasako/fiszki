@@ -1111,15 +1111,17 @@
   /** @type {ReturnType<typeof setTimeout> | null} */
   let copyClassCodeTimerId = null;
 
+  /** @param {HTMLElement | null} el @param {boolean} visible */
+  function setShellVisible(el, visible) {
+    if (!(el instanceof HTMLElement)) return;
+    el.classList.toggle("hidden", !visible);
+    el.hidden = !visible;
+  }
+
   function syncRoleMockUi() {
-    const authLogin = document.getElementById("app-auth-login");
-    const profileStudent = document.getElementById("profile-student");
-    const profileTeacher = document.getElementById("profile-teacher");
-
-    if (authLogin) authLogin.classList.toggle("hidden", mockUserRole !== null);
-    if (profileStudent) profileStudent.classList.toggle("hidden", mockUserRole !== "student");
-    if (profileTeacher) profileTeacher.classList.toggle("hidden", mockUserRole !== "teacher");
-
+    setShellVisible(document.getElementById("app-auth-login"), mockUserRole === null);
+    setShellVisible(document.getElementById("profile-student"), mockUserRole === "student");
+    setShellVisible(document.getElementById("profile-teacher"), mockUserRole === "teacher");
     syncTeacherTaskTools();
   }
 
@@ -1129,7 +1131,7 @@
     const show =
       mockUserRole === "teacher" &&
       (screen === "task-chapters" || screen === "task-detail");
-    tools.classList.toggle("hidden", !show);
+    setShellVisible(tools, show);
   }
 
   /** @param {HTMLElement | null} quizCreatorModal */
@@ -1287,10 +1289,6 @@
     closeTeacherDashboardModal();
     closeQuizCreatorModal();
     syncRoleMockUi();
-    const btnOpenLogin = document.getElementById("btn-open-login");
-    const authLogin = document.getElementById("app-auth-login");
-    if (authLogin) authLogin.classList.remove("hidden");
-    if (btnOpenLogin instanceof HTMLElement) btnOpenLogin.classList.remove("hidden");
   }
 
   /** @type {'main' | 'flash-study' | 'flash-complete' | 'task-chapters' | 'task-detail' | 'onboarding-school' | 'onboarding-grade'} */
@@ -3087,6 +3085,7 @@
       navigator.serviceWorker
         .register("/sw.js", { scope: "/" })
         .then((reg) => {
+          reg.update();
           reg.addEventListener("updatefound", () => {
             const nw = reg.installing;
             if (!nw) return;

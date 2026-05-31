@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 "use strict";
 
-const CACHE_NAME = "fizki-v4";
+const CACHE_NAME = "fizki-v5";
 
 const PRECACHE_URLS = [
   "/",
@@ -20,6 +20,13 @@ const PRECACHE_URLS = [
   "/icons/icon-192.png",
   "/icons/icon-512.png",
 ];
+
+/** Shell assets — network-first, żeby deploy od razu trafiał do użytkowników PWA. */
+const SHELL_PATHS = new Set([
+  "/css/styles.css",
+  "/js/app.js",
+  "/js/wzory-symbol-legends.js",
+]);
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -50,7 +57,9 @@ self.addEventListener("activate", (event) => {
 });
 
 /**
- * Cache-First dla zasobów aplikacji; Stale-While-Revalidate dla nawigacji (HTML).
+ * HTML: stale-while-revalidate.
+ * CSS/JS shell: network-first (świeży kod po deployu).
+ * Reszta: cache-first (offline JSON, logo, ikony).
  */
 self.addEventListener("fetch", (event) => {
   const { request } = event;
@@ -69,6 +78,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  if (SHELL_PATHS.has(url.pathname)) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
   event.respondWith(cacheFirst(request));
 });
 
@@ -84,6 +98,20 @@ async function cacheFirst(request) {
     }
     return response;
   } catch {
+    return cached || Response.error();
+  }
+}
+
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request);
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cached = await caches.match(request);
     return cached || Response.error();
   }
 }

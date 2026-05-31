@@ -114,7 +114,8 @@ body {
   outline-offset: 2px;
 }
 
-.hidden {
+.hidden,
+[hidden] {
   display: none !important;
 }
 
