@@ -35,18 +35,258 @@
         <img class="app-logo app-logo--theme-light" src="/logo/fizki_black.svg" alt="" width="120" height="49" decoding="async" fetchpriority="high" />
       </a>
       <button type="button" id="app-mini-breadcrumb" class="app-mini-breadcrumb" hidden aria-label="Zmień szkołę i klasę"></button>
+      <nav class="app-auth-nav" aria-label="Logowanie">
+        <div id="app-auth-login" class="app-auth-login">
+          <button type="button" id="btn-open-login" class="btn-auth-login">👤 Zaloguj się</button>
+        </div>
+        <div id="profile-student" class="app-auth-profile app-auth-profile--student hidden" role="button" tabindex="0" aria-label="Otwórz profil ucznia">
+          <img class="app-auth-avatar" src="https://ui-avatars.com/api/?name=Uczen&background=6366f1&color=fff&size=64" alt="" width="32" height="32" decoding="async" />
+          <span class="app-auth-streak" aria-label="Seria nauki: 12 dni z rzędu">🔥 12 Dni</span>
+          <span class="app-auth-label">Uczeń</span>
+          <button type="button" class="btn-auth-logout" data-auth-logout>Wyloguj</button>
+        </div>
+        <div id="profile-teacher" class="app-auth-profile app-auth-profile--teacher hidden" role="button" tabindex="0" aria-label="Otwórz profil nauczyciela">
+          <img class="app-auth-avatar" src="https://ui-avatars.com/api/?name=Nauczyciel&background=1e3a5f&color=fff&size=64" alt="" width="32" height="32" decoding="async" />
+          <span class="app-auth-label">Nauczyciel</span>
+          <button type="button" class="btn-auth-logout" data-auth-logout>Wyloguj</button>
+        </div>
+      </nav>
     </header>
+    <div id="teacher-task-tools" class="teacher-task-tools hidden" aria-label="Narzędzia nauczyciela w widoku zadań">
+      <p class="teacher-task-tools-label">Tryb Nauczyciela: Jesteś w dziale zadań</p>
+      <button type="button" id="btn-open-quiz-creator" class="teacher-task-tools-btn">📝 Przygotuj sprawdzian</button>
+    </div>
     <!-- #app: cały UI generuje js/app.js -->
     <div id="app" class="app"></div>
   </div>
   <footer class="app-footer">
     <p id="pwa-install-hint" class="pwa-install-hint" hidden></p>
     <div class="app-footer-actions">
+      <button type="button" id="btn-find-teacher" class="btn-theme-toggle">👩‍🏫 Znajdź Nauczyciela</button>
       <button type="button" id="pwa-install" class="btn-theme-toggle btn-pwa-install" hidden>📲 Zainstaluj aplikację</button>
       <button type="button" id="theme-toggle" class="btn-theme-toggle" aria-label="Przełącz motyw jasny lub ciemny">🌓 Zmień motyw</button>
     </div>
   </footer>
+  <div id="student-dashboard" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="student-modal-backdrop"></div>
+    <div class="modal-content student-dashboard-panel" role="dialog" aria-modal="true" aria-labelledby="student-profile-name">
+      <button type="button" id="student-modal-close" class="login-modal-close" aria-label="Zamknij">×</button>
+      <div class="student-profile-hero">
+        <img
+          class="student-profile-avatar"
+          src="https://ui-avatars.com/api/?name=Jan+Kowalski&background=0D8ABC&color=fff&size=128"
+          alt="Jan Kowalski"
+          width="70"
+          height="70"
+          decoding="async"
+        />
+        <h2 id="student-profile-name" class="student-profile-name">Jan Kowalski</h2>
+        <span class="student-dashboard-streak student-profile-streak">🔥 12 Dni Nauki</span>
+      </div>
+      <div class="student-dashboard-stats">
+        <div class="student-stat-card">
+          <span class="student-stat-value">142</span>
+          <span class="student-stat-label">Powtórzone fiszki</span>
+        </div>
+        <div class="student-stat-card">
+          <span class="student-stat-value">28</span>
+          <span class="student-stat-label">Rozwiązane zadania</span>
+        </div>
+      </div>
+      <div class="student-dashboard-curriculum">
+        <p class="student-curriculum-label">Twój program nauczania:</p>
+        <select id="student-level-select" class="form-select" aria-label="Poziom szkoły"></select>
+        <select id="student-grade-select" class="form-select" aria-label="Klasa"></select>
+      </div>
+      <div class="student-dashboard-join">
+        <p class="student-join-label">Nauczyciel podał Ci kod?</p>
+        <div class="student-join-row">
+          <input
+            type="text"
+            id="input-join-code"
+            class="student-join-input"
+            placeholder="Kod klasy"
+            autocomplete="off"
+            inputmode="text"
+            aria-label="Kod klasy od nauczyciela"
+          />
+          <button type="button" id="btn-join-class" class="student-join-btn">Dołącz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="teacher-dashboard" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="teacher-dashboard-backdrop"></div>
+    <div class="modal-content teacher-dashboard-panel" role="dialog" aria-modal="true" aria-labelledby="teacher-profile-name">
+      <button type="button" id="teacher-dashboard-close" class="login-modal-close" aria-label="Zamknij">×</button>
+      <div class="teacher-profile-hero">
+        <img
+          class="teacher-profile-avatar"
+          src="https://ui-avatars.com/api/?name=Anna+Nauczycielka&background=0D8ABC&color=fff&size=128"
+          alt="Anna Nauczycielka"
+          width="70"
+          height="70"
+          decoding="async"
+        />
+        <h2 id="teacher-profile-name" class="teacher-profile-name">Anna Nauczycielka</h2>
+        <span class="teacher-profile-role">👨‍🏫 Nauczyciel Fizyki</span>
+      </div>
+      <div id="t-view-main" class="t-view">
+        <section class="teacher-analytics" aria-label="Zagrożenia w wiedzy">
+          <h3 class="analytics-title">Zagrożenia (Ostatnie 7 dni)</h3>
+          <div class="analytics-item">
+            <div class="analytics-label">
+              <span>Optyka</span>
+              <span class="text-critical">70% błędów</span>
+            </div>
+            <div class="analytics-track">
+              <div class="analytics-fill bg-critical" style="width: 70%"></div>
+            </div>
+          </div>
+          <div class="analytics-item">
+            <div class="analytics-label">
+              <span>Dynamika</span>
+              <span class="text-warning">45% błędów</span>
+            </div>
+            <div class="analytics-track">
+              <div class="analytics-fill bg-warning" style="width: 45%"></div>
+            </div>
+          </div>
+        </section>
+        <div class="teacher-classes-manage">
+          <div class="teacher-classes-header">
+            <h3 class="teacher-classes-heading">Twoje Klasy</h3>
+            <button type="button" id="btn-t-add-class" class="teacher-new-class-btn">+ Nowa</button>
+          </div>
+          <div class="teacher-classes-list">
+            <button type="button" class="t-class-nav-btn" data-class-code="FIZ-3B">
+              <span><strong>Klasa 3B</strong> <code class="t-class-code">FIZ-3B</code></span>
+              <span class="t-nav-chevron" aria-hidden="true">›</span>
+            </button>
+            <button type="button" class="t-class-nav-btn" data-class-code="FIZ-1A">
+              <span><strong>Klasa 1A</strong> <code class="t-class-code">FIZ-1A</code></span>
+              <span class="t-nav-chevron" aria-hidden="true">›</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="t-view-class-detail" class="t-view hidden" aria-hidden="true">
+        <div class="t-detail-header">
+          <button type="button" id="btn-t-view-back" class="t-detail-back">← Wróć</button>
+          <h3 id="t-detail-title" class="t-detail-title">Klasa 3B</h3>
+          <button type="button" id="btn-copy-class-code" class="t-detail-code-btn">📋 Kod</button>
+        </div>
+        <p class="t-detail-hint">Lista uczniów (kliknij, by rozwinąć):</p>
+        <div id="t-class-students" class="t-students-list">
+          <div class="t-student-group">
+            <div class="t-student-header" data-toggle-target="t-student-body-kamil" role="button" tabindex="0">
+              <span>Kamil W.</span>
+              <span class="t-student-header-right">
+                <span class="text-good">85%</span>
+                <span class="t-chevron" aria-hidden="true">▼</span>
+              </span>
+            </div>
+            <div id="t-student-body-kamil" class="t-student-body hidden">
+              <div class="t-micro-stat"><span>Optyka</span><span class="text-good">90%</span></div>
+              <div class="t-micro-stat"><span>Kinematyka</span><span class="text-critical">30%</span></div>
+            </div>
+          </div>
+          <div class="t-student-group">
+            <div class="t-student-header" data-toggle-target="t-student-body-anna" role="button" tabindex="0">
+              <span>Anna M.</span>
+              <span class="t-student-header-right">
+                <span class="text-warning">42%</span>
+                <span class="t-chevron" aria-hidden="true">▼</span>
+              </span>
+            </div>
+            <div id="t-student-body-anna" class="t-student-body hidden">
+              <div class="t-micro-stat"><span>Dynamika</span><span class="text-warning">45%</span></div>
+              <div class="t-micro-stat"><span>Termodynamika</span><span class="text-critical">20%</span></div>
+            </div>
+          </div>
+        </div>
+        <p id="t-class-empty" class="teacher-class-empty hidden">Brak uczniów w tej klasie.</p>
+        <span id="teacher-class-code" class="hidden" aria-hidden="true">FIZ-3B</span>
+      </div>
+    </div>
+  </div>
+  <div id="login-modal" class="login-modal hidden" aria-hidden="true">
+    <div class="login-modal-backdrop" id="login-modal-backdrop"></div>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+      <button type="button" id="login-modal-close" class="login-modal-close" aria-label="Zamknij">×</button>
+      <h2 id="login-modal-title" class="login-modal-heading">Witaj w Fizkach</h2>
+      <form class="login-mock-form" action="#" novalidate>
+        <label class="login-mock-field">
+          <span class="login-mock-label">Email</span>
+          <input type="email" id="login-mock-email" class="login-modal-input" placeholder="twoj@email.pl" autocomplete="username" />
+        </label>
+        <label class="login-mock-field">
+          <span class="login-mock-label">Hasło</span>
+          <input type="password" id="login-mock-password" class="login-modal-input" placeholder="••••••••" autocomplete="current-password" />
+        </label>
+        <button type="button" class="login-mock-submit" disabled>Zaloguj</button>
+      </form>
+      <div class="login-demo-separator" aria-hidden="true">
+        <span>LUB WYPRÓBUJ WERSJĘ DEMO</span>
+      </div>
+      <div class="login-demo-actions">
+        <button type="button" id="btn-login-demo-student" class="login-demo-btn">🎓 Zaloguj jako Uczeń (Demo)</button>
+        <button type="button" id="btn-login-demo-teacher" class="login-demo-btn login-demo-btn--teacher">👨‍🏫 Zaloguj jako Nauczyciel (Demo)</button>
+      </div>
+    </div>
+  </div>
+  <div id="teacher-modal" class="teacher-modal" hidden aria-hidden="true">
+    <div class="teacher-modal-backdrop" id="teacher-modal-backdrop"></div>
+    <div class="teacher-modal-panel" role="dialog" aria-modal="true" aria-labelledby="teacher-modal-title">
+      <header class="teacher-modal-header">
+        <h2 id="teacher-modal-title">Znajdź Nauczyciela</h2>
+        <button type="button" id="teacher-modal-close" class="teacher-modal-close" aria-label="Zamknij">×</button>
+      </header>
+      <div id="teacher-modal-body" class="teacher-modal-body"></div>
+    </div>
+  </div>
+  <div id="quiz-creator-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="quiz-creator-backdrop"></div>
+    <div class="modal-content quiz-creator-panel" role="dialog" aria-modal="true" aria-labelledby="quiz-creator-title">
+      <button type="button" id="quiz-creator-close" class="login-modal-close" aria-label="Zamknij">×</button>
+      <h2 id="quiz-creator-title" class="quiz-creator-heading">Kreator Sprawdzianu</h2>
+      <p class="quiz-creator-intro">Zaznacz zadania do sprawdzianu z bieżącego działu:</p>
+      <ul class="quiz-creator-task-list">
+        <li class="quiz-creator-task-item">
+          <label class="quiz-creator-task-label">
+            <input type="checkbox" class="quiz-creator-checkbox" checked />
+            <span>Zadanie 1: Prędkość i droga</span>
+          </label>
+        </li>
+        <li class="quiz-creator-task-item">
+          <label class="quiz-creator-task-label">
+            <input type="checkbox" class="quiz-creator-checkbox" checked />
+            <span>Zadanie 2: Siły na planszy</span>
+          </label>
+        </li>
+        <li class="quiz-creator-task-item">
+          <label class="quiz-creator-task-label">
+            <input type="checkbox" class="quiz-creator-checkbox" />
+            <span>Zadanie 3: Energia kinetyczna</span>
+          </label>
+        </li>
+      </ul>
+      <div class="quiz-creator-footer">
+        <label class="quiz-creator-class-field" for="quiz-creator-class">
+          <span class="quiz-creator-class-label">Przypisz do klasy</span>
+          <select id="quiz-creator-class" class="form-select quiz-creator-class-select">
+            <option value="3b" selected>Klasa 3B</option>
+          </select>
+        </label>
+        <button type="button" id="btn-share-quiz" class="quiz-creator-submit">Zapisz i wygeneruj link</button>
+      </div>
+    </div>
+  </div>
+  <div id="quiz-success-toast" class="quiz-success-toast hidden" role="status" aria-live="polite">
+    ✅ Wygenerowano link do kartkówki! Skopiowano do schowka.
+  </div>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script defer src="js/wzory-symbol-legends.js"></script>
   <script defer src="js/app.js"></script>
 </body>

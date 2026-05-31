@@ -1,6 +1,37 @@
 (function () {
   "use strict";
 
+  /** @type {readonly { id: string; name: string; photoUrl: string; bio: string; price: string; levels: string[]; availableSlots: string[] }[]} */
+  const MOCK_TEACHERS = [
+    {
+      id: "teacher-1",
+      name: "Anna Kowalska",
+      photoUrl: "https://ui-avatars.com/api/?name=Anna+Kowalska&background=6366f1&color=fff&size=128",
+      bio: "Nauczycielka fizyki z 8-letnim doświadczeniem. Specjalizacja: mechanika i termodynamika.",
+      price: "100 zł/h",
+      levels: ["Szkoła podstawowa", "Liceum", "Matura"],
+      availableSlots: ["Pon 16:00", "Wt 17:00", "Czw 18:00"],
+    },
+    {
+      id: "teacher-2",
+      name: "Marek Nowak",
+      photoUrl: "https://ui-avatars.com/api/?name=Marek+Nowak&background=0ea5e9&color=fff&size=128",
+      bio: "Korepetycje z fizyki i matematyki. Przygotowanie do egzaminu ósmoklasisty i matury.",
+      price: "120 zł/h",
+      levels: ["Szkoła podstawowa", "Liceum"],
+      availableSlots: ["Wt 15:30", "Śr 16:00", "Pt 17:30"],
+    },
+    {
+      id: "teacher-3",
+      name: "Karolina Wiśniewska",
+      photoUrl: "https://ui-avatars.com/api/?name=Karolina+Wisniewska&background=f59e0b&color=fff&size=128",
+      bio: "Studentka fizyki na UW. Pomaga w zadaniach domowych i przygotowaniu do sprawdzianów.",
+      price: "80 zł/h",
+      levels: ["Szkoła podstawowa", "Matura"],
+      availableSlots: ["Pon 18:00", "Czw 16:30", "Sob 10:00"],
+    },
+  ];
+
   /** @param {string} s */
   function texText(s) {
     return String(s)
@@ -357,6 +388,12 @@
     render();
   }
 
+  function celebrateSuccess() {
+    if (typeof confetti === "function") {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
+  }
+
   /** @param {HTMLElement | null} el */
   function triggerTaskShake(el) {
     if (!el) return;
@@ -604,6 +641,13 @@
     { id: "lo-r", title: "Liceum — rozszerzenie" },
   ];
 
+  /** Etykiety w modalu profilu ucznia (`#student-level-select`). */
+  const STUDENT_LEVEL_SELECT_OPTIONS = [
+    { id: "sp", title: "Szkoła podstawowa" },
+    { id: "lo-p", title: "Liceum podstawa" },
+    { id: "lo-r", title: "Liceum rozszerzenie" },
+  ];
+
   const FIZKI_CONFIG_STORAGE_KEY = "fizki_config";
 
   function orderedHomeLevelIds() {
@@ -632,9 +676,20 @@
     }
     taskClassTabId = getEffectiveClassFilterId();
     updateAppBreadcrumb();
+    updateStudentDashboard();
   }
 
-  function saveFizkiConfig() {
+  /**
+   * @param {string} [level]
+   * @param {string} [grade]
+   */
+  function saveFizkiConfig(level, grade) {
+    if (typeof level === "string" && Object.prototype.hasOwnProperty.call(USER_LEVEL_TO_HOME, level)) {
+      userLevel = level;
+    }
+    if (typeof grade === "string") {
+      userGrade = grade.trim() || "all";
+    }
     localStorage.setItem(
       FIZKI_CONFIG_STORAGE_KEY,
       JSON.stringify({ userLevel, userGrade })
@@ -661,15 +716,55 @@
 
   function updateAppBreadcrumb() {
     const el = document.getElementById("app-mini-breadcrumb");
-    if (!el) return;
-    if (screen === "onboarding-school" || screen === "onboarding-grade") {
-      el.hidden = true;
+    if (el) el.hidden = true;
+  }
+
+  /** @param {string} ul */
+  function fillStudentGradeSelect(ul) {
+    const gradeSelect = document.getElementById("student-grade-select");
+    if (!(gradeSelect instanceof HTMLSelectElement)) return;
+    const gradeOpts = gradeOptionsForUserLevel(ul);
+    gradeSelect.innerHTML = gradeOpts
+      .map((o) => `<option value="${escapeHtml(o.id)}">${escapeHtml(o.title)}</option>`)
+      .join("");
+    const validGrade = gradeOpts.some((o) => o.id === userGrade);
+    gradeSelect.value = validGrade ? userGrade : "all";
+    if (!validGrade) userGrade = "all";
+  }
+
+  function updateStudentDashboard() {
+    const levelSelect = document.getElementById("student-level-select");
+    const gradeSelect = document.getElementById("student-grade-select");
+    if (!(levelSelect instanceof HTMLSelectElement) || !(gradeSelect instanceof HTMLSelectElement)) {
       return;
     }
-    el.hidden = false;
-    const school = USER_LEVEL_SHORT_LABELS[userLevel] || userLevel;
-    const grade = userGradeDisplayLabel();
-    el.textContent = `${school} • ${grade}`;
+
+    levelSelect.innerHTML = STUDENT_LEVEL_SELECT_OPTIONS.map(
+      (o) => `<option value="${escapeHtml(o.id)}">${escapeHtml(o.title)}</option>`
+    ).join("");
+    const validLevel = STUDENT_LEVEL_SELECT_OPTIONS.some((o) => o.id === userLevel);
+    levelSelect.value = validLevel ? userLevel : "lo-r";
+
+    fillStudentGradeSelect(levelSelect.value);
+  }
+
+  function onStudentLevelSelectChange() {
+    const levelSelect = document.getElementById("student-level-select");
+    if (!(levelSelect instanceof HTMLSelectElement)) return;
+    const newLevel = levelSelect.value;
+    saveFizkiConfig(newLevel, "all");
+    applyFizkiConfig();
+    fillStudentGradeSelect(newLevel);
+    render();
+  }
+
+  function onStudentGradeSelectChange() {
+    const gradeSelect = document.getElementById("student-grade-select");
+    if (!(gradeSelect instanceof HTMLSelectElement)) return;
+    const newGrade = gradeSelect.value;
+    saveFizkiConfig(userLevel, newGrade);
+    applyFizkiConfig();
+    render();
   }
 
   function userGradeDisplayLabel() {
@@ -701,18 +796,6 @@
   function installAppBreadcrumbDelegation() {
     if (document.documentElement.dataset.breadcrumbDelegation === "1") return;
     document.documentElement.dataset.breadcrumbDelegation = "1";
-    const el = document.getElementById("app-mini-breadcrumb");
-    if (!el) return;
-    el.addEventListener("click", () => {
-      _pendingOnboardingLevel = "";
-      taskLevelId = null;
-      taskSectionId = null;
-      taskCurriculumPath = [];
-      taskCurriculumExpandedIds.clear();
-      lastTaskQuizGateKey = "";
-      screen = "onboarding-school";
-      render();
-    });
   }
 
   function renderOnboardingSchoolHtml() {
@@ -1018,6 +1101,198 @@
   /** Ostatnie wymiary pill zakładek (przetrwają `innerHTML` w `render`). */
   const sliderPositionsCache = {};
 
+  /** @type {null | 'student' | 'teacher'} */
+  let mockUserRole = null;
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  let quizToastTimerId = null;
+  const COPY_CLASS_CODE_BTN_LABEL = "📋 Kod";
+  const QUIZ_TOAST_DEFAULT_MESSAGE =
+    "✅ Wygenerowano link do kartkówki! Skopiowano do schowka.";
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  let copyClassCodeTimerId = null;
+
+  function syncRoleMockUi() {
+    const authLogin = document.getElementById("app-auth-login");
+    const profileStudent = document.getElementById("profile-student");
+    const profileTeacher = document.getElementById("profile-teacher");
+
+    if (authLogin) authLogin.classList.toggle("hidden", mockUserRole !== null);
+    if (profileStudent) profileStudent.classList.toggle("hidden", mockUserRole !== "student");
+    if (profileTeacher) profileTeacher.classList.toggle("hidden", mockUserRole !== "teacher");
+
+    syncTeacherTaskTools();
+  }
+
+  function syncTeacherTaskTools() {
+    const tools = document.getElementById("teacher-task-tools");
+    if (!tools) return;
+    const show =
+      mockUserRole === "teacher" &&
+      (screen === "task-chapters" || screen === "task-detail");
+    tools.classList.toggle("hidden", !show);
+  }
+
+  /** @param {HTMLElement | null} quizCreatorModal */
+  function openQuizCreatorModal(quizCreatorModal) {
+    const modal = quizCreatorModal || document.getElementById("quiz-creator-modal");
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("login-modal-open");
+    const closeBtn = document.getElementById("quiz-creator-close");
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
+  }
+
+  /** @param {HTMLElement | null} quizCreatorModal */
+  function closeQuizCreatorModal(quizCreatorModal) {
+    const modal = quizCreatorModal || document.getElementById("quiz-creator-modal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("login-modal-open");
+  }
+
+  /** @param {string} message */
+  function showToast(message) {
+    const toast = document.getElementById("quiz-success-toast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    if (quizToastTimerId) clearTimeout(quizToastTimerId);
+    quizToastTimerId = setTimeout(() => {
+      toast.classList.add("hidden");
+      toast.textContent = QUIZ_TOAST_DEFAULT_MESSAGE;
+      quizToastTimerId = null;
+    }, 3000);
+  }
+
+  function showQuizSuccessToast() {
+    showToast(QUIZ_TOAST_DEFAULT_MESSAGE);
+  }
+
+  function handleLoginStudent() {
+    mockUserRole = "student";
+    syncRoleMockUi();
+    updateStudentDashboard();
+  }
+
+  function handleLoginTeacher() {
+    mockUserRole = "teacher";
+    syncRoleMockUi();
+  }
+
+  /** @param {HTMLElement | null} studentModal */
+  function openStudentModal(studentModal) {
+    const modal = studentModal || document.getElementById("student-dashboard");
+    if (!modal) return;
+    updateStudentDashboard();
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("login-modal-open");
+    const closeBtn = document.getElementById("student-modal-close");
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
+  }
+
+  /** @param {HTMLElement | null} studentModal */
+  function closeStudentModal(studentModal) {
+    const modal = studentModal || document.getElementById("student-dashboard");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("login-modal-open");
+  }
+
+  /** @param {HTMLElement | null} teacherDashboardModal */
+  function openTeacherDashboardModal(teacherDashboardModal) {
+    const modal = teacherDashboardModal || document.getElementById("teacher-dashboard");
+    if (!modal) return;
+    resetTeacherDashboardView();
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("login-modal-open");
+    const closeBtn = document.getElementById("teacher-dashboard-close");
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
+  }
+
+  function resetTeacherDashboardView() {
+    const tViewMain = document.getElementById("t-view-main");
+    const tViewClassDetail = document.getElementById("t-view-class-detail");
+    if (tViewMain) tViewMain.classList.remove("hidden");
+    if (tViewClassDetail) {
+      tViewClassDetail.classList.add("hidden");
+      tViewClassDetail.setAttribute("aria-hidden", "true");
+    }
+    document.querySelectorAll("#t-view-class-detail .t-student-header").forEach((header) => {
+      header.classList.remove("is-open");
+    });
+    document.querySelectorAll("#t-view-class-detail .t-student-body").forEach((body) => {
+      body.classList.add("hidden");
+    });
+  }
+
+  /** @param {HTMLElement | null} teacherDashboardModal */
+  function closeTeacherDashboardModal(teacherDashboardModal) {
+    const modal = teacherDashboardModal || document.getElementById("teacher-dashboard");
+    if (!modal) return;
+    resetTeacherDashboardView();
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("login-modal-open");
+  }
+
+  /** @param {HTMLElement | null} loginModal */
+  function openLoginModal(loginModal) {
+    const modal = loginModal || document.getElementById("login-modal");
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("login-modal-open");
+    const closeBtn = document.getElementById("login-modal-close");
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
+  }
+
+  /** @param {HTMLElement | null} loginModal */
+  function closeLoginModal(loginModal) {
+    const modal = loginModal || document.getElementById("login-modal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("login-modal-open");
+  }
+
+  function resetMockAuth() {
+    mockUserRole = null;
+    if (quizToastTimerId) {
+      clearTimeout(quizToastTimerId);
+      quizToastTimerId = null;
+    }
+    const toast = document.getElementById("quiz-success-toast");
+    if (toast) {
+      toast.classList.add("hidden");
+      toast.textContent = QUIZ_TOAST_DEFAULT_MESSAGE;
+    }
+    if (copyClassCodeTimerId) {
+      clearTimeout(copyClassCodeTimerId);
+      copyClassCodeTimerId = null;
+    }
+    const btnCopyClassCode = document.getElementById("btn-copy-class-code");
+    if (btnCopyClassCode instanceof HTMLButtonElement) {
+      btnCopyClassCode.disabled = false;
+      btnCopyClassCode.textContent = COPY_CLASS_CODE_BTN_LABEL;
+    }
+    const inputJoinCode = document.getElementById("input-join-code");
+    if (inputJoinCode instanceof HTMLInputElement) inputJoinCode.value = "";
+    closeLoginModal();
+    closeStudentModal();
+    closeTeacherDashboardModal();
+    closeQuizCreatorModal();
+    syncRoleMockUi();
+    const btnOpenLogin = document.getElementById("btn-open-login");
+    const authLogin = document.getElementById("app-auth-login");
+    if (authLogin) authLogin.classList.remove("hidden");
+    if (btnOpenLogin instanceof HTMLElement) btnOpenLogin.classList.remove("hidden");
+  }
+
   /** @type {'main' | 'flash-study' | 'flash-complete' | 'task-chapters' | 'task-detail' | 'onboarding-school' | 'onboarding-grade'} */
   let screen = "main";
   /** @type {'fiszki' | 'zadania' | 'karta-wzorow'} */
@@ -1066,6 +1341,7 @@
       screen = "flash-complete";
       flashQuizPicked = null;
       flashQuizCache = null;
+      celebrateSuccess();
       render();
     }
   }
@@ -2662,6 +2938,7 @@
             if (fq.choices[i].correct) {
               taskQuizSolved = true;
               taskQuizUnlockAnim = true;
+              celebrateSuccess();
               render();
             } else {
               render();
@@ -2680,6 +2957,7 @@
           if (checkMathAnswer(userVal, String(t.mathValue ?? ""))) {
             taskQuizSolved = true;
             taskQuizUnlockAnim = true;
+            celebrateSuccess();
             render();
             return;
           }
@@ -2701,6 +2979,7 @@
             if (abcdOpts[i].isCorrect) {
               taskQuizSolved = true;
               taskQuizUnlockAnim = true;
+              celebrateSuccess();
               render();
               return;
             }
@@ -2756,6 +3035,7 @@
         requestAnimationFrame(() => {
           updateTabSliders();
           updateAppBreadcrumb();
+          syncRoleMockUi();
         });
       }
     };
@@ -2884,4 +3164,349 @@
 
     window.setTimeout(showPwaInstallHint, 4000);
   }
+
+  const teacherModal = document.getElementById("teacher-modal");
+  const teacherModalBody = document.getElementById("teacher-modal-body");
+  const btnFindTeacher = document.getElementById("btn-find-teacher");
+  const teacherModalClose = document.getElementById("teacher-modal-close");
+  const teacherModalBackdrop = document.getElementById("teacher-modal-backdrop");
+  let teachersRendered = false;
+
+  function renderTeachers() {
+    if (!teacherModalBody) return;
+
+    teacherModalBody.innerHTML = MOCK_TEACHERS.map((teacher) => {
+      const levelBadgesHtml = teacher.levels
+        .map(
+          (level) =>
+            `<span class="teacher-level-badge">${escapeHtml(level)}</span>`
+        )
+        .join("");
+
+      const slotsHtml = teacher.availableSlots
+        .map(
+          (slot) =>
+            `<button type="button" class="time-slot-btn">${escapeHtml(slot)}</button>`
+        )
+        .join("");
+
+      return `<article class="teacher-card" data-teacher-id="${escapeHtml(teacher.id)}">
+        <div class="teacher-card-main">
+          <div class="teacher-photo">
+            <img class="teacher-avatar" src="${escapeHtml(teacher.photoUrl)}" alt="${escapeHtml(teacher.name)}" width="60" height="60" loading="lazy" decoding="async" />
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">${escapeHtml(teacher.name)}</h3>
+            <p class="teacher-bio">${escapeHtml(teacher.bio)}</p>
+            <p class="teacher-price"><strong>${escapeHtml(teacher.price)}</strong></p>
+            <div class="teacher-levels">${levelBadgesHtml}</div>
+          </div>
+        </div>
+        <button type="button" class="teacher-toggle-slots" data-teacher-id="${escapeHtml(teacher.id)}">Zobacz wolne terminy</button>
+        <div class="teacher-calendar">${slotsHtml}</div>
+      </article>`;
+    }).join("");
+
+    teachersRendered = true;
+  }
+
+  /** @param {MouseEvent} ev */
+  function onTeacherModalBodyClick(ev) {
+    const target = ev.target;
+    if (!(target instanceof Element)) return;
+
+    const toggleBtn = target.closest(".teacher-toggle-slots");
+    if (!toggleBtn || !teacherModalBody || !teacherModalBody.contains(toggleBtn)) return;
+
+    const card = toggleBtn.closest(".teacher-card");
+    if (!card) return;
+
+    const expanded = card.classList.toggle("show-calendar");
+    toggleBtn.textContent = expanded ? "Ukryj terminy" : "Zobacz wolne terminy";
+  }
+
+  function openTeacherModal() {
+    if (!teacherModal) return;
+    if (!teachersRendered) renderTeachers();
+    teacherModal.hidden = false;
+    teacherModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("teacher-modal-open");
+    if (teacherModalClose) teacherModalClose.focus();
+  }
+
+  function closeTeacherModal() {
+    if (!teacherModal) return;
+    teacherModal.hidden = true;
+    teacherModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("teacher-modal-open");
+    if (btnFindTeacher) btnFindTeacher.focus();
+  }
+
+  if (btnFindTeacher) {
+    btnFindTeacher.addEventListener("click", openTeacherModal);
+  }
+  if (teacherModalBody) {
+    renderTeachers();
+    teacherModalBody.addEventListener("click", onTeacherModalBodyClick);
+  }
+  if (teacherModalClose) {
+    teacherModalClose.addEventListener("click", closeTeacherModal);
+  }
+  if (teacherModalBackdrop) {
+    teacherModalBackdrop.addEventListener("click", closeTeacherModal);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const loginModalEl = document.getElementById("login-modal");
+    if (loginModalEl && !loginModalEl.classList.contains("hidden")) {
+      closeLoginModal(loginModalEl);
+      const openBtn = document.getElementById("btn-open-login");
+      if (openBtn instanceof HTMLElement) openBtn.focus();
+      return;
+    }
+    const studentModalEl = document.getElementById("student-dashboard");
+    if (studentModalEl && !studentModalEl.classList.contains("hidden")) {
+      closeStudentModal(studentModalEl);
+      const profileStudent = document.getElementById("profile-student");
+      if (profileStudent instanceof HTMLElement) profileStudent.focus();
+      return;
+    }
+    const teacherDashboardEl = document.getElementById("teacher-dashboard");
+    if (teacherDashboardEl && !teacherDashboardEl.classList.contains("hidden")) {
+      closeTeacherDashboardModal(teacherDashboardEl);
+      const profileTeacher = document.getElementById("profile-teacher");
+      if (profileTeacher instanceof HTMLElement) profileTeacher.focus();
+      return;
+    }
+    const quizCreatorEl = document.getElementById("quiz-creator-modal");
+    if (quizCreatorEl && !quizCreatorEl.classList.contains("hidden")) {
+      closeQuizCreatorModal(quizCreatorEl);
+      const btnOpenQuiz = document.getElementById("btn-open-quiz-creator");
+      if (btnOpenQuiz instanceof HTMLElement) btnOpenQuiz.focus();
+      return;
+    }
+    if (teacherModal && !teacherModal.hidden) {
+      closeTeacherModal();
+    }
+  });
+
+  const studentModal = document.getElementById("student-dashboard");
+  const profileStudent = document.getElementById("profile-student");
+  const studentModalBackdrop = document.getElementById("student-modal-backdrop");
+  const studentModalClose = document.getElementById("student-modal-close");
+
+  if (profileStudent) {
+    profileStudent.addEventListener("click", (ev) => {
+      const target = ev.target;
+      if (target instanceof Element && target.closest("[data-auth-logout]")) return;
+      openStudentModal(studentModal);
+    });
+    profileStudent.addEventListener("keydown", (ev) => {
+      if (ev.key !== "Enter" && ev.key !== " ") return;
+      if (ev.target instanceof Element && ev.target.closest("[data-auth-logout]")) return;
+      ev.preventDefault();
+      openStudentModal(studentModal);
+    });
+  }
+  if (studentModalClose) {
+    studentModalClose.addEventListener("click", () => closeStudentModal(studentModal));
+  }
+  if (studentModalBackdrop) {
+    studentModalBackdrop.addEventListener("click", () => closeStudentModal(studentModal));
+  }
+
+  const teacherDashboardModal = document.getElementById("teacher-dashboard");
+  const profileTeacher = document.getElementById("profile-teacher");
+  const teacherDashboardBackdrop = document.getElementById("teacher-dashboard-backdrop");
+  const teacherDashboardClose = document.getElementById("teacher-dashboard-close");
+
+  if (profileTeacher) {
+    profileTeacher.addEventListener("click", (ev) => {
+      const target = ev.target;
+      if (target instanceof Element && target.closest("[data-auth-logout]")) return;
+      openTeacherDashboardModal(teacherDashboardModal);
+    });
+    profileTeacher.addEventListener("keydown", (ev) => {
+      if (ev.key !== "Enter" && ev.key !== " ") return;
+      if (ev.target instanceof Element && ev.target.closest("[data-auth-logout]")) return;
+      ev.preventDefault();
+      openTeacherDashboardModal(teacherDashboardModal);
+    });
+  }
+  if (teacherDashboardClose) {
+    teacherDashboardClose.addEventListener("click", () =>
+      closeTeacherDashboardModal(teacherDashboardModal)
+    );
+  }
+  if (teacherDashboardBackdrop) {
+    teacherDashboardBackdrop.addEventListener("click", () =>
+      closeTeacherDashboardModal(teacherDashboardModal)
+    );
+  }
+
+  const tViewMain = document.getElementById("t-view-main");
+  const tViewClassDetail = document.getElementById("t-view-class-detail");
+  const tDetailTitle = document.getElementById("t-detail-title");
+  const tClassStudents = document.getElementById("t-class-students");
+  const tClassEmpty = document.getElementById("t-class-empty");
+  const teacherClassCodeEl = document.getElementById("teacher-class-code");
+  const btnTViewBack = document.getElementById("btn-t-view-back");
+  const btnTAddClass = document.getElementById("btn-t-add-class");
+
+  document.querySelectorAll(".t-class-nav-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const strong = btn.querySelector("strong");
+      const className = strong instanceof HTMLElement ? strong.innerText.trim() : "";
+      const classCode = btn.getAttribute("data-class-code") || "";
+      if (tDetailTitle instanceof HTMLElement && className) {
+        tDetailTitle.innerText = className;
+      }
+      if (teacherClassCodeEl instanceof HTMLElement && classCode) {
+        teacherClassCodeEl.textContent = classCode;
+      }
+      const hasStudents = className === "Klasa 3B";
+      if (tClassStudents) tClassStudents.classList.toggle("hidden", !hasStudents);
+      if (tClassEmpty) tClassEmpty.classList.toggle("hidden", hasStudents);
+      if (tViewMain) tViewMain.classList.add("hidden");
+      if (tViewClassDetail) {
+        tViewClassDetail.classList.remove("hidden");
+        tViewClassDetail.setAttribute("aria-hidden", "false");
+      }
+    });
+  });
+
+  if (btnTViewBack) {
+    btnTViewBack.addEventListener("click", () => {
+      if (tViewClassDetail) {
+        tViewClassDetail.classList.add("hidden");
+        tViewClassDetail.setAttribute("aria-hidden", "true");
+      }
+      if (tViewMain) tViewMain.classList.remove("hidden");
+      document.querySelectorAll("#t-view-class-detail .t-student-header").forEach((header) => {
+        header.classList.remove("is-open");
+      });
+      document.querySelectorAll("#t-view-class-detail .t-student-body").forEach((body) => {
+        body.classList.add("hidden");
+      });
+    });
+  }
+
+  document.querySelectorAll("#t-view-class-detail .t-student-header").forEach((header) => {
+    header.addEventListener("click", () => {
+      if (!(header instanceof HTMLElement)) return;
+      const targetId = header.getAttribute("data-toggle-target");
+      if (!targetId) return;
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        targetEl.classList.toggle("hidden");
+        header.classList.toggle("is-open");
+      }
+    });
+  });
+
+  if (btnTAddClass instanceof HTMLButtonElement) {
+    btnTAddClass.addEventListener("click", () => {
+      showToast("✅ Utworzono nową klasę!");
+    });
+  }
+
+  const loginModal = document.getElementById("login-modal");
+  const btnOpenLogin = document.getElementById("btn-open-login");
+  const loginModalBackdrop = document.getElementById("login-modal-backdrop");
+  const loginModalClose = document.getElementById("login-modal-close");
+  const btnDemoStudent = document.getElementById("btn-login-demo-student");
+  const btnDemoTeacher = document.getElementById("btn-login-demo-teacher");
+
+  if (btnOpenLogin) {
+    btnOpenLogin.addEventListener("click", () => openLoginModal(loginModal));
+  }
+  if (loginModalClose) {
+    loginModalClose.addEventListener("click", () => closeLoginModal(loginModal));
+  }
+  if (loginModalBackdrop) {
+    loginModalBackdrop.addEventListener("click", () => closeLoginModal(loginModal));
+  }
+  if (btnDemoStudent) {
+    btnDemoStudent.addEventListener("click", () => {
+      handleLoginStudent();
+      closeLoginModal(loginModal);
+    });
+  }
+  if (btnDemoTeacher) {
+    btnDemoTeacher.addEventListener("click", () => {
+      handleLoginTeacher();
+      closeLoginModal(loginModal);
+    });
+  }
+
+  const studentSelectLevel = document.getElementById("student-level-select");
+  const studentSelectGrade = document.getElementById("student-grade-select");
+  if (studentSelectLevel instanceof HTMLSelectElement) {
+    studentSelectLevel.addEventListener("change", onStudentLevelSelectChange);
+  }
+  if (studentSelectGrade instanceof HTMLSelectElement) {
+    studentSelectGrade.addEventListener("change", onStudentGradeSelectChange);
+  }
+
+  document.querySelectorAll("[data-auth-logout]").forEach((btn) => {
+    btn.addEventListener("click", resetMockAuth);
+  });
+
+  const btnCopyClassCode = document.getElementById("btn-copy-class-code");
+  if (btnCopyClassCode instanceof HTMLButtonElement) {
+    btnCopyClassCode.addEventListener("click", () => {
+      if (btnCopyClassCode.disabled) return;
+      const codeEl = document.getElementById("teacher-class-code");
+      const code = codeEl instanceof HTMLElement ? codeEl.textContent?.trim() || "" : "";
+      if (!code) return;
+      const copied = () => {
+        btnCopyClassCode.textContent = "✅ Skopiowano!";
+        if (copyClassCodeTimerId) clearTimeout(copyClassCodeTimerId);
+        copyClassCodeTimerId = window.setTimeout(() => {
+          btnCopyClassCode.textContent = COPY_CLASS_CODE_BTN_LABEL;
+          copyClassCodeTimerId = null;
+        }, 2000);
+      };
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        navigator.clipboard.writeText(code).then(copied).catch(copied);
+      } else {
+        copied();
+      }
+    });
+  }
+
+  const btnJoinClass = document.getElementById("btn-join-class");
+  const inputJoinCode = document.getElementById("input-join-code");
+  if (btnJoinClass instanceof HTMLButtonElement) {
+    btnJoinClass.addEventListener("click", () => {
+      if (inputJoinCode instanceof HTMLInputElement) inputJoinCode.value = "";
+      closeStudentModal();
+      showToast("✅ Dołączono do klasy! Twój nauczyciel widzi Twoje postępy.");
+    });
+  }
+
+  const quizCreatorModal = document.getElementById("quiz-creator-modal");
+  const btnOpenQuizCreator = document.getElementById("btn-open-quiz-creator");
+  const btnShareQuiz = document.getElementById("btn-share-quiz");
+  const quizCreatorClose = document.getElementById("quiz-creator-close");
+  const quizCreatorBackdrop = document.getElementById("quiz-creator-backdrop");
+
+  if (btnOpenQuizCreator instanceof HTMLButtonElement) {
+    btnOpenQuizCreator.addEventListener("click", () => openQuizCreatorModal(quizCreatorModal));
+  }
+  if (quizCreatorClose) {
+    quizCreatorClose.addEventListener("click", () => closeQuizCreatorModal(quizCreatorModal));
+  }
+  if (quizCreatorBackdrop) {
+    quizCreatorBackdrop.addEventListener("click", () => closeQuizCreatorModal(quizCreatorModal));
+  }
+  if (btnShareQuiz instanceof HTMLButtonElement) {
+    btnShareQuiz.addEventListener("click", () => {
+      closeQuizCreatorModal(quizCreatorModal);
+      showToast("✅ Sprawdzian został przypisany do Klasy 3B!");
+    });
+  }
+
+  syncRoleMockUi();
 })();

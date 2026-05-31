@@ -16,6 +16,9 @@ logo:
   url: https://fizki.pl
   text: Fizki — zadania
 
+media_folder: images
+public_folder: /images
+
 collections:
   - name: zadania
     label: Zadania główne

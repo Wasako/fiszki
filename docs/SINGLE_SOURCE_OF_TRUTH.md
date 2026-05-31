@@ -2,7 +2,7 @@
 
 Dokument opisuje **aktualny stan** repozytorium: źródła JSON, jeden plik `js/app.js` (router + render + logika), `css/styles.css`, `index.html` oraz **pełną specyfikację UX** (nawigacja, layout, motywy, mobile/PWA, dostępność, stany brzegowe).
 
-**Dla agentów / audytu UX:** sekcja **§3** jest samowystarczalna — po jej przeczytaniu można przeprowadzić dogłębny audyt interfejsu bez przeglądania całego kodu. Sekcje **§1–2** opisują dane i logikę (**§2.5** — onboarding i `fizki_config`); **§4** mapuje klasy CSS; **§5** — pliki.
+**Dla agentów / audytu UX:** sekcja **§3** jest samowystarczalna — po jej przeczytaniu można przeprowadzić dogłębny audyt interfejsu bez przeglądania całego kodu. Sekcje **§1–2** opisują dane i logikę (**§1.5–1.6** — shell i CMS; **§2.5** — onboarding i `fizki_config`); **§4** mapuje klasy CSS; **§5** — pliki. Makiety demo (role, nauczyciel, confetti): **§3.13**.
 
 **Produkcja:** https://fizki.pl (PWA, Vercel). Brak routingu URL per ekran — stan w pamięci + `history.pushState` bez zmiany ścieżki.
 
@@ -35,7 +35,19 @@ Dokument opisuje **aktualny stan** repozytorium: źródła JSON, jeden plik `js/
 - **Ładowanie:** `fetch("zadania.json")` w `loadZadaniaJson()` w `boot()` — nadpisuje **`TASK_LEVELS`**. Tablica poziomów obejmuje co najmniej **`lo-rozszerzenie`**, **`lo-podstawa`**, **`sp`** (id muszą zgadzać się z **`CURRICULUM_FILES`** / menu), każdy z własną tablicą **`sections`**. Dla każdego poziomu normalizowane są `sections` i `tasks` (puste tablice, gdy brak w JSON).
 - **Jedyny plik zadań w przeglądarce** — nie ma osobnego `data/gemini-zadania.json` w tym przepływie.
 
-**Bramka (`task-detail`):** `taskNeedsQuizGate(t)` jest **true**, gdy istnieje **`formulaQuiz`** z tablicą **`choices`** o długości **≥ 4**. Wtedy renderowany jest quiz; przyciski „Pokaż wzory / odpowiedź / pełne rozwiązanie” są **`disabled`** + **`btn-gated`**, dopóki **`taskQuizSolved`**. Opcje quizu: **`quiz-options quiz-options--stack task-quiz-options`** (jedna kolumna); każda opcja w **`.task-quiz-option-cell`** (przycisk + ewentualny blok rationale pod błędnym wyborem).
+**Bramka (`task-detail`):** **`taskNeedsAnswerGate(t)`** — true, gdy zadanie ma interaktywną bramkę wg **`taskType`**:
+
+| `taskType` | Warunek bramki | UI bramki |
+|------------|----------------|-----------|
+| **`open`** (domyślny) | **`formulaQuiz.choices.length ≥ 4`** (legacy) | Quiz wzorów — jak wcześniej (`data-task-quiz-opt`) |
+| **`math`** | niepusty **`mathValue`** | Pole **`#task-math-input`** + **Sprawdź**; opcjonalnie **`mathUnit`** w etykiecie; tolerancja **`checkMathAnswer`** (2% lub ±0,01 przy exact=0) |
+| **`abcd`** | **`abcdOptions.length ≥ 4`** | Cztery przyciski **`data-task-abcd-opt`** |
+
+**2-Strike (math / abcd):** pierwszy błąd — **`handleTaskWrongAttempt`** → wstrząs (`.shake`) + podpowiedź; drugi — ujawnienie poprawnej odpowiedzi (**`taskMathRevealed`** / podświetlenie opcji) i **`unlockTaskWithSolution()`** (bez confetti).
+
+**Pola opcjonalne zadania:** **`difficulty`** (1–3, gwiazdki **`taskDifficultyStarsHtml`** na liście i w tytule), **`taskType`**, **`mathValue`**, **`mathUnit`**, **`abcdOptions`** (`text`, `isCorrect`).
+
+Dla **`open`** + **`formulaQuiz`**: przyciski „Pokaż wzory / odpowiedź / pełne rozwiązanie” są **`disabled`** + **`btn-gated`**, dopóki **`taskQuizSolved`**. Opcje quizu: **`quiz-options quiz-options--stack task-quiz-options`** (jedna kolumna); każda opcja w **`.task-quiz-option-cell`** (przycisk + ewentualny blok rationale pod błędnym wyborem).
 
 **Schemat `formulaQuiz`:**
 
@@ -93,20 +105,48 @@ Struktura statyczna (poza `#app` całość UI jest w JS):
 ```
 body (flex column, min-height 100dvh)
 ├─ .app-shell (max-width 28rem, wyśrodkowany)
-│  ├─ header.app-brand — logo + breadcrumb profilu
+│  ├─ header.app-brand — logo + breadcrumb profilu + mock logowanie ról
 │  └─ #app.app — dynamiczny UI (render)
-└─ footer.app-footer (max-width 28rem) — PWA + motyw
+├─ footer.app-footer (max-width 28rem) — Znajdź Nauczyciela + PWA + motyw
+├─ #login-modal — modal logowania (mock + demo ról)
+├─ #student-dashboard — modal profilu ucznia
+├─ #teacher-dashboard — modal profilu nauczyciela
+├─ #quiz-creator-modal — kreator sprawdzianu (B2B, makieta)
+├─ #teacher-modal — modal „Znajdź Nauczyciela” (frontend mock)
+└─ #quiz-success-toast — toast po „generowaniu kartkówki” (makieta)
 ```
 
 | Element | Rola UX |
 |---------|---------|
-| **`header.app-brand`** | Wyśrodkowany blok: logo SVG (`fizki_yellow.svg` / `fizki_black.svg` wg motywu; bez XML/DOCTYPE w pliku) + **`#app-mini-breadcrumb`** — skrót profilu (np. „LO Rozsz. • Klasa I”); klik → ponowny onboarding od `onboarding-school`. Ukryty na ekranach onboardingu. |
+| **`header.app-brand`** | Wyśrodkowany blok: logo SVG + **`#app-mini-breadcrumb`** + **`nav.app-auth-nav`**. |
+| **`#app-auth-login`** | Przycisk **`#btn-open-login`** („👤 Zaloguj się”) — otwiera modal logowania. Ukrywany po zalogowaniu demo (**`.hidden`**). |
+| **`#profile-student`**, **`#profile-teacher`** | Awatar (ui-avatars.com) + etykieta roli + **`[data-auth-logout]`** „Wyloguj”. Klasa **`.hidden`** gdy nieaktywne. |
+| **`#login-modal`** | Modal logowania: **`.modal-content`**, nagłówek „Witaj w Fizkach”, mock formularz (Email/Hasło, zablokowany **Zaloguj**), separator demo, **`#btn-login-demo-student`**, **`#btn-login-demo-teacher`**, **`#login-modal-close`**, **`#login-modal-backdrop`**. Domyślnie **`.hidden`**. |
+| **`#student-dashboard`** | Modal profilu ucznia (po demo ucznia, klik **`#profile-student`**): hero (awatar, imię, streak), statystyki, sekcja programu (**`#student-level-select`**, **`#student-grade-select`**) — zapis **`fizki_config`** bez nawigacji; sekcja dołączenia do klasy (**`#input-join-code`**, **`#btn-join-class`**) — makieta: toast + zamknięcie modala. **`#student-modal-close`**, **`#student-modal-backdrop`**, Escape. |
+| **`#teacher-dashboard`** | Modal profilu nauczyciela (klik **`#profile-teacher`**): hero, drill-down **`#t-view-main`** (analityka + **`t-class-nav-btn`**) ↔ **`#t-view-class-detail`** (**`#btn-t-view-back`**, lista uczniów z akordeonem), **`#btn-t-add-class`** (toast). **`resetTeacherDashboardView()`** przy otwarciu/zamknięciu. |
 | **`#app`** | Jedyny kontener dynamiczny; klasa **`app`**; padding `0.5rem 1rem 1rem`. |
-| **`footer.app-footer`** | `#pwa-install-hint`, `#pwa-install`, `#theme-toggle` — poza `#app`, zawsze widoczne. |
+| **`footer.app-footer`** | **`#btn-find-teacher`**, `#pwa-install-hint`, `#pwa-install`, `#theme-toggle` — poza `#app`, zawsze widoczne. |
+| **`#teacher-modal`** | Modal z listą mock nauczycieli (`MOCK_TEACHERS` → **`renderTeachers()`**); backdrop + **`#teacher-modal-close`**. |
+| **`#teacher-task-tools`** | Pasek B2B w widoku zadań (`.app-shell`, nad **`#app`**): widoczny gdy **`mockUserRole === 'teacher'`** i **`screen`** ∈ **`task-chapters` \| `task-detail`**. **`#btn-open-quiz-creator`**. |
+| **`#quiz-creator-modal`** | Modal kreatora sprawdzianu: checkboxy zadań (mock), **`#quiz-creator-class`**, **`#btn-share-quiz`**. |
+| **`#quiz-success-toast`** | Zielony toast sukcesu (**`showToast()`**); **`aria-live="polite"`**. |
 | **FOUC motywu** | Inline script w `<head>`: `localStorage.fizki_theme` → `document.documentElement.dataset.theme` + `meta theme-color`. |
 | **Style** | `css/styles.css` + KaTeX 0.16.11 z jsDelivr. |
-| **Skrypty `defer`** | `katex.min.js` → `wzory-symbol-legends.js` → `app.js`. |
+| **Skrypty `defer`** | `katex.min.js` → **`canvas-confetti`** (jsDelivr 1.9.3) → `wzory-symbol-legends.js` → `app.js`. |
 | **PWA meta** | `manifest.json`, ikony `/icons/`, Apple `mobile-web-app-*`, `theme-color` zsynchronizowany z motywem. |
+
+### 1.6 CMS (Decap) — edycja treści poza runtime ucznia
+
+| Ścieżka | Rola |
+|---------|------|
+| **`admin/`** | Pełny panel Decap CMS (`config.yml`) — fiszki + zadania. |
+| **`admin/zadania/`** | Ograniczony panel (tylko zadania). |
+| **`config/cms-access.json`** | Polityka edytorów: `enabled`, `limitedEditorEmails`, `allowedPaths`, `limitedEditorPanelPath`. Wyłączenie: `"enabled": false`. |
+| **`api/auth.js`**, **`api/callback.js`** | GitHub OAuth (Vercel); **`state`** z **`return`** → powrót do `/admin/` lub `/admin/zadania/`. |
+| **`.github/workflows/cms-limited-editor-guard.yml`** | CI: push od ograniczonego edytora tylko na dozwolone ścieżki (`scripts/check-cms-limited-push.mjs`). |
+| **`scripts/rebuild_zadania.py`** | Regeneracja / walidacja `zadania.json` (poza przeglądarką). |
+
+**Decap — pola zadań w `admin/config.yml`:** `difficulty`, `taskType` (open/abcd/math), `mathValue`, `mathUnit`, `abcdOptions`.
 
 ---
 
@@ -132,6 +172,11 @@ body (flex column, min-height 100dvh)
 | **`taskCurriculumExpandedIds`** | `Set` identyfikatorów **rozgałęzień** planu (`curriculum`), rozwiniętych na **`task-chapters`**. Czyszczone przy wejściu w **Zadania**, powrocie do Fiszki/Karta, ponownym onboardingu. |
 | **`taskAnswerVisible`**, **`taskFormulasVisible`**, **`taskSolutionVisible`** | Rozwinięcie bloków `#task-answer`, `#formulas-box`, `#task-solution`. |
 | **`lastTaskQuizGateKey`**, **`taskQuizPickIndex`**, **`taskQuizSolved`**, **`taskQuizUnlockAnim`** | Stan bramki: klucz `level\x1esection\x1eindex`, wybór w quizie, czy odblokowano, flaga jednorazowej animacji po poprawnej odpowiedzi. |
+| **`taskAttempts`**, **`taskMathInputDraft`**, **`taskMathRevealed`** | 2-Strike i stan pola math w bramce zadania. |
+| **`flashAutoAdvanceTimerId`** | Auto „Dalej” 1 s po poprawnej odpowiedzi w fiszkach (`scheduleFlashAutoAdvance`). |
+| **`mockUserRole`** | **`null` \| `'student'` \| `'teacher'`** — makieta logowania (tylko sesja, **bez** `localStorage`). |
+| **`MOCK_TEACHERS`** | Stała tablica mock nauczycieli (modal „Znajdź Nauczyciela”). |
+| **`copyClassCodeTimerId`**, **`quizToastTimerId`** | Timery UI makiety: reset etykiety **Kopiuj kod** (2 s), ukrycie toastu (3 s, przywrócenie domyślnej treści). |
 
 **Dane:** `CARDS`, `SHEET_CARD_BACK_MAP` (`rebuildSheetCardBackMap`), **`TASK_LEVELS`** (z JSON + `curriculum` z plików planu).
 
@@ -192,7 +237,13 @@ flowchart TD
 | **`loadFizkiConfig`**, **`saveFizkiConfig`**, **`applyFizkiConfig`**, **`homeNavTabsHtml`**, **`renderOnboardingSchoolHtml`**, **`renderOnboardingGradeHtml`**, **`updateAppBreadcrumb`** | Profil użytkownika, onboarding, breadcrumb — §2.5. |
 | **`cardsForHomeLevel`**, **`cardVisibleForHomeLevel`**, **`groupCardsByTopicInOrder`**, **`countFlashStatsForCards`**, **`flashTopicTriGradientStyle`**, **`renderFiszkiPanelInnerHtml`** | Filtrowanie fiszek wg poziomu; grupowanie po **`topic`** dla panelu Fiszki i Karty wzorów; liczniki postępu (`flashProgress`); pasek trójkolorowy; HTML zakładki **Fiszki** na **`main`**. |
 | **`fisherYatesShuffle`**, **`buildFlashQuizChoices`** | Quiz fiszek: cztery warianty LaTeXu — poprawny `back` + trzy dystraktory z innych wzorów (priorytet: ten sam `topic`, potem poziom, potem `quizDistractors`, potem `CARDS`); **`fisherYatesShuffle`**. |
-| **`taskNeedsQuizGate`** | Warunek bramki (`formulaQuiz` + `choices.length >= 4`). |
+| **`taskNeedsQuizGate`**, **`getTaskType`**, **`taskHasInteractiveGate`**, **`taskNeedsAnswerGate`**, **`checkMathAnswer`**, **`handleTaskWrongAttempt`**, **`unlockTaskWithSolution`** | Bramki zadań: open (formulaQuiz), math, abcd; 2-Strike; odblokowanie rozwiązania. |
+| **`celebrateSuccess`** | **`canvas-confetti`** po ukończeniu talii fiszek (`flash-complete`) i po **poprawnej** odpowiedzi w bramce (nie po 2. błędzie). |
+| **`handleLoginStudent`**, **`handleLoginTeacher`**, **`openLoginModal`**, **`closeLoginModal`**, **`openStudentModal`**, **`closeStudentModal`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`**, **`resetMockAuth`**, **`syncRoleMockUi`**, **`showToast`**, **`showQuizSuccessToast`** | Makieta ról: modale profilu, uniwersalny toast (**`#quiz-success-toast`**, stan tylko w pamięci). |
+| **`resetTeacherDashboardView`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`** | Drill-down: reset widoków modala nauczyciela. |
+| **`syncTeacherTaskTools`**, **`openQuizCreatorModal`**, **`closeQuizCreatorModal`** | B2B: pasek nauczyciela w zadaniach + kreator sprawdzianu (makieta). |
+| **`renderTeachers`**, **`openTeacherModal`**, **`closeTeacherModal`**, **`onTeacherModalBodyClick`** | Modal „Znajdź Nauczyciela”: karty nauczycieli, rozwijanie `.teacher-calendar`. |
+| **`scheduleFlashAutoAdvance`**, **`advanceFlashStudyCard`**, **`clearFlashAutoAdvanceTimer`** | Auto-przejście fiszek po poprawnej odpowiedzi. |
 | **`getSection`**, **`getLevel`**, **`getTaskSheetLines`**, **`getSolutionSteps`** | Nawigacja i treść pomocnicza zadań (w tym kroki rozwiązania z `solutionSteps`). |
 | **`collectSectionIdsUnderCurriculumSubtree`**, **`sectionsForTaskClassFilter`**, **`normalizeUserGradeForLevel`**, **`normalizeTaskClassTabId`**, **`curriculumVisibleClassRoots`**, **`renderTaskCurriculumTreeHtml`**, **`renderCurriculumSubtree`**, **`countTasksOnCurriculumLeaf`**, **`countTasksUnderCurriculumNode`** | **Zadania:** filtr klasy z **`getEffectiveClassFilterId()`** (z `userGrade`); drzewo / płaska lista; **`taskClassTabsHtml`** pozostaje w kodzie, **nie** jest renderowane na liście zadań. |
 | **`sheetSymbolLegendKey`**, **`getCardSymbolLegendEntries`**, **`taskFormulaQuizLegendHaystack`**, **`getLegendEntriesMatchingHaystack`**, **`symbolLegendBlockHtml`** | Legenda na fiszkach / karcie wzorów; po bramce — dopasowanie symboli do treści `formulaQuiz`. |
@@ -215,15 +266,16 @@ flowchart TD
 - **SPA bez routera URL:** jeden adres `/`; ekrany to wartość **`screen`** + zmienne stanu w `js/app.js`. Użytkownik nie może udostępnić linku do konkretnego zadania ani fiszki.
 - **Mobile-first:** kolumna **`max-width: 28rem`**, wyśrodkowana na całej szerokości viewportu (brak osobnego layoutu „desktop wide”).
 - **Język UI:** polski (`lang="pl"`).
-- **Główne moduły treści:** Fiszki (quiz wzorów), Karta wzorów (przeglądarka), Zadania (lista + szczegół z opcjonalną bramką `formulaQuiz`).
+- **Główne moduły treści:** Fiszki (quiz wzorów), Karta wzorów (przeglądarka), Zadania (lista + szczegół z bramką: open/math/abcd).
 - **Profil użytkownika:** wymuszony **dwuetapowy onboarding** przy pierwszej wizycie; później zmiana przez **breadcrumb** w nagłówku (bez stałych zakładek poziomu).
+- **Makiety demo (wideo):** mock logowanie Uczeń/Nauczyciel, panel nauczyciela, modal „Znajdź Nauczyciela”, confetti sukcesu — **frontend only**, bez backendu auth.
 
 ### 3.1 Architektura informacji
 
 #### Drzewo nawigacji
 
 ```
-index.html (logo + #app-mini-breadcrumb + footer)
+index.html (logo + breadcrumb + mock auth + footer + modals: login, student, teacher profile, find-teacher + toast)
 ├─ screen: onboarding-school → onboarding-grade (brak fizki_config)
 └─ #app
    ├─ screen: main
@@ -231,11 +283,11 @@ index.html (logo + #app-mini-breadcrumb + footer)
    │  ├─ #panel-fiszki — tryby + kafelki działów
    │  ├─ #panel-karta-wzorow — select działu + lista wzorów
    │  └─ #panel-zadania — pusty stub
-   ├─ screen: flash-study → flash-complete
+   ├─ screen: flash-study → flash-complete (+ confetti)
    └─ screen: task-chapters
       ├─ drzewo programu (filtrowane userGrade) LUB płaska lista
-      ├─ lista zadań w dziale
-      └─ screen: task-detail (+ Poprzednie/Następne)
+      ├─ lista zadań w dziale (+ gwiazdki trudności)
+      └─ screen: task-detail (+ bramka open/math/abcd, confetti przy sukcesie)
 ```
 
 #### Ekrany (`screen`)
@@ -256,6 +308,10 @@ index.html (logo + #app-mini-breadcrumb + footer)
 |---------|------------|------|
 | Zakładki modułów | `.tabs.tabs-main` | `data-main-tab`: Fiszki, Karta wzorów, Zadania — `main`, `task-chapters`, `task-detail` |
 | Breadcrumb profilu | `#app-mini-breadcrumb` | Skrót szkoły + klasa; klik → `onboarding-school` |
+| Mock logowanie | `#btn-open-login`, `#login-modal`, `#btn-login-demo-*`, `#profile-*`, `[data-auth-logout]` | Modal + demo ról — §3.13 |
+| Panel nauczyciela | `#teacher-dashboard`, `#t-view-main`, `#t-view-class-detail`, `#btn-t-view-back`, `#btn-t-add-class`, `#btn-copy-class-code` | Drill-down UX — §3.13 |
+| Narzędzia B2B (zadania) | `#teacher-task-tools`, `#btn-open-quiz-creator`, `#quiz-creator-modal`, `#btn-share-quiz` | Tylko rola nauczyciel + ekrany zadań — §3.13 |
+| Znajdź Nauczyciela | `#btn-find-teacher`, `#teacher-modal` | Modal z mock listą — §3.13 |
 | ~~Poziom szkoły~~ | ~~`.tabs-level`~~ | **Usunięte** — zastąpione onboardingiem |
 | ~~Klasa na liście zadań~~ | ~~`.tabs-task-class`~~ | **Usunięte z UI** — klasa z `userGrade` w `fizki_config` |
 
@@ -335,10 +391,12 @@ index.html (logo + #app-mini-breadcrumb + footer)
 
 #### `flash-study` / `flash-complete`
 
+- **Layout:** **`.flash-study`** — przewijana treść (**`.flash-study-body`**) + sticky **`nav.flash-nav`** (Wstecz/Dalej) u dołu ekranu quizu.
 - **Bez** `homeNavTabsHtml` — tylko `top-bar` „← Menu”, postęp `N / M`, scena quizu.
 - **Quiz:** 4 opcje **`data-quiz-opt`**, układ **`quiz-options--stack`**; po wyborze — `disabled`, klasy correct/wrong; pełna fiszka w **`.quiz-flip-face`** (`aria-live="polite"`).
+- **Auto-advance:** poprawna odpowiedź → **`scheduleFlashAutoAdvance`** (1 s) → **`advanceFlashStudyCard`**.
 - **Stały slot pytania:** `.quiz-prompt-slot` — wysokość `clamp` (anty-skok layoutu przy ujawnieniu wzoru).
-- **Wstecz/Dalej:** zmiana `flashIndex`; na ostatniej karcie „Dalej” po odpowiedzi → `flash-complete`.
+- **Wstecz/Dalej:** zmiana `flashIndex`; na ostatniej karcie „Dalej” po odpowiedzi → `flash-complete` + **`celebrateSuccess()`** (confetti).
 - **Pusty deck:** `history.back()`.
 
 #### `main` + Karta wzorów
@@ -362,9 +420,11 @@ index.html (logo + #app-mini-breadcrumb + footer)
 #### `task-detail`
 
 - `homeNavTabsHtml` + `top-bar` (**`#btn-back-list`** „← Lista”) + pasek postępu w dziale.
-- **Bramka:** gdy `taskNeedsQuizGate` — quiz `data-task-quiz-opt`; przyciski Pokaż wzory/odpowiedź/rozwiązanie: **`disabled`** + **`.btn-gated`** do poprawnej odpowiedzi.
-- Po odblokowaniu: **`.task-quiz-symbol-legend`**, animacja **`.task-quiz-unlock-anim`** na `.task-sheet`.
+- **Bramka wg `taskType`:** **`open`** — quiz `formulaQuiz` (`data-task-quiz-opt`); **`math`** — pole + Sprawdź; **`abcd`** — 4 opcje (`data-task-abcd-opt`). Przyciski Pokaż wzory/odpowiedź/rozwiązanie: **`disabled`** + **`.btn-gated`** do **`taskQuizSolved`**.
+- **2-Strike** (math/abcd): pierwszy błąd — shake + hint; drugi — ujawnienie + **`unlockTaskWithSolution()`** (bez confetti).
+- Po **poprawnej** odpowiedzi: **`celebrateSuccess()`** + **`taskQuizUnlockAnim`**; legenda **`.task-quiz-symbol-legend`** (open + formulaQuiz).
 - **Poprzednie/Następne:** `#btn-task-prev` / `#btn-task-next` — globalna sekwencja z `buildTaskNavSequence`.
+- **Trudność:** **`task-difficulty-stars`** przy tytule zadania.
 
 ### 3.7 Komponenty i wzorce interakcji
 
@@ -447,6 +507,68 @@ index.html (logo + #app-mini-breadcrumb + footer)
 9. **Logo SVG** — bez zewnętrznego DTD; bump cache SW przy zmianie assetów.
 10. **Brak przycisku „Menu” na korzeniu `task-chapters`** — zakładki Fiszki/Karta lub historia.
 11. **`history.state` nie zawiera `userLevel`/`userGrade`** — przy `popstate` profil zawsze z `loadFizkiConfig()` z `localStorage`.
+12. **Mock logowanie ról** — **`mockUserRole`** wpływa na widoczność **`#teacher-task-tools`** w ekranach zadań; nie filtruje treści fiszek/zadań. Stan ginie po odświeżeniu (celowo, makieta wideo).
+13. **`#teacher-dashboard`** i **`#student-dashboard`** — modale profilu poza **`#app`**; otwierane kliknięciem profilu w **`nav.app-auth-nav`**.
+
+### 3.13 Makiety demo (frontend — wideo / prototyp)
+
+#### Modal logowania (`#login-modal`)
+
+| Element / akcja | Efekt |
+|-----------------|--------|
+| **`#btn-open-login`** | **`openLoginModal()`** — usuwa **`.hidden`** z **`#login-modal`**, `body.login-modal-open`. |
+| **`#login-modal-close`**, **`#login-modal-backdrop`**, **Escape** | **`closeLoginModal()`** — dodaje **`.hidden`**, usuwa `body.login-modal-open`. |
+| Mock formularz | Pola Email/Hasło + przycisk **Zaloguj** — **`disabled`** (szary, nieklikalny); bez backendu. |
+| Separator | **„LUB WYPRÓBUJ WERSJĘ DEMO”** — **`.login-demo-separator`** (linie po bokach). |
+| **`#btn-login-demo-student`** | **`handleLoginStudent()`** + **`closeLoginModal()`** → profil ucznia, ukryty panel nauczyciela. |
+| **`#btn-login-demo-teacher`** | **`handleLoginTeacher()`** + **`closeLoginModal()`** → profil nauczyciela (**`#profile-teacher`**). |
+| **`[data-auth-logout]`** | **`resetMockAuth()`** — reset roli, zamknięcie modala, ukrycie profili/panelu/toastu, ponowne **`#btn-open-login`** / **`#app-auth-login`**. |
+
+**Storage:** brak — tylko **`mockUserRole`** w pamięci (do odświeżenia strony).
+
+#### Modal profilu ucznia (`#student-dashboard`)
+
+| Element / akcja | Efekt |
+|-----------------|--------|
+| **`#profile-student`** (bez **`[data-auth-logout]`**) | **`openStudentModal()`** — usuwa **`.hidden`** z **`#student-dashboard`**, `body.login-modal-open`. |
+| **`#student-modal-close`**, **`#student-modal-backdrop`**, **Escape** | **`closeStudentModal()`**. |
+| **`#student-level-select`**, **`#student-grade-select`** | Zmiana poziomu/klasy → **`saveFizkiConfig()`**, **`applyFizkiConfig()`**, **`render()`** — bez przejścia do onboardingu. |
+| **`#input-join-code`**, **`#btn-join-class`** | Makieta dołączenia: wyczyść input, **`closeStudentModal()`**, toast „Dołączono do klasy…”. |
+
+#### Modal profilu nauczyciela (`#teacher-dashboard`)
+
+| Element / akcja | Efekt |
+|-----------------|--------|
+| **`#profile-teacher`** | **`openTeacherDashboardModal()`** + **`resetTeacherDashboardView()`**. |
+| **`#t-view-main`** | Ekran główny: **Zagrożenia** + lista **`t-class-nav-btn`** (Klasa 3B, 1A). |
+| **`t-class-nav-btn`** | Ukrywa main, pokazuje **`#t-view-class-detail`**, ustawia **`#t-detail-title`**. Klasa 3B → uczniowie; 1A → „Brak uczniów”. |
+| **`#btn-t-view-back`** | Powrót do **`#t-view-main`**, zwija statystyki uczniów. |
+| **`#btn-t-add-class`** | **`showToast("✅ Utworzono nową klasę!")`** — bez dodawania HTML. |
+| **`#btn-copy-class-code`** | Kopiuje kod bieżącej klasy (**`#teacher-class-code`**). |
+| **`.t-student-header`** (ekran detalu) | Toggle **`data-toggle-target`** + **`.is-open`** (chevron). |
+| **`#teacher-dashboard-close`**, backdrop, Escape | **`closeTeacherDashboardModal()`**. |
+| **`.teacher-analytics`** | Mock analityka luk (Optyka / Dynamika / Kinematyka). |
+
+#### Narzędzia B2B w zadaniach (makieta)
+
+| Element / akcja | Efekt |
+|-----------------|--------|
+| **`#teacher-task-tools`** | Widoczny tylko dla nauczyciela na **`task-chapters`** / **`task-detail`** — **`syncTeacherTaskTools()`**. |
+| **`#btn-open-quiz-creator`** | **`openQuizCreatorModal()`** — **`#quiz-creator-modal`**. |
+| **`#btn-share-quiz`** | **`closeQuizCreatorModal()`** + toast „Sprawdzian został przypisany do Klasy 3B!”. |
+| **`#quiz-creator-close`**, **`#quiz-creator-backdrop`**, **Escape** | **`closeQuizCreatorModal()`**. |
+
+#### Modal „Znajdź Nauczyciela”
+
+- Otwarcie: **`#btn-find-teacher`** → **`#teacher-modal`** (Escape / backdrop / × zamyka).
+- **`renderTeachers()`** wypełnia **`#teacher-modal-body`** z **`MOCK_TEACHERS`** (awatar, bio, cena, odznaki poziomów, sloty).
+- Przycisk **„Zobacz wolne terminy”** — toggle **`.show-calendar`** na **`.teacher-card`**, siatka **`.time-slot-btn`**.
+
+#### Confetti sukcesu
+
+- Biblioteka: **canvas-confetti** 1.9.3 (CDN).
+- **`celebrateSuccess()`:** `{ particleCount: 100, spread: 70, origin: { y: 0.6 } }`.
+- Wywołania: koniec talii fiszek; poprawna bramka zadania (open/math/abcd) — **nie** przy odblokowaniu po 2. błędzie.
 
 ### 3.12 Checklist audytu UX
 
@@ -503,6 +625,15 @@ Użyj przy przeglądzie lub regresji. Oznacz: ✅ OK / ⚠️ do poprawy / ❌ b
 - [ ] Tablisty: sensowna kolejność Tab; brak pułapek focusu w `fixed` dolnym pasku.
 - [ ] `aria-live` nie nadmiarowo ogłasza KaTeX.
 
+**Makiety demo (§3.13)**
+
+- [ ] **Zaloguj się** otwiera modal; × / tło / Escape zamyka.
+- [ ] Demo Uczeń/Nauczyciel: profil + zamknięty modal; nauczyciel widzi panel z analityką.
+- [ ] **Zapisz klasę** — feedback „Zapisano!” i reset inputa po 2 s.
+- [ ] **Wyloguj** resetuje widok do **Zaloguj się** (bez odświeżania).
+- [ ] **Generuj kartkówkę** → toast; modal nauczycieli: karty, terminy, zamykanie.
+- [ ] Confetti po ukończeniu fiszek i poprawnej bramce zadania.
+
 ---
 
 
@@ -513,7 +644,11 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 | Klasa / selektor | Rola UX |
 |------------------|---------|
 | **`:root`**, **`[data-theme="light"]`** | Tokeny kolorów — §3.4. |
-| **`.app-shell`**, **`.app-brand`**, **`.app-logo*`**, **`.app-mini-breadcrumb`**, **`.app-footer*`**, **`.btn-theme-toggle`**, **`.pwa-install-hint`** | Shell: logo, breadcrumb profilu, footer — §1.5, §2.5, §3.2. |
+| **`.teacher-task-tools*`**, **`.quiz-creator-*`**, **`.quiz-creator-checkbox`**, **`.app-shell`**, **`.app-brand`**, **`.app-logo*`**, **`.app-mini-breadcrumb`**, **`.app-auth-nav`**, **`.btn-auth-login`**, **`.app-auth-profile`**, **`.btn-auth-logout`**, **`.login-modal*`**, **`.modal-content`**, **`.modal`**, **`.modal-backdrop`**, **`.login-modal-input`**, **`.login-demo-*`**, **`.student-dashboard*`**, **`.student-join-*`**, **`.form-select`**, **`.teacher-dashboard-panel`**, **`.teacher-profile-*`**, **`.teacher-classes-manage`**, **`.t-class-*`**, **`.t-student-*`**, **`.t-micro-stat`**, **`.t-chevron`**, **`.teacher-class-empty`**, **`.teacher-analytics`**, **`.analytics-*`**, **`.bg-critical`**, **`.bg-warning`**, **`.bg-good`**, **`.text-critical`**, **`.text-warning`**, **`.text-good`**, **`.quiz-success-toast`**, **`.app-footer*`**, **`.btn-theme-toggle`**, **`.pwa-install-hint`** | Shell: logo, breadcrumb, modale (logowanie, profile, kreator sprawdzianu), toast, footer — §1.5, §3.13. |
+| **`.hidden`** | Ukrycie elementów mock UI (`display: none !important`). |
+| **`.teacher-modal*`**, **`.teacher-card`**, **`.teacher-calendar`**, **`.time-slot-btn`**, **`.teacher-level-badge`** | Modal „Znajdź Nauczyciela” — §3.13. |
+| **`.flash-study`**, **`.flash-study-body`**, **`.flash-nav`**, **`.flash-nav-row`** | Quiz fiszek: przewijana treść + sticky nawigacja Wstecz/Dalej. |
+| **`.task-answer-gate*`**, **`.task-math-input*`**, **`.task-abcd-option*`**, **`.task-difficulty-stars`**, **`.shake`** | Bramki math/abcd, gwiazdki trudności, animacja błędu. |
 | **`.onboarding`**, **`.onboarding-title`**, **`.onboarding-sub`**, **`.onboarding-options`**, **`.onboarding-option`** | Ekrany onboardingu — §2.5. |
 | **`.app-loading`**, **`.app-boot-error`** | Boot / błąd ładowania — §3.10. |
 | **`.tabs`**, **`.tab-slider`**, **`.tab`**, **`.tabs-main`** | Zakładki modułów + pill — §3.3 (**bez** `.tabs-level` w UI). |
@@ -548,10 +683,17 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 | Zadania | `zadania.json` (root) | Tak |
 | Plany programu | `data/curriculum-*.json` | Tak |
 | KaTeX | CDN jsDelivr (`katex.min.js` / `.css`) | Tak |
+| Confetti | CDN jsDelivr (`canvas-confetti` 1.9.3) | Tak |
 | Legenda symboli | `js/wzory-symbol-legends.js` | Tak (przed `app.js`) |
 | Logika | `js/app.js` | Tak |
 | Style | `css/styles.css` | Tak |
 | Shell | `index.html` | Tak |
+| CMS pełny | `admin/`, `admin/config.yml` | Tak (osobna ścieżka `/admin/`) |
+| CMS zadania | `admin/zadania/` | Tak |
+| Polityka CMS | `config/cms-access.json` | Tak (repo + CI) |
+| OAuth Vercel | `api/auth.js`, `api/callback.js` | Tak (produkcja) |
+| CI strażnik CMS | `.github/workflows/cms-limited-editor-guard.yml`, `scripts/check-cms-limited-push.mjs` | Nie (GitHub Actions) |
+| Regeneracja zadań | `scripts/rebuild_zadania.py` | Nie (dev/CI) |
 | Logo | `logo/fizki_yellow.svg`, `logo/fizki_black.svg` | Tak (precache SW) |
 | PWA manifest | `manifest.json` | Tak |
 | Service Worker | `sw.js` (`fizki-v4`) | Tak |
@@ -561,4 +703,4 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 
 ---
 
-*Dokument zsynchronizowany ze stanem kodu (w tym UX: onboarding, `fizki_config`, breadcrumb, zakładki treści, mobile/PWA, a11y). Po zmianach w `app.js`, `styles.css`, `index.html` lub kontrakcie JSON — zaktualizuj §2.5 (profil) i §3 (UX).*
+*Dokument zsynchronizowany ze stanem kodu (w tym UX: onboarding, `fizki_config`, modal logowania demo, panel nauczyciela z analityką, bramki zadań, confetti, CMS, mobile/PWA, a11y). Po zmianach w `app.js`, `styles.css`, `index.html`, `admin/` lub kontrakcie JSON — zaktualizuj §1.5–1.6, §2.5 (profil) i §3 (UX, zwł. §3.13).*
