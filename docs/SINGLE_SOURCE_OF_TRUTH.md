@@ -125,7 +125,7 @@ body (flex column, min-height 100dvh)
 | **`#app-auth-login`** | Przycisk **`#btn-open-login`** („👤 Zaloguj się”) — otwiera modal logowania. Ukrywany po zalogowaniu demo (**`setShellVisible`**: **`.hidden`** + atrybut **`hidden`**). |
 | **`#profile-student`**, **`#profile-teacher`** | Awatar + etykieta roli + **`[data-auth-logout]`** „Wyloguj”; klasa **`.user-badge`** — hover scale + cień (sygnał klikalności). Klik (poza Wyloguj) → modal profilu. |
 | **`#login-modal`** | Modal logowania: **`.modal-content`**, mock formularz, separator demo, **`#btn-login-demo-*`**. Backdrop: **`.modal-backdrop`** (`rgba(0,0,0,0.7)` + blur). Animacja **`fadeIn`** 0.2s. |
-| **`#student-dashboard`** | Modal profilu ucznia: hero, statystyki, program (**`#student-level-select`**, **`#student-grade-select`**), dołączenie do klasy; zakładki **Profil** / **Korepetycje** (**`#s-view-profile`**, **`#s-view-tutor`**). |
+| **`#student-dashboard`** | Modal profilu ucznia: hero, statystyki, program (**`#student-level-select`**, **`#student-grade-select`**), dołączenie do klasy; zakładki **Profil** / **Korepetycje** (**`#s-view-profile`**, **`#s-view-tutor`**). W **Korepetycjach**: marketplace drill-down — **`#s-tutor-list-view`** (profile **`.tutor-card`**) ↔ **`#s-tutor-calendar-view`** (rezerwacja slotów **`.btn-time-slot`**). |
 | **`#teacher-dashboard`** | Modal nauczyciela: przełącznik **Klasy** / **Korepetycje**; **`#t-view-main`** (analityka + 3× **`t-class-nav-btn`**: 3B, 2C, 1A) ↔ **`#t-view-class-detail`** (uczniowie z **`TEACHER_CLASSES`**, akordeon statystyk); **`#t-view-tutor`** — kalendarz tygodnia + edycja dostępności. |
 | **`#topic-modal`** | Wybór działu fiszek: lista **`data-flash-topic`** z postępem; **`#btn-open-topic-modal`** na panelu Fiszki → **`startFlashQuiz(topic)`**. |
 | **`#lesson-detail-modal`** | Szczegóły zabookowanej lekcji (klik **`.cal-cell.booked`** w kalendarzu). |
@@ -136,8 +136,8 @@ body (flex column, min-height 100dvh)
 | **`#quiz-creator-modal`** | Kreator sprawdzianu: dynamiczna lista zadań z działu (**`renderQuizCreatorTaskList`**), kropki trudności, **Opcje zaawansowane** (shuffle), **`#btn-preview-quiz`**, **`#btn-share-quiz`**. |
 | **`#quiz-success-toast`** | Toast sukcesu (**`showToast()`**); **`aria-live="polite"`**. |
 | **FOUC motywu** | Inline script w `<head>`: `localStorage.fizki_theme` → `document.documentElement.dataset.theme` + `meta theme-color`. |
-| **Style** | `css/styles.css?v=21` + KaTeX 0.16.11 z jsDelivr. Przy deployzie shell: podbić **`?v=`** w `index.html`. |
-| **Skrypty `defer`** | `katex.min.js` → **`canvas-confetti`** (jsDelivr 1.9.3) → `wzory-symbol-legends.js?v=5` → `app.js?v=19`. |
+| **Style** | `css/styles.css?v=23` + KaTeX 0.16.11 z jsDelivr. Przy deployzie shell: podbić **`?v=`** w `index.html`. |
+| **Skrypty `defer`** | **`canvas-confetti`** (jsDelivr 1.9.3, w `<head>`) → `katex.min.js` → `wzory-symbol-legends.js?v=5` → `app.js?v=22`. |
 | **PWA meta** | `manifest.json`, ikony `/icons/`, Apple `mobile-web-app-*`, `theme-color` zsynchronizowany z motywem. |
 
 ### 1.6 CMS (Decap) — edycja treści poza runtime ucznia
@@ -178,7 +178,6 @@ body (flex column, min-height 100dvh)
 | **`taskAnswerVisible`**, **`taskFormulasVisible`**, **`taskSolutionVisible`** | Rozwinięcie bloków `#task-answer`, `#formulas-box`, `#task-solution`. |
 | **`lastTaskQuizGateKey`**, **`taskQuizPickIndex`**, **`taskQuizSolved`**, **`taskQuizUnlockAnim`** | Stan bramki: klucz `level\x1esection\x1eindex`, wybór w quizie, czy odblokowano, flaga jednorazowej animacji po poprawnej odpowiedzi. |
 | **`taskAttempts`**, **`taskMathInputDraft`**, **`taskMathRevealed`** | 2-Strike i stan pola math w bramce zadania. |
-| **`flashAutoAdvanceTimerId`** | Auto „Dalej” 1 s po poprawnej odpowiedzi w fiszkach (`scheduleFlashAutoAdvance`). |
 | **`mockUserRole`** | **`null` \| `'student'` \| `'teacher'`** — makieta logowania (tylko sesja, **bez** `localStorage`). |
 | **`MOCK_TEACHERS`** | Stała tablica mock nauczycieli (modal „Znajdź Nauczyciela”). |
 | **`copyClassCodeTimerId`**, **`quizToastTimerId`** | Timery UI makiety: reset etykiety **Kopiuj kod** (2 s), ukrycie toastu (3 s, przywrócenie domyślnej treści). |
@@ -243,16 +242,17 @@ flowchart TD
 | **`cardsForHomeLevel`**, **`cardVisibleForHomeLevel`**, **`groupCardsByTopicInOrder`**, **`countFlashStatsForCards`**, **`flashTopicTriGradientStyle`**, **`renderFiszkiPanelInnerHtml`** | Filtrowanie fiszek wg poziomu; grupowanie po **`topic`** dla panelu Fiszki i Karty wzorów; liczniki postępu (`flashProgress`); pasek trójkolorowy; HTML zakładki **Fiszki** na **`main`**. |
 | **`fisherYatesShuffle`**, **`buildFlashQuizChoices`** | Quiz fiszek: cztery warianty LaTeXu — poprawny `back` + trzy dystraktory z innych wzorów (priorytet: ten sam `topic`, potem poziom, potem `quizDistractors`, potem `CARDS`); **`fisherYatesShuffle`**. |
 | **`taskNeedsQuizGate`**, **`getTaskType`**, **`taskHasInteractiveGate`**, **`taskNeedsAnswerGate`**, **`checkMathAnswer`**, **`handleTaskWrongAttempt`**, **`unlockTaskWithSolution`** | Bramki zadań: open (formulaQuiz), math, abcd; 2-Strike; odblokowanie rozwiązania. |
-| **`celebrateSuccess`** | **`canvas-confetti`** po ukończeniu talii fiszek (`flash-complete`) i po **poprawnej** odpowiedzi w bramce (nie po 2. błędzie). |
-| **`handleLoginStudent`**, **`handleLoginTeacher`**, **`openLoginModal`**, **`closeLoginModal`**, **`openStudentModal`**, **`closeStudentModal`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`**, **`resetMockAuth`**, **`syncRoleMockUi`**, **`setShellVisible`**, **`showToast`**, **`showQuizSuccessToast`** | Makieta ról: modale profilu, widoczność shell auth (**`.hidden`** + **`hidden`**), uniwersalny toast (**`#quiz-success-toast`**, stan tylko w pamięci). |
+| **`triggerSuccessEffect`**, **`triggerChapterComplete`** | **`canvas-confetti`**: subtelny efekt po poprawnej odpowiedzi (fiszki + bramka zadania); większy efekt na **`flash-complete`**. **Bez** auto-„Dalej” — uczeń klika **Dalej** ręcznie. |
+| **`handleLoginStudent`**, **`handleLoginTeacher`**, **`openLoginModal`**, **`closeLoginModal`**, **`openStudentModal`**, **`closeStudentModal`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`**, **`resetMockAuth`**, **`syncRoleMockUi`**, **`setShellVisible`**, **`showToast`**, **`showQuizSuccessToast(message?)`** | Makieta ról: modale profilu, widoczność shell auth (**`.hidden`** + **`hidden`**), uniwersalny toast (**`#quiz-success-toast`**, stan tylko w pamięci). |
+| **`resetTutorBookingView`**, **`resetStudentDashboardView`** | Drill-down korepetycji ucznia: powrót z kalendarza do listy profili; reset przy zamknięciu modala. |
 | **`resetTeacherDashboardView`**, **`openTeacherDashboardModal`**, **`closeTeacherDashboardModal`** | Drill-down: reset widoków modala nauczyciela. |
 | **`syncTeacherTaskTools`**, **`openQuizCreatorModal`**, **`closeQuizCreatorModal`**, **`renderQuizCreatorTaskList`**, **`getQuizCreatorTasks`**, **`quizCreatorDifficultyDotHtml`** | B2B: kreator sprawdzianu z listą zadań działu i trudnością. |
 | **`openTopicModal`**, **`closeTopicModal`**, **`startFlashQuiz`**, **`renderFlashTopicGridHtml`**, **`syncTopicModalList`** | Modal wyboru działu fiszek (minimalistyczny panel). |
-| **`symbolLegendDisclosureHtml`**, **`renderFlashTopicGridHtml`** | Legenda symboli — progressive disclosure po ujawnieniu fiszki; kafelki działów w modalu. |
+| **`renderFlashTopicGridHtml`** | Kafelki działów w modalu **`#topic-modal`**. |
 | **`TEACHER_CLASSES`**, **`showTeacherClassDetail`**, **`renderTeacherStudentsHtml`**, **`teacherPctClass`** | Mock 3 klas × 3–4 uczniów z wynikami per dział. |
 | **`renderCalendar`**, **`CALENDAR_BOOKED_DEMO`**, **`isEditMode`**, **`openLessonDetailModal`**, **`setTeacherDashboardMode`** | Kalendarz korepetycji: demo sloty, tryb edycji dostępności (**`#btn-toggle-edit`**). |
 | **`renderTeachers`**, **`openTeacherModal`**, **`closeTeacherModal`**, **`onTeacherModalBodyClick`** | Modal „Znajdź Nauczyciela”: karty nauczycieli, rozwijanie `.teacher-calendar`. |
-| **`scheduleFlashAutoAdvance`**, **`advanceFlashStudyCard`**, **`clearFlashAutoAdvanceTimer`** | Auto-przejście fiszek po poprawnej odpowiedzi. |
+| **`advanceFlashStudyCard`** | Przejście fiszek po kliknięciu **Dalej** (ręcznie, bez timera). |
 | **`getSection`**, **`getLevel`**, **`getTaskSheetLines`**, **`getSolutionSteps`** | Nawigacja i treść pomocnicza zadań (w tym kroki rozwiązania z `solutionSteps`). |
 | **`collectSectionIdsUnderCurriculumSubtree`**, **`sectionsForTaskClassFilter`**, **`normalizeUserGradeForLevel`**, **`normalizeTaskClassTabId`**, **`curriculumVisibleClassRoots`**, **`renderTaskCurriculumTreeHtml`**, **`renderCurriculumSubtree`**, **`countTasksOnCurriculumLeaf`**, **`countTasksUnderCurriculumNode`** | **Zadania:** filtr klasy z **`getEffectiveClassFilterId()`** (z `userGrade`); drzewo / płaska lista; **`taskClassTabsHtml`** pozostaje w kodzie, **nie** jest renderowane na liście zadań. |
 | **`sheetSymbolLegendKey`**, **`getCardSymbolLegendEntries`**, **`taskFormulaQuizLegendHaystack`**, **`getLegendEntriesMatchingHaystack`**, **`symbolLegendBlockHtml`** | Legenda na fiszkach / karcie wzorów; po bramce — dopasowanie symboli do treści `formulaQuiz`. |
@@ -277,7 +277,7 @@ flowchart TD
 - **Język UI:** polski (`lang="pl"`).
 - **Główne moduły treści:** Fiszki (quiz wzorów), Karta wzorów (przeglądarka), Zadania (lista + szczegół z bramką: open/math/abcd).
 - **Profil użytkownika:** wymuszony **dwuetapowy onboarding** przy pierwszej wizycie; później zmiana przez **breadcrumb** w nagłówku (bez stałych zakładek poziomu).
-- **Makiety demo (wideo):** mock logowanie Uczeń/Nauczyciel, panel nauczyciela, modal „Znajdź Nauczyciela”, confetti sukcesu — **frontend only**, bez backendu auth.
+- **Makiety demo (wideo):** mock logowanie Uczeń/Nauczyciel, panel nauczyciela, **marketplace korepetycji ucznia** (drill-down rezerwacji), modal „Znajdź Nauczyciela”, confetti sukcesu — **frontend only**, bez backendu auth.
 
 ### 3.1 Architektura informacji
 
@@ -401,10 +401,11 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 #### `flash-study` / `flash-complete`
 
 - **Layout:** **`.flash-study`** — pasek postępu (**`#flash-progress-bar`**), przewijana treść + sticky **`nav.flash-nav`**.
-- **Quiz:** 4 opcje; po odpowiedzi — pełna fiszka w **`.quiz-flip-face`**; legenda symboli — **progressive disclosure** (**`symbolLegendDisclosureHtml`**, przycisk „Pokaż legendę symboli”).
-- **Auto-advance:** poprawna odpowiedź → **`scheduleFlashAutoAdvance`** (1 s) → **`advanceFlashStudyCard`**.
+- **Quiz:** 4 opcje; po odpowiedzi — pełna fiszka w **`.quiz-flip-face`**; legenda symboli od razu widoczna (**`symbolLegendBlockHtml`**, blok **`.symbol-legend`**).
+- **Brak auto-advance:** po poprawnej odpowiedzi uczeń czyta legendę i sam klika **Dalej** → **`advanceFlashStudyCard`**.
+- **Confetti:** poprawna odpowiedź → **`triggerSuccessEffect()`**; koniec talii + **Dalej** → **`flash-complete`** + **`triggerChapterComplete()`**.
 - **Stały slot pytania:** `.quiz-prompt-slot` — wysokość `clamp` (anty-skok layoutu przy ujawnieniu wzoru).
-- **Wstecz/Dalej:** zmiana `flashIndex`; na ostatniej karcie „Dalej” po odpowiedzi → `flash-complete` + **`celebrateSuccess()`** (confetti).
+- **Wstecz/Dalej:** zmiana `flashIndex`; na ostatniej karcie „Dalej” po odpowiedzi → `flash-complete`.
 - **Pusty deck:** `history.back()`.
 
 #### `main` + Karta wzorów
@@ -430,7 +431,7 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 - `homeNavTabsHtml` + `top-bar` (**`#btn-back-list`** „← Lista”) + pasek postępu w dziale.
 - **Bramka wg `taskType`:** **`open`** — quiz `formulaQuiz` (`data-task-quiz-opt`); **`math`** — pole + Sprawdź; **`abcd`** — 4 opcje (`data-task-abcd-opt`). Przyciski Pokaż wzory/odpowiedź/rozwiązanie: **`disabled`** + **`.btn-gated`** do **`taskQuizSolved`**.
 - **2-Strike** (math/abcd): pierwszy błąd — shake + hint; drugi — ujawnienie + **`unlockTaskWithSolution()`** (bez confetti).
-- Po **poprawnej** odpowiedzi: **`celebrateSuccess()`** + **`taskQuizUnlockAnim`**; legenda **`.task-quiz-symbol-legend`** (open + formulaQuiz).
+- Po **poprawnej** odpowiedzi: **`triggerSuccessEffect()`** + **`taskQuizUnlockAnim`**; legenda **`.task-quiz-symbol-legend`** (open + formulaQuiz).
 - **Poprzednie/Następne:** `#btn-task-prev` / `#btn-task-next` — globalna sekwencja z `buildTaskNavSequence`.
 - **Trudność:** **`task-difficulty-stars`** przy tytule zadania.
 
@@ -438,7 +439,7 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 
 | Komponent | Kluczowe klasy / ID | Interakcja |
 |-----------|---------------------|------------|
-| Przycisk primary | `.btn` | Pełna szerokość, żółty, czarny tekst |
+| Przycisk primary | `.btn`, **`.btn-primary`** | Pełna szerokość, żółty, czarny tekst |
 | Przycisk wstecz | `.btn-back`, `.btn-secondary` | W `top-bar` |
 | Lista | `.list-item`, `.list-stack` | Klik → nawigacja |
 | Quiz opcja (fiszki) | `.quiz-option`, `data-quiz-opt` | Jednokrotny wybór |
@@ -455,7 +456,7 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 | Element | Zachowanie |
 |---------|------------|
 | **`manifest.json`** | `display: standalone`, `start_url` `/`, ikony 192/512 |
-| **Service Worker** | `sw.js`, cache **`fizki-v6`**; precache HTML/CSS/JS/JSON/logo; **HTML** stale-while-revalidate; **CSS/JS shell** network-first; reszta cache-first; `/admin`, `/api` pomijane |
+| **Service Worker** | `sw.js`, cache **`fizki-v7`**; precache HTML/CSS/JS/JSON/logo; **HTML** stale-while-revalidate; **CSS/JS shell** network-first; reszta cache-first; `/admin`, `/api` pomijane |
 | **Instalacja** | `beforeinstallprompt` → `#pwa-install`; po 4 s bez promptu → `#pwa-install-hint` (`pwaManualInstallText` — iOS/Android/desktop); ukryte w standalone i na `/admin` |
 | **Bez `preventDefault`** na `beforeinstallprompt` | Chrome może pokazać natywny banner |
 | **Apple** | `apple-mobile-web-app-*`, touch icon 192 |
@@ -544,6 +545,9 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 | **`#student-modal-close`**, **`#student-modal-backdrop`**, **Escape** | **`closeStudentModal()`**. |
 | **`#student-level-select`**, **`#student-grade-select`** | Zmiana poziomu/klasy → **`saveFizkiConfig()`**, **`applyFizkiConfig()`**, **`render()`** — bez przejścia do onboardingu. |
 | **`#input-join-code`**, **`#btn-join-class`** | Makieta dołączenia: wyczyść input, **`closeStudentModal()`**, toast „Dołączono do klasy…”. |
+| **Zakładka Korepetycje** | **`#s-tutor-list-view`** — profile **`.tutor-card`** (awatar, specjalizacja, cena, bio, **`.btn-book-tutor`**). **`#s-tutor-calendar-view`** — ukryty widok rezerwacji: **`#booking-tutor-name`**, siatka **`.btn-time-slot`**, **`#btn-back-to-tutors`**. |
+| **Drill-down rezerwacji** | **`.btn-book-tutor`** → ukryj listę, pokaż kalendarz, nagłówek „Rezerwacja: {nazwa}”. **`#btn-back-to-tutors`** / zamknięcie modala → **`resetTutorBookingView()`**. |
+| **Klik slotu** | **`.btn-time-slot`** — podświetlenie (zielony), toast **`showQuizSuccessToast("Termin został pomyślnie zarezerwowany!")`**, po 1,5 s powrót do listy + reset slotu. |
 
 #### Modal profilu nauczyciela (`#teacher-dashboard`)
 
@@ -583,9 +587,10 @@ index.html (logo + breadcrumb + mock auth + footer + modals: login, student, tea
 
 #### Confetti sukcesu
 
-- Biblioteka: **canvas-confetti** 1.9.3 (CDN).
-- **`celebrateSuccess()`:** `{ particleCount: 100, spread: 70, origin: { y: 0.6 } }`.
-- Wywołania: koniec talii fiszek; poprawna bramka zadania (open/math/abcd) — **nie** przy odblokowaniu po 2. błędzie.
+- Biblioteka: **canvas-confetti** 1.9.3 (CDN w `<head>`).
+- **`triggerSuccessEffect()`:** `{ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: ['#ffc800', '#ffffff'] }` — poprawna odpowiedź w fiszkach i bramce zadania.
+- **`triggerChapterComplete()`:** `{ particleCount: 150, spread: 100, origin: { y: 0.6 } }` — ekran **`flash-complete`** (koniec talii).
+- **Nie** wywoływane przy odblokowaniu po 2. błędzie (**`unlockTaskWithSolution`**).
 
 ### 3.12 Checklist audytu UX
 
@@ -616,6 +621,7 @@ Użyj przy przeglądzie lub regresji. Oznacz: ✅ OK / ⚠️ do poprawy / ❌ b
 
 - [ ] Quick 10 / Powtórka / dział — poprawne `disabled` przy pustej puli.
 - [ ] Po odpowiedzi: brak skoku layoutu (prompt slot).
+- [ ] Po odpowiedzi: legenda symboli widoczna od razu (bez klikania); brak auto-„Dalej”.
 - [ ] 4 opcje czytelne na wąskim ekranie; długi LaTeX przewijalny.
 - [ ] Postęp utrzymuje się po odświeżeniu (`fiszki_progress`).
 
@@ -649,7 +655,8 @@ Użyj przy przeglądzie lub regresji. Oznacz: ✅ OK / ⚠️ do poprawy / ❌ b
 - [ ] Fiszki: panel minimalistyczny → modal działów → quiz.
 - [ ] Kreator sprawdzianu: lista z trudnością, podgląd, shuffle.
 - [ ] **Wyloguj** resetuje widok do **Zaloguj się**.
-- [ ] Confetti po ukończeniu fiszek i poprawnej bramce zadania.
+- [ ] Confetti po poprawnej odpowiedzi (fiszki/zadanie) i po ukończeniu talii (**`flash-complete`**).
+- [ ] Korepetycje ucznia: drill-down profil → kalendarz → rezerwacja slotu → powrót do listy.
 - [ ] Modale: ciemny blur backdrop + animacja wjazdu.
 
 ---
@@ -672,7 +679,8 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 | **`.tabs`**, **`.tab-slider`**, **`.tab`**, **`.tabs-main`** | Zakładki modułów + pill — §3.3 (**bez** `.tabs-level` w UI). |
 | **`.tabs-task-class`** | Style pozostają; **nieużywane** w renderze listy zadań po onboardingu. |
 | **`.top-bar`**, **`.top-bar-title`**, **`.btn-back`**, **`.btn-link-back`** | Pasek podrzędnych ekranów (quiz, zadania). |
-| **`.flash-panel-minimal`**, **`.flash-panel-title`**, **`.flash-pick-topic-btn`**, **`.flash-topic-modal-*`**, **`.symbol-legend-disclosure`**, **`.flash-progress-bar`** | Panel Fiszki (minimal), modal działów, legenda progressive disclosure, pasek postępu quizu. |
+| **`.flash-panel-minimal`**, **`.flash-panel-title`**, **`.flash-pick-topic-btn`**, **`.flash-topic-modal-*`**, **`.flash-progress-bar`** | Panel Fiszki (minimal), modal działów, pasek postępu quizu. |
+| **`.tutor-card*`**, **`.btn-primary`**, **`#s-tutor-list-view`**, **`#s-tutor-calendar-view`**, **`.s-tutor-*`**, **`.btn-book-tutor`**, **`.btn-time-slot`** | Marketplace korepetycji ucznia (profile + widok rezerwacji) — §3.13. |
 | **`.calendar-grid`**, **`.cal-cell`**, **`.cal-slot`**, **`.cal-slot.booked`**, **`.cal-slot.available`**, **`.btn-cal-edit-availability`**, **`.calendar-nav`** | Kalendarz korepetycji nauczyciela + tryb edycji dostępności. |
 | **`.quiz-creator-advanced*`**, **`.quiz-creator-difficulty*`**, **`.quiz-creator-preview`** | Kreator sprawdzianu B2B. |
 | **`.user-badge`**, **`@keyframes fadeIn`**, **`@keyframes backdropFadeIn`** | Demo Mode: profil klikalny, animacje modalów. |
@@ -718,11 +726,11 @@ Mapowanie klas → UX (uzupełnienie §3). Breakpointy: **360px**, **28rem**, **
 | Regeneracja zadań | `scripts/rebuild_zadania.py` | Nie (dev/CI) |
 | Logo | `logo/fizki_yellow.svg`, `logo/fizki_black.svg` | Tak (precache SW) |
 | PWA manifest | `manifest.json` | Tak |
-| Service Worker | `sw.js` (`fizki-v6`) | Tak |
+| Service Worker | `sw.js` (`fizki-v7`) | Tak |
 | Źródło generatora fiszek JSON | `js/cards-wzory-cke.js` | Tylko Node (`tools/gen-fiszki-wzory-json.mjs`) |
 | Generator legendy | `tools/gen_wzory_symbol_legends.py` | Tylko Node |
 | **Ten dokument** | `docs/SINGLE_SOURCE_OF_TRUTH.md` | Spec UX + dane |
 
 ---
 
-*Dokument zsynchronizowany ze stanem kodu (Demo Mode: minimalistyczne Fiszki, modale B2B/korepetycje, kalendarz, statusy CSS, animacje modalów). Po zmianach w `app.js`, `styles.css`, `index.html`, `sw.js` — zaktualizuj §1.5–1.6, §2.5, §3 (zwł. §3.13) i podbij **`fizki-vN`** + **`?v=`**.*
+*Dokument zsynchronizowany ze stanem kodu (marketplace korepetycji ucznia, legenda od razu widoczna, confetti dwustopniowe, brak auto-Dalej). Po zmianach w `app.js`, `styles.css`, `index.html`, `sw.js` — zaktualizuj §1.5–1.6, §2.5, §3 (zwł. §3.13) i podbij **`fizki-vN`** + **`?v=`**.*

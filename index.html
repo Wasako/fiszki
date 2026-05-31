@@ -13,7 +13,7 @@
   <meta name="apple-mobile-web-app-title" content="Fizki" />
   <meta name="mobile-web-app-capable" content="yes" />
   <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <link rel="stylesheet" href="css/styles.css?v=22" />
+  <link rel="stylesheet" href="css/styles.css?v=23" />
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
@@ -123,22 +123,43 @@
         </div>
       </div>
       <div id="s-view-tutor" class="s-view hidden" aria-hidden="true">
-        <ul class="student-tutor-list">
-          <li class="student-tutor-card">
-            <div class="student-tutor-card-body">
-              <h3 class="student-tutor-name">Dr. Anna N.</h3>
-              <p class="student-tutor-slots">Terminy: Wt, Czw</p>
+        <div id="s-tutor-list-view">
+          <article class="tutor-card">
+            <div class="tutor-card-header">
+              <div class="tutor-avatar tutor-avatar--accent" aria-hidden="true">AN</div>
+              <div class="tutor-card-info">
+                <div class="tutor-name">Dr. Anna N.</div>
+                <div class="tutor-meta">Fizyka kwantowa i Optyka • 100 zł/h</div>
+              </div>
             </div>
-            <button type="button" class="student-tutor-book-btn" data-tutor-name="Dr. Anna N.">Zapisz się</button>
-          </li>
-          <li class="student-tutor-card">
-            <div class="student-tutor-card-body">
-              <h3 class="student-tutor-name">mgr inż. Piotr W.</h3>
-              <p class="student-tutor-slots">Terminy: Pon, Śr</p>
+            <p class="tutor-bio">Cierpliwie tłumaczę trudne zagadnienia. Posiadam własne materiały i arkusze maturalne.</p>
+            <button type="button" class="btn-primary btn-book-tutor" data-tutor="Dr. Anna N.">Sprawdź kalendarz</button>
+          </article>
+          <article class="tutor-card">
+            <div class="tutor-card-header">
+              <div class="tutor-avatar tutor-avatar--sky" aria-hidden="true">PW</div>
+              <div class="tutor-card-info">
+                <div class="tutor-name">mgr inż. Piotr W.</div>
+                <div class="tutor-meta">Kinematyka i Dynamika • 80 zł/h</div>
+              </div>
             </div>
-            <button type="button" class="student-tutor-book-btn" data-tutor-name="mgr inż. Piotr W.">Zapisz się</button>
-          </li>
-        </ul>
+            <p class="tutor-bio">Praktyczne podejście do fizyki. Dużo zadań obliczeniowych i przygotowanie do egzaminów.</p>
+            <button type="button" class="btn-primary btn-book-tutor" data-tutor="mgr inż. Piotr W.">Sprawdź kalendarz</button>
+          </article>
+        </div>
+        <div id="s-tutor-calendar-view" class="hidden" aria-hidden="true">
+          <div class="s-tutor-calendar-header">
+            <button type="button" id="btn-back-to-tutors" class="btn-secondary s-tutor-back-btn">← Wróć</button>
+            <h3 id="booking-tutor-name" class="s-tutor-calendar-heading">Rezerwacja</h3>
+          </div>
+          <p class="s-tutor-calendar-hint">Wybierz dostępny termin:</p>
+          <div class="s-tutor-time-slots">
+            <button type="button" class="btn-secondary btn-time-slot">Śr, 16:00</button>
+            <button type="button" class="btn-secondary btn-time-slot">Śr, 17:00</button>
+            <button type="button" class="btn-secondary btn-time-slot">Czw, 15:00</button>
+            <button type="button" class="btn-secondary btn-time-slot">Pt, 18:00</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -323,6 +344,6 @@
   </div>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="js/wzory-symbol-legends.js?v=5"></script>
-  <script defer src="js/app.js?v=21"></script>
+  <script defer src="js/app.js?v=23"></script>
 </body>
 </html>

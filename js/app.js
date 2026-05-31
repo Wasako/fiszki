@@ -1002,6 +1002,8 @@
     saveFizkiConfig(newLevel, "all");
     applyFizkiConfig();
     fillStudentGradeSelect(newLevel);
+    resetTaskNavForProfileChange();
+    taskLevelId = homeLevelId;
     render();
   }
 
@@ -1011,11 +1013,13 @@
     const newGrade = gradeSelect.value;
     saveFizkiConfig(userLevel, newGrade);
     applyFizkiConfig();
+    resetTaskNavForProfileChange();
+    taskLevelId = homeLevelId;
     render();
   }
 
   function userGradeDisplayLabel() {
-    if (userGrade === "all") return "Wszystko";
+    if (userGrade === "all") return "Pokaż wszystkie zadania";
     const level = getLevel(homeLevelIdFromUserLevel(userLevel));
     if (!level || !level.curriculum) return userGrade;
     const node = findCurriculumNodeById(level.curriculum, userGrade);
@@ -1032,7 +1036,7 @@
     const level = getLevel(hid);
     const roots = level ? curriculumVisibleClassRoots(level) : [];
     /** @type {{ id: string, title: string }[]} */
-    const opts = [{ id: "all", title: "Wszystko" }];
+    const opts = [{ id: "all", title: "Pokaż wszystkie zadania" }];
     for (const r of roots) {
       const title = r.title != null && String(r.title).trim() ? String(r.title) : String(r.id || "");
       opts.push({ id: String(r.id || ""), title });
@@ -1582,8 +1586,8 @@
     }, 3000);
   }
 
-  function showQuizSuccessToast() {
-    showToast(QUIZ_TOAST_DEFAULT_MESSAGE);
+  function showQuizSuccessToast(message) {
+    showToast(message || QUIZ_TOAST_DEFAULT_MESSAGE);
   }
 
   function handleLoginStudent() {
@@ -1629,7 +1633,20 @@
     }
   }
 
+  function resetTutorBookingView() {
+    const sTutorListView = document.getElementById("s-tutor-list-view");
+    const sTutorCalendarView = document.getElementById("s-tutor-calendar-view");
+    if (sTutorListView) {
+      sTutorListView.classList.remove("hidden");
+    }
+    if (sTutorCalendarView) {
+      sTutorCalendarView.classList.add("hidden");
+      sTutorCalendarView.setAttribute("aria-hidden", "true");
+    }
+  }
+
   function resetStudentDashboardView() {
+    resetTutorBookingView();
     setStudentDashboardTab("profile");
   }
 
@@ -2004,6 +2021,44 @@
   }
 
   /**
+   * Czy węzeł planu (`targetId`) leży w poddrzewie klasy (`rootNode`).
+   * @param {TopicSection} rootNode
+   * @param {string} targetId
+   */
+  function isCurriculumIdInSubtree(rootNode, targetId) {
+    if (!rootNode || !targetId) return false;
+    if (rootNode.id === targetId) return true;
+    return (rootNode.children || []).some((c) => isCurriculumIdInSubtree(c, targetId));
+  }
+
+  /**
+   * Czy dział / liść programu jest widoczny przy filtrze klasy z profilu (`classId` = `""` → wszystko).
+   * @param {SchoolLevel} level
+   * @param {string} sectionOrLeafId
+   * @param {string} classId
+   */
+  function isTaskSectionInClassFilter(level, sectionOrLeafId, classId) {
+    if (!classId || !sectionOrLeafId) return true;
+    if (!level?.curriculum) return true;
+    const classNode = findCurriculumNodeById(level.curriculum, classId);
+    if (!classNode || !hasNodeChildren(classNode)) return true;
+    if (isCurriculumIdInSubtree(classNode, sectionOrLeafId)) return true;
+    const allowed = collectSectionIdsUnderCurriculumSubtree(level, classNode);
+    return allowed.has(sectionOrLeafId);
+  }
+
+  function resetTaskNavForProfileChange() {
+    taskSectionId = null;
+    taskIndex = 0;
+    taskCurriculumPath = [];
+    taskCurriculumExpandedIds.clear();
+    taskAnswerVisible = false;
+    taskFormulasVisible = false;
+    taskSolutionVisible = false;
+    lastTaskQuizGateKey = "";
+  }
+
+  /**
    * Rząd zakładek „Klasa …” nad listą działów. Pusty, gdy brak sensownego `curriculum`.
    * @param {SchoolLevel} level
    * @param {string} selectedClassId
@@ -2044,7 +2099,7 @@
     const node = findCurriculumNodeById(level.curriculum, cid);
     if (!node || !hasNodeChildren(node)) return all.slice();
     const allowed = collectSectionIdsUnderCurriculumSubtree(level, node);
-    if (!allowed.size) return all.slice();
+    if (!allowed.size) return cid ? [] : all.slice();
     return all.filter((s) => allowed.has(s.id));
   }
 
@@ -3099,12 +3154,24 @@
 
     else if (screen === "task-chapters") {
       applyFizkiConfig();
-      if (!taskLevelId) taskLevelId = homeLevelId;
+      taskLevelId = homeLevelId;
       const level = taskLevelId ? getLevel(taskLevelId) : null;
       if (!level) {
         screen = "main";
         render();
         return;
+      }
+
+      normalizeTaskClassTabId(level);
+      const classFilter = getEffectiveClassFilterId();
+
+      if (
+        taskSectionId &&
+        classFilter &&
+        !isTaskSectionInClassFilter(level, taskSectionId, classFilter)
+      ) {
+        taskSectionId = null;
+        taskIndex = 0;
       }
 
       /** Lista zadań w wybranym dziale (`level.sections`). */
@@ -3158,16 +3225,13 @@
         return;
       }
 
-      applyFizkiConfig();
-      normalizeTaskClassTabId(level);
-      const classFilter = getEffectiveClassFilterId();
       const treeHtml = renderTaskCurriculumTreeHtml(level, classFilter);
 
       let chaptersHtml;
       if (treeHtml) {
         chaptersHtml = treeHtml;
       } else {
-        const filteredSections = sectionsForTaskClassFilter(level);
+        const filteredSections = sectionsForTaskClassFilter(level, classFilter);
         chaptersHtml =
           filteredSections.length > 0
             ? filteredSections
@@ -3187,9 +3251,15 @@
               }</p>`;
       }
 
+      const filterHint =
+        userGrade !== "all"
+          ? `<p class="sub task-class-filter-hint">Klasa: <strong>${escapeHtml(userGradeDisplayLabel())}</strong></p>`
+          : "";
+
       app.innerHTML = `
         ${homeNavTabsHtml()}
         <p class="panel-title task-dzialy-heading">Działy</p>
+        ${filterHint}
         <div class="list-stack task-curriculum-root">${chaptersHtml}</div>
       `;
 
@@ -3237,6 +3307,23 @@
     }
 
     else if (screen === "task-detail") {
+      applyFizkiConfig();
+      taskLevelId = homeLevelId;
+      const level = taskLevelId ? getLevel(taskLevelId) : null;
+      const classFilter = getEffectiveClassFilterId();
+      if (
+        level &&
+        taskSectionId &&
+        classFilter &&
+        !isTaskSectionInClassFilter(level, taskSectionId, classFilter)
+      ) {
+        screen = "task-chapters";
+        taskSectionId = null;
+        taskIndex = 0;
+        render();
+        return;
+      }
+
       const sec = taskLevelId && taskSectionId ? getSection(taskLevelId, taskSectionId) : null;
       if (!sec || !Array.isArray(sec.tasks) || sec.tasks.length === 0) {
         screen = "task-chapters";
@@ -3253,7 +3340,6 @@
         render();
         return;
       }
-      const level = getLevel(taskLevelId);
       const t = sec.tasks[taskIndex];
 
       const quizGateKey = taskLevelId + "\x1e" + taskSectionId + "\x1e" + taskIndex;
@@ -3410,7 +3496,6 @@
       const showSuccessFeedback = taskQuizSolved && taskQuizUnlockAnim;
       taskQuizUnlockAnim = false;
 
-      const classFilter = getEffectiveClassFilterId();
       const navSeq = level ? buildTaskNavSequence(level, classFilter) : [];
       const navIdx = level ? findTaskNavIndex(level, classFilter, taskSectionId, taskIndex) : -1;
       const canTaskPrev = navIdx > 0;
@@ -3893,11 +3978,50 @@
     });
   }
 
-  document.querySelectorAll(".student-tutor-book-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      if (!(btn instanceof HTMLElement)) return;
-      const name = btn.getAttribute("data-tutor-name") || "nauczyciela";
-      showToast(`✅ Wysłano prośbę o zapis do: ${name}`);
+  const sTutorListView = document.getElementById("s-tutor-list-view");
+  const sTutorCalendarView = document.getElementById("s-tutor-calendar-view");
+  const bookingTutorName = document.getElementById("booking-tutor-name");
+  const btnBackToTutors = document.getElementById("btn-back-to-tutors");
+
+  document.querySelectorAll(".btn-book-tutor").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const target = e.currentTarget;
+      if (!(target instanceof HTMLElement)) return;
+      const tutorName = target.getAttribute("data-tutor") || "Nauczyciel";
+      if (bookingTutorName) bookingTutorName.textContent = "Rezerwacja: " + tutorName;
+      if (sTutorListView) sTutorListView.classList.add("hidden");
+      if (sTutorCalendarView) {
+        sTutorCalendarView.classList.remove("hidden");
+        sTutorCalendarView.setAttribute("aria-hidden", "false");
+      }
+    });
+  });
+
+  if (btnBackToTutors) {
+    btnBackToTutors.addEventListener("click", () => {
+      resetTutorBookingView();
+    });
+  }
+
+  document.querySelectorAll(".btn-time-slot").forEach((slot) => {
+    if (!(slot instanceof HTMLButtonElement)) return;
+    const originalText = slot.textContent || "";
+    slot.addEventListener("click", () => {
+      if (slot.disabled) return;
+      slot.style.background = "var(--status-correct)";
+      slot.style.color = "white";
+      slot.textContent = "✅ Zarezerwowano!";
+      slot.disabled = true;
+
+      showQuizSuccessToast("Termin został pomyślnie zarezerwowany!");
+
+      setTimeout(() => {
+        resetTutorBookingView();
+        slot.style.background = "";
+        slot.style.color = "";
+        slot.textContent = originalText;
+        slot.disabled = false;
+      }, 1500);
     });
   });
 
